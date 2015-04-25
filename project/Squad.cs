@@ -9,14 +9,20 @@ namespace project
      public struct Squad
     {
         public readonly Unit Unit;
-        public int Amount;
+        private int amount;
+
+        public int Amount
+        {
+            get { return amount; }
+            private set { amount = value; }
+        }
         public int DamageLeft;
         public Point Position;
      
-        public Squad(Unit unit, int amount, Point position)
+        public Squad(Unit unit, int _amount, Point position)
         {
             Unit = unit;
-            Amount = amount;
+            amount = _amount;
             DamageLeft = 0;
             Position = position;
         }

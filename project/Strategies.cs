@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace project
 {
@@ -15,7 +12,11 @@ namespace project
 
         public readonly Maneuver[] Maneuvers;
 
-        public static int NearestToPoint(Point p1, Squad[] Army)
+        protected Strategy()
+        {
+            Maneuvers = new Maneuver[2];
+        }
+        protected static int NearestToPoint(Point p1, Squad[] Army)
         {
             int Temp = 0;
             double minDistance = Double.MaxValue;
@@ -36,7 +37,7 @@ namespace project
         /// <param name="Army"></param>
         /// <param name="Targets"></param>
         /// <returns></returns>
-        public static int NearestToAll(Squad[] Army, Squad[] Targets)
+        protected static int NearestToAll(Squad[] Army, Squad[] Targets)
         {
            int Temp = 0;
            double[] distances = new double[Targets.Length];
@@ -62,42 +63,57 @@ namespace project
             return Temp;
         }
 
+        protected static void MoveAndAttak(Squad attaker ,ref Squad target ,KeyValuePair<Point, double>[] Path )
+        {
+
+            if (Move(attaker, Path)) attaker.Attack(ref target);
+               
+        }
+
+        protected static bool Move(Squad attaker ,KeyValuePair<Point, double>[] Path )
+        {
+            double movement = attaker.Unit.MovementSpeed;
+            Point temp = new Point(-1, -1);
+            int lenght = Path.Length;
+            if (lenght < 0)
+                return true;
+            for (int k = 0; k < lenght; k++)
+            {
+                if (Path[k].Value > movement)
+                {
+                    temp = Path[k - 1].Key;
+                    break;
+                }
+            }
+            if (temp == new Point(-1, -1))
+            {
+                attaker.Position = Path[ lenght- 1].Key;
+                return true;
+            }
+            else
+                attaker.Position = temp;
+                return false;
+        }
     }
 
     public class Offensive : Strategy
     {
-        public static void Surround(BattleData battleData)
+        static void Surround(BattleData battleData)
         {
             int TargetIndex = Strategy.NearestToAll(battleData.AllyArmy, battleData.EnemyArmy);
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
-
                 KeyValuePair<Point, double>[] Path = DistanceAndPath.PathTo(
                     battleData.Map,
                     battleData.AllyArmy[i].Position,
                     battleData.EnemyArmy[TargetIndex].Position,
                     battleData.AllyArmy[i].Unit.Range);
 
-                double movement = battleData.AllyArmy[i].Unit.MovementSpeed;
-                Point temp = new Point(-1, -1);
-                for (int k = 0; k < Path.Length; k++)
-                {
-                    if (Path[k].Value > movement)
-                    {
-                        temp = Path[k - 1].Key;
-                        break;
-                    }
-                }
-                if (temp == new Point(-1, -1))
-                {
-                    battleData.AllyArmy[i].Position = Path[Path.Length - 1].Key;
-                    battleData.AllyArmy[i].Attack(ref battleData.EnemyArmy[TargetIndex]);
-                }
-                else
-                    battleData.AllyArmy[i].Position = temp;
+                Strategy.MoveAndAttak(battleData.AllyArmy[i],ref battleData.EnemyArmy[TargetIndex],Path);
             }
+                
         }
-        public static void Rush(BattleData battleData)
+        static void Rush(BattleData battleData)
         {
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
@@ -109,36 +125,60 @@ namespace project
                     battleData.EnemyArmy[TargetIndex].Position,
                     battleData.AllyArmy[i].Unit.Range);
 
-                double movement = battleData.AllyArmy[i].Unit.MovementSpeed;
-                Point temp = new Point(-1, -1);
-                for (int k = 0; k < Path.Length; k++)
-                {
-                    if (Path[k].Value > movement)
-                    {
-                        temp = Path[k - 1].Key;
-                        break;
-                    }
-                }
-                if (temp == new Point(-1, -1))
-                {
-                    battleData.AllyArmy[i].Position = Path[Path.Length - 1].Key;
-                    battleData.AllyArmy[i].Attack(ref battleData.EnemyArmy[TargetIndex]);
-                }
-                else
-                    battleData.AllyArmy[i].Position = temp;
+                Strategy.MoveAndAttak(battleData.AllyArmy[i],ref battleData.EnemyArmy[TargetIndex],Path);
+                
+                
             }
         }
         public Offensive()
         {
-            Maneuvers[0] = Rush;
+            
+            Maneuvers[0] = Surround;
+            Maneuvers[1] = Rush;
         }
     }
 
     class Deffensive : Strategy
     {
+        static void Ambysh(BattleData battleData)
+        {
+            for (int i = 0; i < battleData.AllyArmy.Length; i++)
+            {
+                int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
+
+                KeyValuePair<Point, double>[] Path = DistanceAndPath.PathTo(
+                    battleData.Map,
+                    battleData.AllyArmy[i].Position,
+                    battleData.EnemyArmy[TargetIndex].Position,
+                    battleData.AllyArmy[i].Unit.Range);
+
+                Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+            }
+                
+        }
+        static void HitAndRun(BattleData battleData)
+        {
+            for (int i = 0; i < battleData.AllyArmy.Length; i++)
+            {
+                int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
+                KeyValuePair<Point, double>[] Path = DistanceAndPath.PathTo(
+                    battleData.Map,
+                    battleData.AllyArmy[i].Position,
+                    battleData.EnemyArmy[TargetIndex].Position,
+                    battleData.AllyArmy[i].Unit.Range);
+                if (Path.Length==0)
+                {
+                    battleData.AllyArmy[i].Attack( ref battleData.EnemyArmy[TargetIndex]);
+
+                }
+                else
+                    Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+            }
+        }
         public Deffensive()
         {
-            //Maneuvers[0] = ;
+            Maneuvers[0] = Ambysh;
+            Maneuvers[1] = HitAndRun;
         }
     }
 }

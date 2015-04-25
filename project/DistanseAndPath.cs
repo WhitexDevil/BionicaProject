@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace project
 {
-    class DistanseAndPath
+    class DistanceAndPath
     {
         static public  double DistanceTo(Point p1 , Point p2)
         {
@@ -15,7 +15,7 @@ namespace project
             int b = (p1.Y - p2.Y);
             return Math.Sqrt(a * a + b * b);
         }
-        static public KeyValuePair<Point, double>[] PathTo(Squad[,] map)
+        static public KeyValuePair<Point, double>[] PathTo(Squad[,] map,Point p1,Point p2,Double range)
         {
             return  null;
         }

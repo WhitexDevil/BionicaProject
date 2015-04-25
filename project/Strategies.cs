@@ -94,6 +94,34 @@ namespace project
                 attaker.Position = temp;
                 return false;
         }
+
+        protected static Point GetSafeFrom(Point Victum , Point Enemy)
+        {
+            Point temp = new Point(Victum.X - Enemy.X, Victum.Y - Enemy.Y);
+            List<Point> SafePlaces = new List<Point>();
+            if (temp.X <= 0)
+                SafePlaces.Add(new Point(0, Victum.Y));
+            if (temp.X >= 0)
+                SafePlaces.Add(new Point(99, Victum.Y));
+            if (temp.Y <= 0)
+                SafePlaces.Add(new Point(Victum.X, 0));
+            if (temp.Y >= 0)
+                SafePlaces.Add(new Point(Victum.X, 99));
+
+            double max = double.MinValue;
+            foreach (var item in SafePlaces)
+            {
+                double dist = DistanceAndPath.DistanceTo(Victum, item);
+                if(dist>max)
+                {
+                    max = dist;
+                    temp = item;
+                }
+            }
+
+            return temp;
+        }
+
     }
 
     public class Offensive : Strategy
@@ -161,20 +189,32 @@ namespace project
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
                 int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
+
                 KeyValuePair<Point, double>[] Path = DistanceAndPath.PathTo(
                     battleData.Map,
                     battleData.AllyArmy[i].Position,
                     battleData.EnemyArmy[TargetIndex].Position,
                     battleData.AllyArmy[i].Unit.Range);
+
                 if (Path.Length==0)
                 {
                     battleData.AllyArmy[i].Attack( ref battleData.EnemyArmy[TargetIndex]);
+                    Point SafePoint = GetSafeFrom(battleData.AllyArmy[i].Position, battleData.EnemyArmy[TargetIndex].Position);
+                    
+                    Path=DistanceAndPath.PathTo(
+                    battleData.Map,
+                    battleData.AllyArmy[i].Position,
+                    SafePoint,
+                    0);
 
+                    Move(battleData.AllyArmy[i], Path);
                 }
                 else
                     Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
             }
         }
+
+      
         public Deffensive()
         {
             Maneuvers[0] = Ambysh;

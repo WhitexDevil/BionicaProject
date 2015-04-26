@@ -29,14 +29,14 @@ namespace project
        // public Texture2D Texture = null;
 
 
-        public Unit(int initiative, int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, float range)
+        public Unit( int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, float range)
         {
             MaxHitpoints = maxHitpoints;
             Defense = defense;
             Attack = attack;
             Range = range;
             Damage = damage;
-            InitiativeMod = initiative;
+          
             MovementSpeed = movSpeed;
             MaxAmount = maxAmount;
             //Race = race;
@@ -50,7 +50,7 @@ namespace project
             Attack = 0;
             Range = 0;
             Damage = 0;
-            InitiativeMod = 0;
+           
 
         }
 

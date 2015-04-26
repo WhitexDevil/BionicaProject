@@ -24,7 +24,7 @@ namespace project
             /// <returns></returns>
             public BattleData Clone()
             {
-                return new BattleData(EnemyArmy.Clone(), AllyArmy.Clone(), Map.Clone());
+                return  BattleData(EnemyArmy.Clone(), AllyArmy.Clone(), Map.Clone());
             }
         }
     class SandBox

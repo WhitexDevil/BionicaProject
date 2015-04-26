@@ -55,6 +55,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DistanseAndPath.cs" />
+    <Compile Include="GenomComparer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="SandBox.cs" />
     <Compile Include="Squad.cs" />
     <Compile Include="AI.cs" />

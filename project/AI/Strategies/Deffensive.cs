@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System.Drawing;
+
 namespace project
 {
     using Step = KeyValuePair<Point, float>;
@@ -45,7 +46,7 @@ namespace project
 					battleData.AllyArmy[i].Position,
 					SafePoint,
 					0);
-
+					battleData.AllyArmy.Contain()
                     Move(battleData.AllyArmy[i], Path, battleData);
 				}
 				else

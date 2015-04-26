@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +50,7 @@ namespace project
             alive = true;
         }
 
-        public void Attack(ref Squad target){
+        public void Attack(Squad target){
             int Damage = 0;
             for (int i = 0; i < Amount; i++){
                 if ((1 + Random.Next(20) + Unit.Attack) >= target.Unit.Defense)
@@ -60,7 +60,7 @@ namespace project
             target.TakeDamage(Damage);
         }
 
-        private void TakeDamage(int Damage)
+        public void TakeDamage(int Damage)
         {
             Damage += DamageLeft;
             Amount -= (Damage / Unit.MaxHitpoints);

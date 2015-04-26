@@ -15,7 +15,7 @@ using System;
 using System.Text;
 using System.Threading;
 using System.Collections;
-using Microsoft.Xna.Framework;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Algorithms;

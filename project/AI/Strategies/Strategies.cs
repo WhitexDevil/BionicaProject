@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+using System.Drawing;
 
 namespace project
 {
@@ -68,7 +68,13 @@ namespace project
         protected static void MoveAndAttak(Squad attaker, Squad target, Step[] Path, BattleData bd)
         {
 
-            if (Move(attaker, Path, bd)) attaker.Attack(ref target);
+			if (Move(attaker, Path, bd))
+			{
+				int dmg = target.Amount;
+				attaker.Attack(target);
+				if (bd.Visualization != null)
+					bd.Visualization.RecordAttack(attaker.Position, target.Position, dmg - target.Amount);
+			}
 
         }
 
@@ -94,6 +100,8 @@ namespace project
             if (temp == new Point(-1, -1))
             {
                 temp = Path[0].Key;
+				if (bd.Visualization != null)
+					bd.Visualization.RecordMove(mover.Position, temp, Path);
                 bd.Relocate(mover.Position, temp);
                 mover.Position = temp;
                 return true;

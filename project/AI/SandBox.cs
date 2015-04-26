@@ -29,6 +29,7 @@ namespace project
 				allyArmy.Select(x => (Squad)x.Clone()).ToArray(),
 				new byte[mapSize * mapSize], mapSize);
 			setMap();
+			BattleData.Visualization.InitZeroState(BattleData);
 	//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
 			Side1 = new AI(Player, BattleData);
 			Side2 = new AI(Enemy, BattleData);

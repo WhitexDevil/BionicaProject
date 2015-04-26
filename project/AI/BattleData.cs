@@ -1,5 +1,5 @@
 ﻿using Algorithms;
-using Microsoft.Xna.Framework;
+using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,8 @@ namespace project
 		public  Squad[] EnemyArmy;
 		public  Squad[] AllyArmy;
 		public readonly PathFinderFast PathFinder;
+
+		public readonly Visualization Visualization = new Visualization();
 
 		public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
 		{

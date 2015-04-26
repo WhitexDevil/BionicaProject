@@ -64,21 +64,17 @@ namespace project
 			return Temp;
 		}
 
-		protected static void MoveAndAttak(Squad attaker, ref Squad target, Step[] Path , byte[] map)
+		protected static void MoveAndAttak(Squad attaker, ref Squad target, Step[] Path , BattleData bd)
 		{
 
-			if (Move(attaker, Path,map)) attaker.Attack(ref target);
+			if (Move(attaker, Path,bd)) attaker.Attack(ref target);
 
 		}
 
-        protected static void relocated(Point oldP, Point newP, byte [] map)
-        {
+      
 
 
-        }
-
-
-        protected static bool Move(Squad mover, Step[] Path, byte[] map)
+        protected static bool Move(Squad mover, Step[] Path, BattleData bd)
 		{
             if (Path.Length < 1)
                 return true;
@@ -165,7 +161,7 @@ namespace project
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
 
-				Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+				Strategy.MoveAndAttak(battleData.AllyArmy[i],  battleData.EnemyArmy[TargetIndex], Path, );
 
 
 			}

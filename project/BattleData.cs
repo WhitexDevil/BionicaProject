@@ -1,4 +1,5 @@
 ﻿using Algorithms;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace project
 {
-    public struct BattleData : ICloneable
+    public class BattleData : ICloneable
     {
         public readonly byte[] Map;
 		public readonly int MapHeight;
@@ -27,6 +28,15 @@ namespace project
 			this.MapHeight = map.Length / mapWidth;
 			this.MapHeightLog2 = (int)(Math.Log(MapWidth, 2));
             this.PathFinder = new PathFinderFast(Map, MapWidth);
+        }
+       public void relocated(Point oldP, Point newP)
+        {
+          int  oldIndex = (oldP.Y << MapHeightLog2) + oldP.X;
+          int newIndex = (newP.Y << MapHeightLog2) + newP.X;
+          Map[newIndex] = Map[oldIndex];
+          Map[oldIndex] = 0;
+
+
         }
         /// <summary>
         /// Deep clone!

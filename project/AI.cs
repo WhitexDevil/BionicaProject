@@ -13,43 +13,38 @@ namespace project
     {
         private static readonly List<System.Random> Randoms = new List<System.Random>();
 
-        private static void InitRandoms()
+		private static System.Random GetRandom()
         {
-            int max = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            if (max < Randoms.Count) return;
+            int cId = System.Threading.Thread.CurrentThread.ManagedThreadId;
+			if (cId < Randoms.Count) return Randoms[cId];
 			lock (Randoms)
 			{
-				max = max - Randoms.Count + 1;
-				for (int i = 0; i < max; i++)
+				for (int i = cId - Randoms.Count + 1; i > 0; i--)
 					Randoms.Add(new System.Random());
 			}
+			return Randoms[cId];
         }
         public static byte[] NextBytes(byte[] buffer)
         {
-            InitRandoms();
-            Random.NextBytes(buffer);
+			GetRandom().NextBytes(buffer);
             return buffer;
         }
 
         public static double NextDouble()
         {
-            InitRandoms();
-            return Randoms[System.Threading.Thread.CurrentThread.ManagedThreadId].NextDouble();
+			return GetRandom().NextDouble();
         }
         public static int Next()
         {
-            InitRandoms();
-            return Randoms[System.Threading.Thread.CurrentThread.ManagedThreadId].Next();
+			return GetRandom().Next();
         }
         public static int Next(int minValue, int maxValue)
         {
-            InitRandoms();
-            return Random.Next(minValue, maxValue);
+			return GetRandom().Next(minValue, maxValue);
         }
         public static int Next(int maxValue)
         {
-            InitRandoms();
-            return Random.Next(maxValue);
+			return GetRandom().Next(maxValue);
         }
     }
 

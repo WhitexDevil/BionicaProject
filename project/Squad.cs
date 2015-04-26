@@ -58,7 +58,7 @@ namespace project
 		/// <returns></returns>
 		public object Clone()
 		{
-			return new Squad(Unit) { DamageLeft = 0 };
+			return new Squad(Unit) { DamageLeft = 0, Amount = amount, Position = position };
 		}
 	}
 }

@@ -438,7 +438,7 @@ namespace Algorithms
 
                     while(fNode.X != fNode.PX || fNode.Y != fNode.PY)
                     {
-						if (range >= Math.Sqrt(Math.Pow(fNode.PX - end.X, 2) + Math.Pow((fNode.PY - end.Y), 2))) continue;
+						if (range < Math.Sqrt(Math.Pow(fNode.PX - end.X, 2) + Math.Pow((fNode.PY - end.Y), 2)))
                         mClose.Add(new KeyValuePair<Point, float>(new Point(fNode.X, fNode.Y), fNode.G));
                         #if DEBUGON
                         if (mDebugFoundPath && PathFinderDebug != null)

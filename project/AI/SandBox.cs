@@ -54,8 +54,8 @@ namespace project
 				int step = MapSize / Math.Min((BattleData.EnemyArmy.Length - i * MapSize), MapSize);
 				for (int j = i * MapSize; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
 				{
-					BattleData.Map[(BattleData.MapWidth - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
-					BattleData.EnemyArmy[j].Position = new Microsoft.Xna.Framework.Point((BattleData.MapWidth - i), (j % MapSize) * step);
+					BattleData.Map[(BattleData.MapWidth -1 - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
+					BattleData.EnemyArmy[j].Position = new Microsoft.Xna.Framework.Point((BattleData.MapWidth -1- i), (j % MapSize) * step);
 				}
 			}
 		}

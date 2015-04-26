@@ -71,7 +71,7 @@ namespace project
 
 		}
 
-        protected static void relocated(Point oldP, Point newP, byte [] map)
+        protected static void relocated(Point oldP, Point newP, byte[] map)
         {
 
 

@@ -115,13 +115,19 @@ namespace project
         private void EraseDeadSquads()
         {
              int aliveSq=0;
+             bool change = false;
              foreach (var item in BattleData.AllyArmy)
 	            {
                     if (item.Alive)
                         aliveSq++;
                     else
+                    {
                         BattleData.EraseFromMap(item.Position);
+                        change =true;
+                    }
 	            }
+            if (!change)
+                return;
             Squad[] temp = new Squad[aliveSq];
             int index=0;
             foreach (var item in BattleData.AllyArmy)

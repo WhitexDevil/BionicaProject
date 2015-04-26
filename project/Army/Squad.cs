@@ -24,13 +24,14 @@ namespace project
         {
             get { return amount; }
             private set {
-                if (value>1)
+                if (value < 1)
                 {
                     alive = false;
                     amount = 0;
-                  
+
                 }
                 else
+                    
                 amount = value; }
         }
 

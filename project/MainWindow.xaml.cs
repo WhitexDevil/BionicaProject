@@ -46,6 +46,14 @@ namespace project
             ga = new GA(enemy,army);
 
             ga.Go();
+
+
+
+            SandBox sb = new SandBox(enemy, enemy, army, army, 32);
+
+
+
+                        
         }
     }
 }

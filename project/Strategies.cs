@@ -64,7 +64,7 @@ namespace project
 			return Temp;
 		}
 
-		protected static void MoveAndAttak(Squad attaker, ref Squad target, Step[] Path , BattleData bd)
+		protected static void MoveAndAttak(Squad attaker,  Squad target, Step[] Path , BattleData bd)
 		{
 
 			if (Move(attaker, Path,bd)) attaker.Attack(ref target);
@@ -146,7 +146,7 @@ namespace project
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
 
-				Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+				Strategy.MoveAndAttak(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path , battleData);
 			}
 
 		}
@@ -162,7 +162,7 @@ namespace project
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
 
-				Strategy.MoveAndAttak(battleData.AllyArmy[i],  battleData.EnemyArmy[TargetIndex], Path, );
+                Strategy.MoveAndAttak(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
 
 
 			}
@@ -190,7 +190,7 @@ namespace project
 					battleData.AllyArmy[i].Unit.Range);
                 if (Path!=null && Path.Length>0)
 				if (Path[Path.Length - 1].Value <= battleData.AllyArmy[i].Unit.MovementSpeed)
-					Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+                    Strategy.MoveAndAttak(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
 			}
 
 		}
@@ -217,10 +217,10 @@ namespace project
 					SafePoint,
 					0);
 
-					Move(battleData.AllyArmy[i], Path);
+                    Move(battleData.AllyArmy[i], Path, battleData);
 				}
 				else
-					Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
+                    Strategy.MoveAndAttak(battleData.AllyArmy[i],  battleData.EnemyArmy[TargetIndex], Path, battleData);
 			}
 		}
 

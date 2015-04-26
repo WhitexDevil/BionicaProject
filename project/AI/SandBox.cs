@@ -16,7 +16,8 @@ namespace project
 		private AI Side1;
 		private AI Side2;
 		private int MapSize;
-		private BattleData BattleData;
+		private BattleData BattleDataSide1;
+        private BattleData BattleDataSide2;
 
 		public SandBox(Player enemy, Player player, Squad[] enemyArmy, Squad[] allyArmy, int mapSize)
 		{
@@ -24,38 +25,41 @@ namespace project
 			this.Enemy = enemy;
 			this.Player = player;
 			MapSize = mapSize;
-			BattleData = new BattleData(
+            
+			BattleDataSide1 = new BattleData(
 				enemyArmy.Select(x => (Squad)x.Clone()).ToArray(),
 				allyArmy.Select(x => (Squad)x.Clone()).ToArray(),
 				new byte[mapSize * mapSize], mapSize);
-			setMap();
+            setMap();
+            BattleDataSide2 = new BattleData(BattleDataSide1.AllyArmy, BattleDataSide1.EnemyArmy, BattleDataSide1.Map, BattleDataSide1.MapWidth);
+
 	//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
-			Side1 = new AI(Player, BattleData);
-			Side2 = new AI(Enemy, BattleData);
+			Side1 = new AI(Player, BattleDataSide1);
+			Side2 = new AI(Enemy, BattleDataSide2);
 
 		}
 		void setMap()
 		{
 
-			for (int i = 0; i <= BattleData.AllyArmy.Length / MapSize; i++)
+            for (int i = 0; i <= BattleDataSide1.AllyArmy.Length / MapSize; i++)
 			{
-				int step = MapSize / Math.Min((BattleData.AllyArmy.Length - i * MapSize), MapSize);
+                int step = MapSize / Math.Min((BattleDataSide1.AllyArmy.Length - i * MapSize), MapSize);
 
 
-				for (int j = i * MapSize; j < Math.Min(BattleData.AllyArmy.Length, (i + 1) * MapSize); j++)
+                for (int j = i * MapSize; j < Math.Min(BattleDataSide1.AllyArmy.Length, (i + 1) * MapSize); j++)
 				{
-					BattleData.Map[i + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
-					BattleData.AllyArmy[j].Position = new Microsoft.Xna.Framework.Point(i, (j % MapSize) * step);
+                    BattleDataSide1.Map[i + (((j % MapSize) * step) << BattleDataSide1.MapHeightLog2)] = 1;
+                    BattleDataSide1.AllyArmy[j].Position = new Microsoft.Xna.Framework.Point(i, (j % MapSize) * step);
 				}
 			}
 
-			for (int i = 0; i <= BattleData.EnemyArmy.Length / MapSize; i++)
+            for (int i = 0; i <= BattleDataSide1.EnemyArmy.Length / MapSize; i++)
 			{
-				int step = MapSize / Math.Min((BattleData.EnemyArmy.Length - i * MapSize), MapSize);
-				for (int j = i * MapSize; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
+                int step = MapSize / Math.Min((BattleDataSide1.EnemyArmy.Length - i * MapSize), MapSize);
+                for (int j = i * MapSize; j < Math.Min(BattleDataSide1.EnemyArmy.Length, (i + 1) * MapSize); j++)
 				{
-					BattleData.Map[(BattleData.MapWidth -1 - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
-					BattleData.EnemyArmy[j].Position = new Microsoft.Xna.Framework.Point((BattleData.MapWidth -1- i), (j % MapSize) * step);
+                    BattleDataSide1.Map[(BattleDataSide1.MapWidth - 1 - i) + (((j % MapSize) * step) << BattleDataSide1.MapHeightLog2)] = 1;
+                    BattleDataSide1.EnemyArmy[j].Position = new Microsoft.Xna.Framework.Point((BattleDataSide1.MapWidth - 1 - i), (j % MapSize) * step);
 				}
 			}
 		}

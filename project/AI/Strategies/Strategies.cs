@@ -76,14 +76,13 @@ namespace project
         {
             if (Path == null)
                 return false;
-            if (Path.Length < 1)
+            int length = Path.Length;
+            if (length < 1)
                 return true;
             double movement = mover.Unit.MovementSpeed;
             Point temp = new Point(-1, -1);
-            int length = Path.Length;
-            if (length < 0)
-                return true;
-            for (int k = length; k < 0; k--)
+           
+            for (int k = length-1; k > 0; k--)
             {
                 if (Path[k].Value > movement)
                 {

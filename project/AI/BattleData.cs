@@ -18,6 +18,9 @@ namespace project
 		public  Squad[] EnemyArmy;
 		public  Squad[] AllyArmy;
 		public readonly PathFinderFast PathFinder;
+        private Squad[] squad1;
+        private Squad[] squad2;
+        private byte[] p;
 
 		public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
 		{
@@ -30,6 +33,8 @@ namespace project
 			this.PathFinder = new PathFinderFast(Map, MapWidth);
 			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
+
+      
 
 		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)
 		{

@@ -18,6 +18,10 @@ namespace project
 		public  Squad[] EnemyArmy;
 		public  Squad[] AllyArmy;
 		public readonly PathFinderFast PathFinder;
+        private Squad[] squad1;
+        private Squad[] squad2;
+        private byte[] p;
+        private BattleData BattleDataSide1;
 
 		public readonly Visualization Visualization = new Visualization();
 
@@ -32,6 +36,23 @@ namespace project
 			this.PathFinder = new PathFinderFast(Map, MapWidth);
 			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
+
+        public static BattleData Reverse(BattleData bd)
+        {
+            return new BattleData(bd.AllyArmy, bd.EnemyArmy, bd.Map, bd.MapWidth);
+         
+          
+        }
+
+        //public BattleData(ref Squad[] enemyArmy, ref Squad[] allyArmy, ref byte[] map)
+        //{
+        //    // TODO: Complete member initialization
+        //    this.EnemyArmy = enemyArmy;
+        //    this.AllyArmy = allyArmy;
+        //    this.Map = map;
+        //}
+
+      
 
 		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)
 		{

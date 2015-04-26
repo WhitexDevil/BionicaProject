@@ -59,7 +59,6 @@ namespace project
         private double ManeuverTrust = -1;
         private Strategy Strategy;
         private Maneuver Maneuver;
-        public int ForceBalance;
         public bool Alive = true;
 
         //public static Func<Point, Point, Squad[,], KeyValuePair<Point[],double>> PathFinder;
@@ -78,7 +77,7 @@ namespace project
                 else Strategy = Strategy.Deffensive;
                 ManeuverTrust = 0;
                 ChooseManeuver();
-                StrategyTrust = 100*Player.Pride;
+                StrategyTrust = 500*Player.Pride;
             }
         }
 
@@ -93,67 +92,23 @@ namespace project
                     Maneuver = Strategy.Maneuvers[1];              
 
 
-                ManeuverTrust = 20*Player.Pride;
+                ManeuverTrust = 50*Player.Pride;
             }
         }
 
-        private int EvaluateForces(){
-            EraseDeadSquads();
-            int result = 0;
-            foreach (var squad in BattleData.AllyArmy)
-                result += squad.Amount * squad.Unit.MaxHitpoints;
-            if (result == 0)
-            {
-                Alive = false;
-                return 0;
-            }
-            foreach (var squad in BattleData.AllyArmy)
-                result -= squad.Amount * squad.Unit.MaxHitpoints;
-            return result;
-        }
 
-        private void EraseDeadSquads()
+
+        public Maneuver NextTurn(double DeltaBalance)
         {
-             int aliveSq=0;
-             bool change = false;
-             foreach (var item in BattleData.AllyArmy)
-	            {
-                    if (item.Alive)
-                        aliveSq++;
-                    else
-                    {
-                        BattleData.EraseFromMap(item.Position);
-                        change =true;
-                    }
-	            }
-            if (!change)
-                return;
-            Squad[] temp = new Squad[aliveSq];
-            int index=0;
-            foreach (var item in BattleData.AllyArmy)
-	            {
-		            if (item.Alive)
-                    {
-                        temp[index]=item;
-                        index++;
-                    }
-	            }
-
-            BattleData.AllyArmy = temp;
-        }
-
-        public void NextTurn()
-        {
-            int NewForceBalance = EvaluateForces();
-            int DeltaBalance = ForceBalance - NewForceBalance;
-            double DeltaTrust = DeltaBalance * (Player.Perception) * (1 + Math.Sign(DeltaBalance) * Player.Pride);
+            if (DeltaBalance == 0)
+                DeltaBalance = -50; 
+            double DeltaTrust =DeltaBalance * ((Player.Perception) + (1 + Math.Sign(DeltaBalance) * Player.Pride));
             StrategyTrust += DeltaTrust;
             ManeuverTrust += DeltaTrust;
-            ForceBalance = NewForceBalance;
 
             ChooseStrategy();
             ChooseManeuver();
-            Maneuver(BattleData);
+            return Maneuver;
         }
 
 

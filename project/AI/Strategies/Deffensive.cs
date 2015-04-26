@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-namespace project.AI
+namespace project
 {
     using Step = KeyValuePair<Point, float>;
    class Deffensive : Strategy
@@ -61,4 +61,4 @@ namespace project.AI
 		}
 	}
 }
-}
+

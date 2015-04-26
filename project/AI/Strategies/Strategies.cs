@@ -72,9 +72,6 @@ namespace project
 
         }
 
-
-
-
         protected static bool Move(Squad mover, Step[] Path, BattleData bd)
         {
             if (Path == null)

@@ -59,6 +59,8 @@
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
     <Compile Include="PathFinder\PriorityQueueB.cs" />
+    <Compile Include="GenomComparer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="SandBox.cs" />
     <Compile Include="Squad.cs" />
     <Compile Include="AI.cs" />

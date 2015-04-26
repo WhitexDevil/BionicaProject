@@ -86,13 +86,13 @@ namespace project
         {
             if (ManeuverTrust <= 0)
             {
-                double R = Random.NextDouble() * 2d;
-                if ( R >= Player.Aggression)
+                double R = Random.NextDouble();
+                if (R >= Player.Wairness)
                     Maneuver = Strategy.Maneuvers[0];
-                else if (R >= Player.Wairness+Player.Aggression)
+                else 
                     Maneuver = Strategy.Maneuvers[1];              
-                else
-                    Maneuver = Strategy.Maneuvers[2];
+
+
                 ManeuverTrust = 20*Player.Pride;
             }
         }

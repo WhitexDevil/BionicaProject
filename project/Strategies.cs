@@ -93,13 +93,14 @@ namespace project
 			}
 			if (temp == new Point(-1, -1))
 			{
-                mover.Position = Path[length - 1].Key;
-
+                temp =Path[length - 1].Key;
+                bd.relocated(mover.Position,temp);
+                mover.Position =temp ;
 				return true;
 			}
 			else
+                bd.relocated(mover.Position, temp);
                 mover.Position = temp;
-
 			return false;
 		}
 

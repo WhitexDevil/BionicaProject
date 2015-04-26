@@ -54,7 +54,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DistanseAndPath.cs" />
+    <Compile Include="DistanceAndPath.cs" />
+    <Compile Include="PathFinder\AuthorAttribute.cs" />
+    <Compile Include="PathFinder\IPathFinder.cs" />
+    <Compile Include="PathFinder\PathFinderFast.cs" />
+    <Compile Include="PathFinder\PriorityQueueB.cs" />
     <Compile Include="SandBox.cs" />
     <Compile Include="Squad.cs" />
     <Compile Include="AI.cs" />

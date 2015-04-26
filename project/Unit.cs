@@ -12,6 +12,7 @@ namespace project
     };
 
 
+	public class Obstacle : Unit {}
 
     public class Unit
     {
@@ -55,4 +56,4 @@ namespace project
 
     }
 }
-}
+

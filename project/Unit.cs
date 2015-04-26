@@ -21,7 +21,7 @@ namespace project
        // public Race Race;
         public int Defense;
         public int Attack;
-        public int Range;
+        public float Range;
         public int Damage;
         public int MaxAmount;
         public int InitiativeMod;
@@ -29,7 +29,7 @@ namespace project
        // public Texture2D Texture = null;
 
 
-        public Unit(int initiative, int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, int range)
+        public Unit(int initiative, int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, float range)
         {
             MaxHitpoints = maxHitpoints;
             Defense = defense;

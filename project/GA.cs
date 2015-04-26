@@ -23,7 +23,7 @@ namespace project
         /// Default constructor sets mutation rate to 5%, crossover to 80%, population to 10,
         /// and generations to 10.
         /// </summary>
-        public GA(Player enemy, Squad[] army)
+        public GA()
         {
             InitialValues();
             m_mutationRate = 0.05;
@@ -33,14 +33,49 @@ namespace project
             m_battleCount = 1;
             m_strFitness = "";
             m_genomeSize = 4;
-            Enemy = enemy;
-            AllyArmy = army;
-            EnemyArmy = army;
+          
             
 
         }
+        /// <summary>
+        /// Sets the Equal army to both sides
+        /// </summary>
+        /// <param name="enemy"></param>
+        /// <param name="Army"></param>
+        /// <param name="crossoverRate"></param>
+        /// <param name="mutationRate"></param>
+        /// <param name="populationSize"></param>
+        /// <param name="generationSize"></param>
+        /// <param name="genomeSize"></param>
+        public GA(
+            Player enemy,
+            Squad[] Army,
+            double crossoverRate = 0.8,
+            double mutationRate = 0.05,
+            int populationSize = 2,
+            int generationSize = 2,
+            int genomeSize = 4):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize){}
 
-        public GA(double crossoverRate, double mutationRate, int populationSize, int generationSize, int genomeSize)
+        /// <summary>
+        /// Sets different army to each side;
+        /// </summary>
+        /// <param name="enemy"></param>
+        /// <param name="enemyArmy"></param>
+        /// <param name="allyArmy"></param>
+        /// <param name="crossoverRate"></param>
+        /// <param name="mutationRate"></param>
+        /// <param name="populationSize"></param>
+        /// <param name="generationSize"></param>
+        /// <param name="genomeSize"></param>
+        public GA(
+            Player enemy,
+            Squad[] enemyArmy,
+            Squad[] allyArmy,
+            double crossoverRate = 0.8,
+            double mutationRate = 0.05,
+            int populationSize = 2,
+            int generationSize =2,
+            int genomeSize=4)
         {
             InitialValues();
             m_mutationRate = mutationRate;
@@ -48,7 +83,10 @@ namespace project
             m_populationSize = populationSize;
             m_generationSize = generationSize;
             m_genomeSize = genomeSize;
-            m_strFitness = "";
+           // m_strFitness = "";
+              Enemy = enemy;
+              AllyArmy = allyArmy;
+            EnemyArmy = enemyArmy;
         }
 
         public GA(int genomeSize)

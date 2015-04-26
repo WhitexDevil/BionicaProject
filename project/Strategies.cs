@@ -73,12 +73,14 @@ namespace project
 
 		protected static bool Move(Squad attaker, Step[] Path)
 		{
+            if (Path.Length < 1)
+                return true;
 			double movement = attaker.Unit.MovementSpeed;
 			Point temp = new Point(-1, -1);
-			int lenght = Path.Length;
-			if (lenght < 0)
+			int length = Path.Length;
+			if (length < 0)
 				return true;
-			for (int k = 0; k < lenght; k++)
+			for (int k = 0; k < length; k++)
 			{
 				if (Path[k].Value > movement)
 				{
@@ -88,7 +90,7 @@ namespace project
 			}
 			if (temp == new Point(-1, -1))
 			{
-				attaker.Position = Path[lenght - 1].Key;
+				attaker.Position = Path[length - 1].Key;
 				return true;
 			}
 			else

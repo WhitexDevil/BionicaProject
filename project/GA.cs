@@ -28,9 +28,9 @@ namespace project
             InitialValues();
             m_mutationRate = 0.05;
             m_crossoverRate = 0.80;
-            m_populationSize = 5;
-            m_generationSize = 5;
-            m_battleCount = 10;
+            m_populationSize = 2;
+            m_generationSize = 1;
+            m_battleCount = 1;
             m_strFitness = "";
             m_genomeSize = 4;
             Enemy = enemy;

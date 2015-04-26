@@ -44,8 +44,8 @@ namespace project
         /// <returns></returns>
         public object Clone()
         {
-            return new BattleData((Squad[])EnemyArmy.Clone(), 
-				(Squad[])AllyArmy.Clone(), (byte[])Map.Clone(), MapWidth);
+			return new BattleData(EnemyArmy.Select(x => (Squad)x.Clone()).ToArray(), 
+				AllyArmy.Select(x=>(Squad)x.Clone()).ToArray(), (byte[])Map.Clone(), MapWidth);
         }
     }
 }

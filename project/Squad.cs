@@ -6,18 +6,18 @@ using System.Text;
 
 namespace project
 {
-     public class Squad
+     public class Squad : ICloneable
     {
         public readonly Unit Unit;
         private int amount;
+        public int DamageLeft;
+        private Point position;
        
         public int Amount
         {
             get { return amount; }
             private set { amount = value; }
         }
-        public int DamageLeft;
-        private Point position;
 
         public Point Position
         {
@@ -52,6 +52,14 @@ namespace project
             if (Amount < 0)
                 Amount = 0;
         }
-     }
+		/// <summary>
+		/// Deep clone!
+		/// </summary>
+		/// <returns></returns>
+		public object Clone()
+		{
+			return new Squad(Unit, amount) { DamageLeft = 0 };
+		}
+	}
 }
 

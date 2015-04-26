@@ -83,17 +83,17 @@ namespace project
 			int length = Path.Length;
 			if (length < 0)
 				return true;
-			for (int k = 0; k < length; k++)
+            for (int k = length; k < 0; k--)
 			{
 				if (Path[k].Value > movement)
 				{
-					temp = Path[k - 1].Key;
+					temp = Path[k + 1].Key;
 					break;
 				}
 			}
 			if (temp == new Point(-1, -1))
 			{
-                temp =Path[length - 1].Key;
+                temp =Path[0].Key;
                 bd.relocated(mover.Position,temp);
                 mover.Position =temp ;
 				return true;

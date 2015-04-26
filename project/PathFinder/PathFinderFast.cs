@@ -101,7 +101,7 @@ namespace Algorithms
         private bool                            mStop                   = false;
         private bool                            mStopped                = true;
         private int                             mHoriz                  = 0;
-        private HeuristicFormula                mFormula                = HeuristicFormula.Manhattan;
+		private HeuristicFormula				mFormula				= HeuristicFormula.EuclideanNoSQR;
         private bool                            mDiagonals              = true;
         private int                             mHEstimate              = 2;
         private bool                            mPunishChangeDirection  = false;
@@ -238,240 +238,246 @@ namespace Algorithms
             mStop = true;
         }
 
-		public KeyValuePair<Point, float>[] FindPath(Point start, Point end, float range)
-        {
-            lock(this)
-            {
-                var Stopwatch = System.Diagnostics.Stopwatch.StartNew();
+		public KeyValuePair<Point, float>[] FindPath(Point start, Point end, float rangePow)
+		{
+			lock (this)
+			{
+				var Stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-				if (range >= Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow((start.Y - end.Y), 2)))
+				if (start == end || rangePow >= Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow((start.Y - end.Y), 2)))
 					return new KeyValuePair<Point, float>[0];
 
-                // Is faster if we don't clear the matrix, just assign different values for open and close and ignore the rest
-                // I could have user Array.Clear() but using unsafe code is faster, no much but it is.
-                //fixed (PathFinderNodeFast* pGrid = tmpGrid) 
-                //    ZeroMemory((byte*) pGrid, sizeof(PathFinderNodeFast) * 1000000);
+				// Is faster if we don't clear the matrix, just assign different values for open and close and ignore the rest
+				// I could have user Array.Clear() but using unsafe code is faster, no much but it is.
+				//fixed (PathFinderNodeFast* pGrid = tmpGrid) 
+				//    ZeroMemory((byte*) pGrid, sizeof(PathFinderNodeFast) * 1000000);
 
-                mFound              = false;
-                mStop               = false;
-                mStopped            = false;
-                mCloseNodeCounter   = 0;
-                mOpenNodeValue      += 2;
-                mCloseNodeValue     += 2;
-                mOpen.Clear();
-                mClose.Clear();
+				mFound = false;
+				mStop = false;
+				mStopped = false;
+				mCloseNodeCounter = 0;
+				mOpenNodeValue += 2;
+				mCloseNodeValue += 2;
+				mOpen.Clear();
+				mClose.Clear();
 
-                #if DEBUGON
-                if (mDebugProgress && PathFinderDebug != null)
-                    PathFinderDebug(0, 0, start.X, start.Y, PathFinderNodeType.Start, -1, -1);
-                if (mDebugProgress && PathFinderDebug != null)
-                    PathFinderDebug(0, 0, end.X, end.Y, PathFinderNodeType.End, -1, -1);
-                #endif
+#if DEBUGON
+				if (mDebugProgress && PathFinderDebug != null)
+					PathFinderDebug(0, 0, start.X, start.Y, PathFinderNodeType.Start, -1, -1);
+				if (mDebugProgress && PathFinderDebug != null)
+					PathFinderDebug(0, 0, end.X, end.Y, PathFinderNodeType.End, -1, -1);
+#endif
 
-                mLocation                      = (start.Y << mGridYLog2) + start.X;
-                mEndLocation                   = (end.Y << mGridYLog2) + end.X;
-                mCalcGrid[mLocation].G         = 0;
-                mCalcGrid[mLocation].F         = mHEstimate;
-                mCalcGrid[mLocation].PX        = (ushort) start.X;
-                mCalcGrid[mLocation].PY        = (ushort) start.Y;
-                mCalcGrid[mLocation].Status    = mOpenNodeValue;
+				mLocation = (start.Y << mGridYLog2) + start.X;
+				mEndLocation = (end.Y << mGridYLog2) + end.X;
+				mCalcGrid[mLocation].G = 0;
+				mCalcGrid[mLocation].F = mHEstimate;
+				mCalcGrid[mLocation].PX = (ushort)start.X;
+				mCalcGrid[mLocation].PY = (ushort)start.Y;
+				mCalcGrid[mLocation].Status = mOpenNodeValue;
 
-                mOpen.Push(mLocation);
-                while(mOpen.Count > 0 && !mStop)
-                {
-                    mLocation    = mOpen.Pop();
+				mOpen.Push(mLocation);
+				while (mOpen.Count > 0 && !mStop)
+				{
+					mLocation = mOpen.Pop();
 
-                    //Is it in closed list? means this node was already processed
-                    if (mCalcGrid[mLocation].Status == mCloseNodeValue)
-                        continue;
+					//Is it in closed list? means this node was already processed
+					if (mCalcGrid[mLocation].Status == mCloseNodeValue)
+						continue;
 
-                    mLocationX   = (ushort) (mLocation & mGridXMinus1);
-                    mLocationY   = (ushort) (mLocation >> mGridYLog2);
-                    
-                    #if DEBUGON
-                    if (mDebugProgress && PathFinderDebug != null)
-                        PathFinderDebug(0, 0, mLocation & mGridXMinus1, mLocation >> mGridYLog2, PathFinderNodeType.Current, -1, -1);
-                    #endif
+					mLocationX = (ushort)(mLocation & mGridXMinus1);
+					mLocationY = (ushort)(mLocation >> mGridYLog2);
 
-                    if (mLocation == mEndLocation)
-                    {
-                        mCalcGrid[mLocation].Status = mCloseNodeValue;
-                        mFound = true;
-                        break;
-                    }
+#if DEBUGON
+					if (mDebugProgress && PathFinderDebug != null)
+						PathFinderDebug(0, 0, mLocation & mGridXMinus1, mLocation >> mGridYLog2, PathFinderNodeType.Current, -1, -1);
+#endif
 
-                    if (mCloseNodeCounter > mSearchLimit)
-                    {
-                        mStopped = true;
+					//if (mLocation == mEndLocation)
+					//{
+					//	mCalcGrid[mLocation].Status = mCloseNodeValue;
+					//	mFound = true;
+					//	break;
+					//}
+
+					if (mCloseNodeCounter > mSearchLimit)
+					{
+						mStopped = true;
 						Stopwatch.Stop();
 						mCompletedTime = Stopwatch.Elapsed;
-                        return null;
-                    }
+						return null;
+					}
 
-                    if (mPunishChangeDirection)
-                        mHoriz = (mLocationX - mCalcGrid[mLocation].PX); 
+					if (mPunishChangeDirection)
+						mHoriz = (mLocationX - mCalcGrid[mLocation].PX);
 
-                    //Lets calculate each successors
-                    for (int i=0; i<(mDiagonals ? 8 : 4); i++)
-                    {
-                        mNewLocationX = (ushort) (mLocationX + mDirection[i,0]);
-                        mNewLocationY = (ushort) (mLocationY + mDirection[i,1]);
-                        mNewLocation  = (mNewLocationY << mGridYLog2) + mNewLocationX;
+					//Lets calculate each successors
+					for (int i = 0; i < (mDiagonals ? 8 : 4); i++)
+					{
+						mNewLocationX = (ushort)(mLocationX + mDirection[i, 0]);
+						mNewLocationY = (ushort)(mLocationY + mDirection[i, 1]);
+						mNewLocation = (mNewLocationY << mGridYLog2) + mNewLocationX;
 
-                        if (mNewLocationX >= mGridX || mNewLocationY >= mGridY)
-                            continue;
+						if (mNewLocationX >= mGridX || mNewLocationY >= mGridY)
+							continue;
 
-                        // Unbreakeable?
-                        if (mGrid[(mNewLocationY  << mGridYLog2) + mNewLocationX] != 0)
-                            continue;
+						// Unbreakeable?
+						if (mGrid[(mNewLocationY << mGridYLog2) + mNewLocationX] != 0)
+							continue;
 
 						if (mHeavyDiagonals && i > 3)
-							mNewG = mCalcGrid[mLocation].G + 1.4142F;//(int) (mGrid[mNewLocationX, mNewLocationY] * 2.41);
+							mNewG = mCalcGrid[mLocation].G + 1.4142f;//(int) (mGrid[mNewLocationX, mNewLocationY] * 2.41);
 						else
 							mNewG = mCalcGrid[mLocation].G + 1;// mGrid[mNewLocationX, mNewLocationY];
 
-                        if (mPunishChangeDirection)
-                        {
-                            if ((mNewLocationX - mLocationX) != 0)
-                            {
-                                if (mHoriz == 0)
-                                    mNewG += Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y);
-                            }
-                            if ((mNewLocationY - mLocationY) != 0)
-                            {
-                                if (mHoriz != 0)
-                                    mNewG += Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y);
-                            }
-                        }
+						if (mPunishChangeDirection)
+						{
+							if ((mNewLocationX - mLocationX) != 0)
+							{
+								if (mHoriz == 0)
+									mNewG += Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y);
+							}
+							if ((mNewLocationY - mLocationY) != 0)
+							{
+								if (mHoriz != 0)
+									mNewG += Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y);
+							}
+						}
 
-                        //Is it open or closed?
-                        if (mCalcGrid[mNewLocation].Status == mOpenNodeValue || mCalcGrid[mNewLocation].Status == mCloseNodeValue)
-                        {
-                            // The current node has less code than the previous? then skip this node
-                            if (mCalcGrid[mNewLocation].G <= mNewG)
-                                continue;
-                        }
+						//Is it open or closed?
+						if (mCalcGrid[mNewLocation].Status == mOpenNodeValue || mCalcGrid[mNewLocation].Status == mCloseNodeValue)
+						{
+							// The current node has less code than the previous? then skip this node
+							if (mCalcGrid[mNewLocation].G <= mNewG)
+								continue;
+						}
 
-                        mCalcGrid[mNewLocation].PX      = mLocationX;
-                        mCalcGrid[mNewLocation].PY      = mLocationY;
-                        mCalcGrid[mNewLocation].G       = mNewG;
+						mCalcGrid[mNewLocation].PX = mLocationX;
+						mCalcGrid[mNewLocation].PY = mLocationY;
+						mCalcGrid[mNewLocation].G = mNewG;
 
-                        switch(mFormula)
-                        {
-                            default:
-                            case HeuristicFormula.Manhattan:
-                                mH = mHEstimate * (Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y));
-                                break;
-                            case HeuristicFormula.MaxDXDY:
-                                mH = mHEstimate * (Math.Max(Math.Abs(mNewLocationX - end.X), Math.Abs(mNewLocationY - end.Y)));
-                                break;
-                            case HeuristicFormula.DiagonalShortCut:
-                                int h_diagonal  = Math.Min(Math.Abs(mNewLocationX - end.X), Math.Abs(mNewLocationY - end.Y));
-                                int h_straight  = (Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y));
-                                mH = (mHEstimate * 2) * h_diagonal + mHEstimate * (h_straight - 2 * h_diagonal);
-                                break;
-                            case HeuristicFormula.Euclidean:
-                                mH = (int) (mHEstimate * Math.Sqrt(Math.Pow((mNewLocationY - end.X) , 2) + Math.Pow((mNewLocationY - end.Y), 2)));
-                                break;
-                            case HeuristicFormula.EuclideanNoSQR:
-                                mH = (int) (mHEstimate * (Math.Pow((mNewLocationX - end.X) , 2) + Math.Pow((mNewLocationY - end.Y), 2)));
-                                break;
-                            case HeuristicFormula.Custom1:
-                                Point dxy       = new Point(Math.Abs(end.X - mNewLocationX), Math.Abs(end.Y - mNewLocationY));
-                                int Orthogonal  = Math.Abs(dxy.X - dxy.Y);
-                                int Diagonal    = Math.Abs(((dxy.X + dxy.Y) - Orthogonal) / 2);
-                                mH = mHEstimate * (Diagonal + Orthogonal + dxy.X + dxy.Y);
-                                break;
-                        }
-                        if (mTieBreaker)
-                        {
-                            int dx1 = mLocationX - end.X;
-                            int dy1 = mLocationY - end.Y;
-                            int dx2 = start.X - end.X;
-                            int dy2 = start.Y - end.Y;
-                            int cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
-                            mH = (int) (mH + cross * 0.001);
-                        }
-                        mCalcGrid[mNewLocation].F = (int)(mNewG + mH);
+						switch (mFormula)
+						{
+							default:
+							case HeuristicFormula.Manhattan:
+								mH = mHEstimate * (Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y));
+								break;
+							case HeuristicFormula.MaxDXDY:
+								mH = mHEstimate * (Math.Max(Math.Abs(mNewLocationX - end.X), Math.Abs(mNewLocationY - end.Y)));
+								break;
+							case HeuristicFormula.DiagonalShortCut:
+								int h_diagonal = Math.Min(Math.Abs(mNewLocationX - end.X), Math.Abs(mNewLocationY - end.Y));
+								int h_straight = (Math.Abs(mNewLocationX - end.X) + Math.Abs(mNewLocationY - end.Y));
+								mH = (mHEstimate * 2) * h_diagonal + mHEstimate * (h_straight - 2 * h_diagonal);
+								break;
+							case HeuristicFormula.Euclidean:
+								mH = (int)(mHEstimate * Math.Sqrt(Math.Pow((mNewLocationY - end.X), 2) + Math.Pow((mNewLocationY - end.Y), 2)));
+								break;
+							case HeuristicFormula.EuclideanNoSQR:
+								double Pow = Math.Pow((mNewLocationX - end.X), 2) + Math.Pow((mNewLocationY - end.Y), 2);
+								if (mNewLocation == mEndLocation || rangePow >= Pow)
+									mFound = true;
+								else
+									mH = (int)(mHEstimate * Pow);
+								break;
+							case HeuristicFormula.Custom1:
+								Point dxy = new Point(Math.Abs(end.X - mNewLocationX), Math.Abs(end.Y - mNewLocationY));
+								int Orthogonal = Math.Abs(dxy.X - dxy.Y);
+								int Diagonal = Math.Abs(((dxy.X + dxy.Y) - Orthogonal) / 2);
+								mH = mHEstimate * (Diagonal + Orthogonal + dxy.X + dxy.Y);
+								break;
+						}
+						if (mTieBreaker)
+						{
+							int dx1 = mLocationX - end.X;
+							int dy1 = mLocationY - end.Y;
+							int dx2 = start.X - end.X;
+							int dy2 = start.Y - end.Y;
+							int cross = Math.Abs(dx1 * dy2 - dx2 * dy1);
+							mH = (int)(mH + cross * 0.001);
+						}
+						mCalcGrid[mNewLocation].F = (int)(mNewG + mH);
 
-                        #if DEBUGON
-                        if (mDebugProgress && PathFinderDebug != null)
-                            PathFinderDebug(mLocationX, mLocationY, mNewLocationX, mNewLocationY, PathFinderNodeType.Open, mCalcGrid[mNewLocation].F, mCalcGrid[mNewLocation].G);
-                        #endif
+#if DEBUGON
+						if (mDebugProgress && PathFinderDebug != null)
+							PathFinderDebug(mLocationX, mLocationY, mNewLocationX, mNewLocationY, PathFinderNodeType.Open, mCalcGrid[mNewLocation].F, mCalcGrid[mNewLocation].G);
+#endif
 
-                        //It is faster if we leave the open node in the priority queue
-                        //When it is removed, it will be already closed, it will be ignored automatically
-                        //if (tmpGrid[newLocation].Status == 1)
-                        //{
-                        //    //int removeX   = newLocation & gridXMinus1;
-                        //    //int removeY   = newLocation >> gridYLog2;
-                        //    mOpen.RemoveLocation(newLocation);
-                        //}
+						//It is faster if we leave the open node in the priority queue
+						//When it is removed, it will be already closed, it will be ignored automatically
+						//if (tmpGrid[newLocation].Status == 1)
+						//{
+						//    //int removeX   = newLocation & gridXMinus1;
+						//    //int removeY   = newLocation >> gridYLog2;
+						//    mOpen.RemoveLocation(newLocation);
+						//}
 
-                        //if (tmpGrid[newLocation].Status != 1)
-                        //{
-                            mOpen.Push(mNewLocation);
-                        //}
-                        mCalcGrid[mNewLocation].Status = mOpenNodeValue;
-                    }
+						//if (tmpGrid[newLocation].Status != 1)
+						//{
+						mOpen.Push(mNewLocation);
+						//}
+						mCalcGrid[mNewLocation].Status = mOpenNodeValue;
+						if (mFound) break;
+					}
 
-                    mCloseNodeCounter++;
-                    mCalcGrid[mLocation].Status = mCloseNodeValue;
+					mCloseNodeCounter++;
+					mCalcGrid[mLocation].Status = mCloseNodeValue;
 
-                    #if DEBUGON
-                    if (mDebugProgress && PathFinderDebug != null)
-                        PathFinderDebug(0, 0, mLocationX, mLocationY, PathFinderNodeType.Close, mCalcGrid[mLocation].F, mCalcGrid[mLocation].G);
-                    #endif
-                }
-		
+#if DEBUGON
+					if (mDebugProgress && PathFinderDebug != null)
+						PathFinderDebug(0, 0, mLocationX, mLocationY, PathFinderNodeType.Close, mCalcGrid[mLocation].F, mCalcGrid[mLocation].G);
+#endif
+					if (mFound) break;
+				}
+
 				Stopwatch.Stop();
 				mCompletedTime = mCompletedTime = Stopwatch.Elapsed;
-                if (mFound)
-                {
-                    mClose.Clear();
+				if (mFound)
+				{
+					mClose.Clear();
 
-					PathFinderNodeFast fNodeTmp = mCalcGrid[(mCalcGrid[mEndLocation].PY << mGridYLog2) + mCalcGrid[mEndLocation].PX];
-                    PathFinderNode fNode;
-                    fNode.F  = fNodeTmp.F;
-                    fNode.G  = fNodeTmp.G;
-                    //fNode.H  = 0;
-                    fNode.PX = fNodeTmp.PX;
-                    fNode.PY = fNodeTmp.PY;
-					fNode.X = mCalcGrid[mEndLocation].PX;
-					fNode.Y = mCalcGrid[mEndLocation].PY;
+					PathFinderNodeFast fNodeTmp = mCalcGrid[(mNewLocationX << mGridYLog2) + mNewLocationY];
+					PathFinderNode fNode;
+					fNode.F = fNodeTmp.F;
+					fNode.G = fNodeTmp.G;
+					//fNode.H  = 0;
+					fNode.PX = fNodeTmp.PX;
+					fNode.PY = fNodeTmp.PY;
+					fNode.X = mNewLocationX;
+					fNode.Y = mNewLocationY;
 
-                    while(fNode.X != fNode.PX || fNode.Y != fNode.PY)
-                    {
-						if (range < Math.Sqrt(Math.Pow(fNode.PX - end.X, 2) + Math.Pow((fNode.PY - end.Y), 2)))
-							mClose.Add(new KeyValuePair<Point, float>(new Point(fNode.X, fNode.Y), fNode.G));
-                        #if DEBUGON
-                        if (mDebugFoundPath && PathFinderDebug != null)
-                            PathFinderDebug(fNode.PX, fNode.PY, fNode.X, fNode.Y, PathFinderNodeType.Path, fNode.F, fNode.G);
-                        #endif
+					while (fNode.X != fNode.PX || fNode.Y != fNode.PY)
+					{
+						//if (range < Math.Sqrt(Math.Pow(fNode.PX - end.X, 2) + Math.Pow((fNode.PY - end.Y), 2)))
+						mClose.Add(new KeyValuePair<Point, float>(new Point(fNode.X, fNode.Y), fNode.G));
+#if DEBUGON
+						if (mDebugFoundPath && PathFinderDebug != null)
+							PathFinderDebug(fNode.PX, fNode.PY, fNode.X, fNode.Y, PathFinderNodeType.Path, fNode.F, fNode.G);
+#endif
 
 						fNodeTmp = mCalcGrid[(fNode.PY << mGridYLog2) + fNode.PX];
-                        fNode.F  = fNodeTmp.F;
-                        fNode.G  = fNodeTmp.G;
-                        //fNode.H  = 0;
+						fNode.F = fNodeTmp.F;
+						fNode.G = fNodeTmp.G;
+						//fNode.H  = 0;
 						fNode.X = fNode.PX;
 						fNode.Y = fNode.PY;
-                        fNode.PX = fNodeTmp.PX;
-                        fNode.PY = fNodeTmp.PY;
-                    } 
+						fNode.PX = fNodeTmp.PX;
+						fNode.PY = fNodeTmp.PY;
+					}
 
-                    //mClose.Add(fNode);
-                    #if DEBUGON
-                    if (mDebugFoundPath && PathFinderDebug != null)
-                        PathFinderDebug(fNode.PX, fNode.PY, fNode.X, fNode.Y, PathFinderNodeType.Path, fNode.F, fNode.G);
-                    #endif
+					//mClose.Add(fNode);
+#if DEBUGON
+					if (mDebugFoundPath && PathFinderDebug != null)
+						PathFinderDebug(fNode.PX, fNode.PY, fNode.X, fNode.Y, PathFinderNodeType.Path, fNode.F, fNode.G);
+#endif
 
-                    mStopped = true;
-                    return mClose.ToArray();
-                }
-                mStopped = true;
-                return null;
-            }
-        }
+					mStopped = true;
+					return mClose.ToArray();
+				}
+				mStopped = true;
+				return null;
+			}
+		}
         #endregion
 
         #region Inner Classes

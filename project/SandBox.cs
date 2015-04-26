@@ -40,12 +40,11 @@ namespace project
 					BattleData.Map[i + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
 			}
 
-			int temp = BattleData.Map.GetLength(1);
 			for (int i = 0; i < BattleData.EnemyArmy.Length / MapSize; i++)
 			{
 				int step = MapSize / Math.Min((BattleData.EnemyArmy.Length - i * MapSize), MapSize);
 				for (int j = i * MapSize; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
-					BattleData.Map[(temp - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
+					BattleData.Map[(BattleData.MapWidth - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
 			}
 		}
 

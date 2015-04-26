@@ -32,7 +32,7 @@ namespace project
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             enemy = new Player(true, 4);
-            Unit humanKnights = new Unit(2, 4, 17, 3, 5, 14, 25, 1);
+            Unit humanKnights = new Unit(2, 4, 17, 3, 5, 14, 25, 1.5f);
             army = new Squad[10];
             for (int i = 0; i < army.Length; i++)
             {

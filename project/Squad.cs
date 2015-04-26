@@ -17,7 +17,13 @@ namespace project
             private set { amount = value; }
         }
         public int DamageLeft;
-        public Point Position;
+        private Point position;
+
+        public Point Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
      
         public Squad(Unit unit, int _amount)
         {

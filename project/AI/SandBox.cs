@@ -30,8 +30,9 @@ namespace project
 				enemyArmy.Select(x => (Squad)x.Clone()).ToArray(),
 				allyArmy.Select(x => (Squad)x.Clone()).ToArray(),
 				new byte[mapSize * mapSize], mapSize);
-            setMap();
+         
             BattleDataSide2 = new BattleData(BattleDataSide1.AllyArmy, BattleDataSide1.EnemyArmy, BattleDataSide1.Map, BattleDataSide1.MapWidth);
+            setMap();
 
 	//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
 			Side1 = new AI(Player, BattleDataSide1);

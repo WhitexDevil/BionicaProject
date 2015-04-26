@@ -34,6 +34,14 @@ namespace project
 			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
 
+        //public BattleData(ref Squad[] enemyArmy, ref Squad[] allyArmy, ref byte[] map)
+        //{
+        //    // TODO: Complete member initialization
+        //    this.EnemyArmy = enemyArmy;
+        //    this.AllyArmy = allyArmy;
+        //    this.Map = map;
+        //}
+
       
 
 		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)

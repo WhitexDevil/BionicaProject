@@ -28,15 +28,20 @@ namespace project
 			this.MapHeight = map.Length / mapWidth;
 			this.MapHeightLog2 = (int)(Math.Log(MapWidth, 2));
 			this.PathFinder = new PathFinderFast(Map, MapWidth);
+			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
-		public void relocated(Point oldP, Point newP)
+
+		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)
+		{
+			Console.WriteLine("{0}&{1}to{2}&{3} total {4} cost {5}", fromX, fromY, x, y, totalCost, cost);
+		}
+
+		public void Relocate(Point oldP, Point newP)
 		{
 			int oldIndex = (oldP.Y << MapHeightLog2) + oldP.X;
 			int newIndex = (newP.Y << MapHeightLog2) + newP.X;
 			Map[newIndex] = Map[oldIndex];
 			Map[oldIndex] = 0;
-
-
 		}
 		/// <summary>
 		/// Deep clone!

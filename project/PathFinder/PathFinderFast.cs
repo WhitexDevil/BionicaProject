@@ -9,7 +9,7 @@
 //
 //  Copyright (C) 2006 Franco, Gustavo 
 //
-//#define DEBUGON
+#define DEBUGON
 
 using System;
 using System.Text;
@@ -63,7 +63,7 @@ namespace Algorithms
 	#endregion
 
 	#region Delegates
-	public delegate void PathFinderDebugHandler(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, int cost);
+	public delegate void PathFinderDebugHandler(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost);
 	#endregion
 
     [Author("Franco, Gustavo")]

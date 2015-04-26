@@ -98,13 +98,13 @@ namespace project
             {
                 if (i < pos)
                 {
-                    child1.[i] = this[i];
-                    child2.[i] = genome2.[i];
+                    child1[i] = this[i];
+                    child2[i] = genome2[i];
                 }
                 else
                 {
-                    child1.[i] = genome2.[i];
-                    child2.[i] = this[i];
+                    child1[i] = genome2[i];
+                    child2[i] = this[i];
                 }
             }
         }

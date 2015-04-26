@@ -189,7 +189,7 @@ namespace project
         {
             for (int i = 0; i < m_populationSize; i++)
             {
-                Player g = new Player(flase, 4);
+                Player g = new Player(false, 4);
                 m_thisGeneration.Add(g);
             }
         }

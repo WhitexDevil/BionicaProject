@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 using Algorithms;
 
 namespace project
@@ -36,7 +37,7 @@ namespace project
          
             //BattleDataSide2 = new BattleData(BattleDataSide1.AllyArmy, BattleDataSide1.EnemyArmy, BattleDataSide1.Map, BattleDataSide1.MapWidth);
 			setMap();
-			BattleData.Visualization.InitZeroState(BattleData);
+			//CurrentBattleData.Visualization.InitZeroState(CurrentBattleData);
 	//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
 			Side1 = new AI(Player, CurrentBattleData);
 			Side2 = new AI(Enemy, CurrentBattleData);
@@ -53,7 +54,7 @@ namespace project
                 for (int j = i * MapSize; j < Math.Min(CurrentBattleData.AllyArmy.Length, (i + 1) * MapSize); j++)
 				{
                     CurrentBattleData.Map[i + (((j % MapSize) * step) << CurrentBattleData.MapHeightLog2)] = 1;
-                    CurrentBattleData.AllyArmy[j].Position = new Microsoft.Xna.Framework.Point(i, (j % MapSize) * step);
+                    CurrentBattleData.AllyArmy[j].Position = new Point(i, (j % MapSize) * step);
 				}
 			}
 
@@ -63,7 +64,7 @@ namespace project
                 for (int j = i * MapSize; j < Math.Min(CurrentBattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
 				{
                     CurrentBattleData.Map[(CurrentBattleData.MapWidth - 1 - i) + (((j % MapSize) * step) << CurrentBattleData.MapHeightLog2)] = 1;
-                    CurrentBattleData.EnemyArmy[j].Position = new Microsoft.Xna.Framework.Point((CurrentBattleData.MapWidth - 1 - i), (j % MapSize) * step);
+                    CurrentBattleData.EnemyArmy[j].Position = new Point((CurrentBattleData.MapWidth - 1 - i), (j % MapSize) * step);
 				}
 			}
 		}

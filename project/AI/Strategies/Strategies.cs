@@ -73,7 +73,7 @@ namespace project
 				int dmg = target.Amount;
 				attaker.Attack(target);
 				if (bd.Visualization != null)
-					bd.Visualization.RecordAttack(attaker.Position, target.Position, dmg - target.Amount);
+					bd.Visualization.RecordAttack(attaker, attaker.Position,target.Position, dmg - target.Amount);
 			}
 
         }
@@ -100,7 +100,7 @@ namespace project
             {
                 temp = Path[0].Key;
 				if (bd.Visualization != null)
-					bd.Visualization.RecordMove(mover.Position, temp, Path);
+					bd.Visualization.RecordMove(mover, mover.Position, temp, Path);
                 bd.Relocate(mover.Position, temp);
                 mover.Position = temp;
                 return true;

@@ -23,7 +23,7 @@ namespace project
         private byte[] p;
         private BattleData BattleDataSide1;
 
-		public readonly Visualization Visualization = new Visualization();
+		public readonly Visualization Visualization = null;
 
 		public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
 		{

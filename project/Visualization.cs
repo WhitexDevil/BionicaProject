@@ -8,7 +8,7 @@ using System.Drawing;
 namespace project
 {
 	using Step = KeyValuePair<Point, float>;
-	class Visualization
+	public class Visualization
 	{
 		BattleData InitBD;
 		BattleData BD;

@@ -42,7 +42,7 @@ namespace project
                 if (Path!=null)
 				if (Path.Length == 0)
 				{
-					battleData.AllyArmy[i].Attack(ref battleData.EnemyArmy[TargetIndex]);
+					battleData.AllyArmy[i].Attack(battleData.EnemyArmy[TargetIndex]);
 					Point SafePoint = GetSafeFrom(battleData.AllyArmy[i].Position, battleData.EnemyArmy[TargetIndex].Position);
 
 					Path = DistanceAndPath.PathTo(
@@ -50,7 +50,7 @@ namespace project
 					battleData.AllyArmy[i].Position,
 					SafePoint,
 					0);
-					battleData.AllyArmy.Contain()
+
                     Move(battleData.AllyArmy[i], Path, battleData);
 				}
 				else

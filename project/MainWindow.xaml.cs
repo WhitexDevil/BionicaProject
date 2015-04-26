@@ -32,11 +32,15 @@ namespace project
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             enemy = new Player(true, 4);
-            Unit humanKnights = new Unit(2, 4, 17, 3, 5, 14, 25, 1.5f);
+            Unit humanKnights = new Unit( 4, 17, 3, 5, 14, 25, 1.5f);
+            Unit humanSoliders = new Unit( 4, 16, 2, 4, 7, 30, 1.5f);
             army = new Squad[10];
             for (int i = 0; i < army.Length; i++)
             {
+                if (i<army.Length/2)
                 army[i] = new Squad(humanKnights, humanKnights.MaxAmount);
+                else
+                army[i] = new Squad(humanSoliders, humanSoliders.MaxAmount);
             }
 
             ga = new GA(enemy,army);

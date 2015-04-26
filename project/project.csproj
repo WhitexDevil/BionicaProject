@@ -55,7 +55,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AI\BattleData.cs" />
+    <Compile Include="AI\Strategies\Deffensive.cs" />
     <Compile Include="AI\DistanceAndPath.cs" />
+    <Compile Include="AI\Strategies\Offensive.cs" />
     <Compile Include="PathFinder\AuthorAttribute.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
@@ -65,7 +67,7 @@
     <Compile Include="AI\SandBox.cs" />
     <Compile Include="Army\Squad.cs" />
     <Compile Include="AI\AI.cs" />
-    <Compile Include="AI\Strategies.cs" />
+    <Compile Include="AI\Strategies\Strategies.cs" />
     <Compile Include="Army\Unit.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

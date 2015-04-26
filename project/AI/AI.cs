@@ -98,6 +98,7 @@ namespace project
         }
 
         private int EvaluateForces(){
+            EraseDeadSquads();
             int result = 0;
             foreach (var squad in BattleData.AllyArmy)
                 result += squad.Amount * squad.Unit.MaxHitpoints;
@@ -109,6 +110,30 @@ namespace project
             foreach (var squad in BattleData.AllyArmy)
                 result -= squad.Amount * squad.Unit.MaxHitpoints;
             return result;
+        }
+
+        private void EraseDeadSquads()
+        {
+             int aliveSq=0;
+             foreach (var item in BattleData.AllyArmy)
+	            {
+                    if (item.Alive)
+                        aliveSq++;
+                    else
+                        BattleData.EraseFromMap(item.Position);
+	            }
+            Squad[] temp = new Squad[aliveSq];
+            int index=0;
+            foreach (var item in BattleData.AllyArmy)
+	            {
+		            if (item.Alive)
+                    {
+                        temp[index]=item;
+                        index++;
+                    }
+	            }
+
+            BattleData.AllyArmy = temp;
         }
 
         public void NextTurn()

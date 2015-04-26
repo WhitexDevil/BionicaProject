@@ -12,11 +12,26 @@ namespace project
         private int amount;
         public int DamageLeft;
         private Point position;
+        private bool alive;
+
+        public bool Alive
+        {
+            get { return alive; }
+            private set  { alive = value; }
+        }
        
         public int Amount
         {
             get { return amount; }
-            private set { amount = value; }
+            private set {
+                if (value>1)
+                {
+                    alive = false;
+                    amount = 0;
+                  
+                }
+                else
+                amount = value; }
         }
 
         public Point Position
@@ -31,6 +46,7 @@ namespace project
             amount = unit.MaxAmount;
             DamageLeft = 0;
             Position = new Point();
+            alive = true;
         }
 
         public void Attack(ref Squad target){
@@ -49,8 +65,7 @@ namespace project
             Amount -= (Damage / Unit.MaxHitpoints);
             DamageLeft = Damage%Unit.MaxHitpoints;
 
-            if (Amount < 0)
-                Amount = 0;
+            
         }
 		/// <summary>
 		/// Deep clone!

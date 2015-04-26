@@ -10,13 +10,13 @@ namespace project
 {
 	public class BattleData : ICloneable
 	{
-		public readonly byte[] Map;
+		public  byte[] Map;
 		public readonly int MapHeight;
 		public readonly int MapWidth;
 		public readonly int MapHeightLog2;
 
-		public readonly Squad[] EnemyArmy;
-		public readonly Squad[] AllyArmy;
+		public  Squad[] EnemyArmy;
+		public  Squad[] AllyArmy;
 		public readonly PathFinderFast PathFinder;
 
 		public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
@@ -43,6 +43,11 @@ namespace project
 			Map[newIndex] = Map[oldIndex];
 			Map[oldIndex] = 0;
 		}
+        public void EraseFromMap(Point p)
+        {
+            int Index = (p.Y << MapHeightLog2) + p.X;
+            Map[Index] = 0;
+        }
 		/// <summary>
 		/// Deep clone!
 		/// </summary>

@@ -54,7 +54,8 @@ namespace project
             double mutationRate = 0.05,
             int populationSize = 2,
             int generationSize = 2,
-            int genomeSize = 4):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize){}
+            int genomeSize = 4,
+            int battleCount = 5 ):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize,battleCount){}
 
         /// <summary>
         /// Sets different army to each side;
@@ -75,7 +76,8 @@ namespace project
             double mutationRate = 0.05,
             int populationSize = 2,
             int generationSize =2,
-            int genomeSize=4)
+            int genomeSize=4,
+            int battleCount = 5)
         {
             InitialValues();
             m_mutationRate = mutationRate;
@@ -87,6 +89,7 @@ namespace project
               Enemy = enemy;
               AllyArmy = allyArmy;
             EnemyArmy = enemyArmy;
+            m_battleCount = battleCount;
         }
 
         public GA(int genomeSize)

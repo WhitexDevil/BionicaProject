@@ -10,7 +10,7 @@ namespace project
     {
         public readonly Unit Unit;
         private int amount;
-
+       
         public int Amount
         {
             get { return amount; }

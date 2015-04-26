@@ -64,18 +64,25 @@ namespace project
 			return Temp;
 		}
 
-		protected static void MoveAndAttak(Squad attaker, ref Squad target, Step[] Path)
+		protected static void MoveAndAttak(Squad attaker, ref Squad target, Step[] Path , byte[] map)
 		{
 
-			if (Move(attaker, Path)) attaker.Attack(ref target);
+			if (Move(attaker, Path,map)) attaker.Attack(ref target);
 
 		}
 
-		protected static bool Move(Squad attaker, Step[] Path)
+        protected static void relocated(Point oldP, Point newP, byte [] map)
+        {
+
+
+        }
+
+
+        protected static bool Move(Squad mover, Step[] Path, byte[] map)
 		{
             if (Path.Length < 1)
                 return true;
-			double movement = attaker.Unit.MovementSpeed;
+            double movement = mover.Unit.MovementSpeed;
 			Point temp = new Point(-1, -1);
 			int length = Path.Length;
 			if (length < 0)
@@ -90,11 +97,13 @@ namespace project
 			}
 			if (temp == new Point(-1, -1))
 			{
-				attaker.Position = Path[length - 1].Key;
+                mover.Position = Path[length - 1].Key;
+
 				return true;
 			}
 			else
-				attaker.Position = temp;
+                mover.Position = temp;
+
 			return false;
 		}
 

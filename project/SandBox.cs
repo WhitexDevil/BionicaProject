@@ -24,7 +24,7 @@ namespace project
 			this.Enemy = enemy;
 			this.Player = player;
             MapSize = mapSize;
-			BattleData = new BattleData(enemyArmy, allyArmy, new Squad[MapSize, MapSize]);
+			BattleData = new BattleData(enemyArmy, allyArmy, new byte[mapSize*mapSize], mapSize);
 			setMap();
             
 			Side1 = new AI(Player, BattleData);

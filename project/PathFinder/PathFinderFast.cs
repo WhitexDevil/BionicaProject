@@ -19,6 +19,7 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Algorithms;
+using project;
 
 namespace Algorithms
 {
@@ -94,7 +95,7 @@ namespace Algorithms
 
         #region Variables Declaration
         // Heap variables are initializated to default, but I like to do it anyway
-        private project.Squad[,]                mGrid                   = null;
+        private byte[]			                mGrid                   = null;
         private PriorityQueueB<int>             mOpen                   = null;
 		private List<KeyValuePair<Point, float>> mClose = new List<KeyValuePair<Point, float>>();
         private bool                            mStop                   = false;
@@ -134,16 +135,16 @@ namespace Algorithms
         #endregion
 
         #region Constructors
-        public PathFinderFast(project.Squad[,] grid)
+        public PathFinderFast(byte[] map, int mapWidth)
         {
-            if (grid == null)
+			if (map == null)
                 throw new Exception("Grid cannot be null");
 
-            mGrid           = grid;
-            mGridX          = (ushort) (mGrid.GetUpperBound(0) + 1);
-            mGridY          = (ushort) (mGrid.GetUpperBound(1) + 1);
+			mGrid			= map;
+			mGridX			= (ushort)(mapWidth);
+			mGridY			= (ushort)(map.Length / mapWidth);
             mGridXMinus1    = (ushort) (mGridX - 1);
-            mGridYLog2      = (ushort) Math.Log(mGridY, 2);
+			mGridYLog2		= (ushort)Math.Log(mapWidth, 2);
 
             // This should be done at the constructor, for now we leave it here.
             if (Math.Log(mGridX, 2) != (int) Math.Log(mGridX, 2) ||
@@ -321,7 +322,7 @@ namespace Algorithms
                             continue;
 
                         // Unbreakeable?
-                        if (mGrid[mNewLocationX, mNewLocationY].Unit != null)
+                        if (mGrid[(mNewLocationY  << mGridYLog2) + mNewLocationX] != 0)
                             continue;
 
 						if (mHeavyDiagonals && i > 3)

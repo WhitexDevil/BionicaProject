@@ -9,17 +9,24 @@ namespace project
 {
     public struct BattleData : ICloneable
     {
-        public readonly Squad[,] Map;
+        public readonly byte[] Map;
+		public readonly int MapHeight;
+		public readonly int MapWidth;
+		public readonly int MapHeightLog2;
+
         public readonly Squad[] EnemyArmy;
         public readonly Squad[] AllyArmy;
         public readonly PathFinderFast PathFinder;
 
-        public BattleData(Squad[] enemyArmy, Squad[] allyArmy, Squad[,] map)
+        public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
         {
             this.EnemyArmy = enemyArmy;
             this.AllyArmy = allyArmy;
             this.Map = map;
-            this.PathFinder = new PathFinderFast(Map);
+			this.MapWidth = mapWidth;
+			this.MapHeight = map.Length / mapWidth;
+			this.MapHeightLog2 = (int)(Math.Log(MapWidth, 2));
+            this.PathFinder = new PathFinderFast(Map, MapWidth);
         }
         /// <summary>
         /// Deep clone!
@@ -27,7 +34,8 @@ namespace project
         /// <returns></returns>
         public object Clone()
         {
-            return new BattleData((Squad[])EnemyArmy.Clone(), (Squad[])AllyArmy.Clone(), (Squad[,])Map.Clone());
+            return new BattleData((Squad[])EnemyArmy.Clone(), 
+				(Squad[])AllyArmy.Clone(), (byte[])Map.Clone(), MapWidth);
         }
     }
 }

@@ -9,7 +9,7 @@
 //
 //  Copyright (C) 2006 Franco, Gustavo 
 //
-#define DEBUGON
+//#define DEBUGON
 
 using System;
 using System.Text;
@@ -109,7 +109,7 @@ namespace Algorithms
         private bool                            mHeavyDiagonals         = true;
         private int                             mSearchLimit            = 2000;
         private TimeSpan                        mCompletedTime          = TimeSpan.Zero;
-        private bool                            mDebugProgress          = true;
+        private bool                            mDebugProgress          = false;
         private bool                            mDebugFoundPath         = false;
         private PathFinderNodeFast[]            mCalcGrid               = null;
         private byte                            mOpenNodeValue          = 1;

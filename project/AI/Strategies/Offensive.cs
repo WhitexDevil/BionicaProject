@@ -19,7 +19,7 @@ namespace project
                     battleData.EnemyArmy[TargetIndex].Position,
                     battleData.AllyArmy[i].Unit.Range);
 
-                Strategy.MoveAndAttak(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
+                Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
             }
 
         }
@@ -37,7 +37,7 @@ namespace project
                     battleData.EnemyArmy[TargetIndex].Position,
                     battleData.AllyArmy[i].Unit.Range);
 
-                Strategy.MoveAndAttak(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
+                Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
 
 
             }

@@ -37,7 +37,8 @@ namespace project
          
             //BattleDataSide2 = new BattleData(BattleDataSide1.AllyArmy, BattleDataSide1.EnemyArmy, BattleDataSide1.Map, BattleDataSide1.MapWidth);
 			setMap();
-			//CurrentBattleData.Visualization.InitZeroState(CurrentBattleData);
+			if (CurrentBattleData.Visualization != null)
+				CurrentBattleData.Visualization.InitZeroState(CurrentBattleData);
 	//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
 			Side1 = new AI(Player, CurrentBattleData);
 			Side2 = new AI(Enemy, CurrentBattleData);

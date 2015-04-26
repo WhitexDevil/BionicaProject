@@ -29,35 +29,34 @@ namespace project
 			public ActionType Type;
 		}
 
-		int FindIndex(Squad s)
+		public static int FindIndex(Squad s, BattleData battleData)
 		{
-			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
-				if (InitBD.AllyArmy[i] == s) return i;
-			for (int i = 0; i < InitBD.EnemyArmy.Length; i++)
-				if (InitBD.EnemyArmy[i] == s) return i;
+			for (int i = 0; i < battleData.AllyArmy.Length; i++)
+				if (battleData.AllyArmy[i] == s) return i;
+			for (int i = 0; i < battleData.EnemyArmy.Length; i++)
+				if (battleData.EnemyArmy[i] == s) return i;
 			return -1;
 		}
-		public void RecordMove(Squad s, Point a, Point b, Step[] path)
+		public void RecordMove(int squadIndex, Point start, Point end, Step[] path)
 		{
 
-			Timeline.Last()[FindIndex(s),
-				Timeline.Last()[FindIndex(s), 0].Type == ActionType.None ? 0 : 1] = new Action()
+			Timeline.Last()[squadIndex,
+				Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
 			{
 				Type = ActionType.Move,
-				a = a,
-				Target = b,
-				Path = path.Select(x => x.Key).SkipWhile(x => x != a).TakeWhile(x => x != b).ToArray(),
+				a = start,
+				Target = end,
+				Path = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).ToArray(),
 				Damage = 0
 			};
 		}
-		public void RecordAttack(Squad s, Point a, Point b, int damage)
+		public void RecordAttack(int squadIndex, Point target, int damage)
 		{
-			Timeline.Last()[FindIndex(s),
-				Timeline.Last()[FindIndex(s), 0].Type == ActionType.None ? 0 : 1] = new Action()
+			Timeline.Last()[squadIndex,
+				Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
 			{
 				Type = ActionType.Attack,
-				a = a,
-				Target = b,
+				Target = target,
 				Path = null,
 				Damage = damage
 			};
@@ -106,18 +105,18 @@ namespace project
 
 		public void InitZeroState(BattleData battleData)
 		{
-			battleData = (BattleData)battleData.Clone();
+			InitBD = (BattleData)battleData.Clone();
 			RecordEndOfTurn();
-			for (int i = 0; i < this.InitBD.AllyArmy.Length; i++)
+			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
 			{
-				this.InitBD.Map[this.InitBD.AllyArmy[i].Position.X +
-					(this.InitBD.AllyArmy[i].Position.Y << this.InitBD.MapHeightLog2)] = (byte)(i + 1);
+				InitBD.Map[InitBD.AllyArmy[i].Position.X +
+					(InitBD.AllyArmy[i].Position.Y << InitBD.MapHeightLog2)] = (byte)(i + 1);
 			}
 			for (int i = 0; i < this.InitBD.EnemyArmy.Length; i++)
 			{
-				this.InitBD.Map[this.InitBD.EnemyArmy[i].Position.X +
-					(this.InitBD.EnemyArmy[i].Position.Y << this.InitBD.MapHeightLog2)] =
-					(byte)(i + 1 + this.InitBD.AllyArmy.Length);
+				this.InitBD.Map[InitBD.EnemyArmy[i].Position.X +
+					(InitBD.EnemyArmy[i].Position.Y << InitBD.MapHeightLog2)] =
+					(byte)(i + 1 + InitBD.AllyArmy.Length);
 			}
 		}
 
@@ -172,7 +171,7 @@ namespace project
 									Enemy[i2].TakeDamage(Action.Damage);
 							break;
 						case ActionType.Move:
-							Ally[i].Position = Action.Path.Last();
+							Ally[i].Position = Action.Path.First();
 							break;
 					}
 				}

@@ -65,15 +65,29 @@ namespace project
             return Temp;
         }
 
-        protected static void MoveAndAttak(Squad attaker, Squad target, Step[] Path, BattleData bd)
+		protected static void AttackAndMove(Squad attaker, Squad target, Step[] Path, BattleData bd)
+		{
+			int dmg = target.Amount;
+			attaker.Attack(target);
+
+			if (bd.Visualization != null)
+				bd.Visualization.RecordAttack(Visualization.FindIndex(attaker, bd),
+					target.Position, dmg - target.Amount);
+
+			Move(attaker, Path, bd);
+		}
+
+        protected static void MoveAndAttack(Squad attaker, Squad target, Step[] Path, BattleData bd)
         {
 
 			if (Move(attaker, Path, bd))
 			{
 				int dmg = target.Amount;
 				attaker.Attack(target);
+
 				if (bd.Visualization != null)
-					bd.Visualization.RecordAttack(attaker, attaker.Position,target.Position, dmg - target.Amount);
+					bd.Visualization.RecordAttack(Visualization.FindIndex(attaker, bd),
+						target.Position, dmg - target.Amount);
 			}
 
         }
@@ -99,8 +113,11 @@ namespace project
             if (temp == new Point(-1, -1))
             {
                 temp = Path[0].Key;
+
 				if (bd.Visualization != null)
-					bd.Visualization.RecordMove(mover, mover.Position, temp, Path);
+					bd.Visualization.RecordMove(Visualization.FindIndex(mover,bd),
+						mover.Position, temp, Path);
+
                 bd.Relocate(mover.Position, temp);
                 mover.Position = temp;
                 return true;
@@ -138,7 +155,7 @@ namespace project
             return temp;
         }
 
-    }
+	}
 }
 
 	

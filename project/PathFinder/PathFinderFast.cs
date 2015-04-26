@@ -243,6 +243,9 @@ namespace Algorithms
             {
                 var Stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
+				if (range >= Math.Sqrt(Math.Pow(start.X - end.X, 2) + Math.Pow((start.Y - end.Y), 2)))
+					return new KeyValuePair<Point, float>[0];
+
                 // Is faster if we don't clear the matrix, just assign different values for open and close and ignore the rest
                 // I could have user Array.Clear() but using unsafe code is faster, no much but it is.
                 //fixed (PathFinderNodeFast* pGrid = tmpGrid) 
@@ -439,7 +442,7 @@ namespace Algorithms
                     while(fNode.X != fNode.PX || fNode.Y != fNode.PY)
                     {
 						if (range < Math.Sqrt(Math.Pow(fNode.PX - end.X, 2) + Math.Pow((fNode.PY - end.Y), 2)))
-                        mClose.Add(new KeyValuePair<Point, float>(new Point(fNode.X, fNode.Y), fNode.G));
+							mClose.Add(new KeyValuePair<Point, float>(new Point(fNode.X, fNode.Y), fNode.G));
                         #if DEBUGON
                         if (mDebugFoundPath && PathFinderDebug != null)
                             PathFinderDebug(fNode.PX, fNode.PY, fNode.X, fNode.Y, PathFinderNodeType.Path, fNode.F, fNode.G);

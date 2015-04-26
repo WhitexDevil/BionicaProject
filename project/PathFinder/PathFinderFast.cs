@@ -109,7 +109,7 @@ namespace Algorithms
         private bool                            mHeavyDiagonals         = true;
         private int                             mSearchLimit            = 2000;
         private TimeSpan                        mCompletedTime          = TimeSpan.Zero;
-        private bool                            mDebugProgress          = false;
+        private bool                            mDebugProgress          = true;
         private bool                            mDebugFoundPath         = false;
         private PathFinderNodeFast[]            mCalcGrid               = null;
         private byte                            mOpenNodeValue          = 1;

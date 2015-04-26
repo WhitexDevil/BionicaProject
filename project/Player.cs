@@ -29,7 +29,7 @@ namespace project
         private double m_fitness;
         private static double m_mutationRate;
 
-        public Player(ref double[] gens)
+        public Player( double[] gens)
         {
             Aggression = 0;
             Wairness = 0;

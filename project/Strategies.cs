@@ -96,12 +96,12 @@ namespace project
 			if (temp == new Point(-1, -1))
 			{
                 temp =Path[0].Key;
-                bd.relocated(mover.Position,temp);
+                bd.Relocate(mover.Position,temp);
                 mover.Position =temp ;
 				return true;
 			}
 			else
-                bd.relocated(mover.Position, temp);
+                bd.Relocate(mover.Position, temp);
                 mover.Position = temp;
 			return false;
 		}

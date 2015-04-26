@@ -76,7 +76,7 @@ namespace project
 
         protected static bool Move(Squad mover, Step[] Path, BattleData bd)
 		{
-            if (Path.Length < 1)
+           oks workif (Path.Length < 1)
                 return true;
             double movement = mover.Unit.MovementSpeed;
 			Point temp = new Point(-1, -1);

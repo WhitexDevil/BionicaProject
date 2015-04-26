@@ -77,7 +77,7 @@ namespace project
                 else Strategy = Strategy.Deffensive;
                 ManeuverTrust = 0;
                 ChooseManeuver();
-                StrategyTrust = 100*Player.Pride;
+                StrategyTrust = 500*Player.Pride;
             }
         }
 
@@ -92,15 +92,17 @@ namespace project
                     Maneuver = Strategy.Maneuvers[1];              
 
 
-                ManeuverTrust = 20*Player.Pride;
+                ManeuverTrust = 50*Player.Pride;
             }
         }
 
-       
 
-        public Maneuver NextTurn(double DeltaTrust)
+
+        public Maneuver NextTurn(double DeltaBalance)
         {
-           
+            if (DeltaBalance == 0)
+                DeltaBalance = -50; 
+            double DeltaTrust =DeltaBalance * ((Player.Perception) + (1 + Math.Sign(DeltaBalance) * Player.Pride));
             StrategyTrust += DeltaTrust;
             ManeuverTrust += DeltaTrust;
 

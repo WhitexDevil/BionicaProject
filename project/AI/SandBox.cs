@@ -130,10 +130,10 @@ namespace project
 			{
                 int NewForceBalance = EvaluateForces();
                 int DeltaBalance = ForceBalance - NewForceBalance;
-                double DeltaTrust = DeltaBalance * (Player.Perception) * (1 + Math.Sign(DeltaBalance) * Player.Pride);
+               
                 ForceBalance = NewForceBalance;
-                Side1.NextTurn(DeltaTrust)(CurrentBattleData);
-                Side2.NextTurn(-DeltaTrust)( BattleData.Reverse( CurrentBattleData));
+                Side1.NextTurn(DeltaBalance)(CurrentBattleData);
+                Side2.NextTurn(-DeltaBalance)(BattleData.Reverse(CurrentBattleData));
 			}
 			return Win;
 		}

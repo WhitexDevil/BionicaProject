@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Diagnostics;
 namespace project
 {
 
@@ -153,7 +153,7 @@ namespace project
 
             //  ArrayList's BinarySearch is for exact values only
             //  so do this by hand.
-            while (idx == -1 && first <= last)
+            while (idx == -1 && first < last)
             {
                 if (randomFitness < (double)m_fitnessTable[mid])
                 {
@@ -165,7 +165,7 @@ namespace project
                 }
                 mid = (first + last) / 2;
                 //  lies between i and i+1
-                if ((last - first) == 1)
+                if ((last - first) <= 1)
                     idx = last;
             }
             return idx;
@@ -266,9 +266,12 @@ namespace project
 
         static private GAFunction getFitness;
        
-
+         
         double FitnessFunction(Player player)
          {
+          
+             //Stopwatch sw = new Stopwatch();
+             //sw.Start();
              double temp = 0;
              for (int i = 0; i < m_battleCount; i++)
              {
@@ -277,6 +280,11 @@ namespace project
                      temp+=1d;
              }
 
+
+             
+             //sw.Stop();
+             //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
+             //sw.Reset();
              return temp / m_battleCount;
          }
 

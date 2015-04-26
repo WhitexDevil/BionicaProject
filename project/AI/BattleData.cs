@@ -33,7 +33,7 @@ namespace project
 
 		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)
 		{
-			Console.WriteLine("{0}&{1}to{2}&{3} total {4} cost {5}", fromX, fromY, x, y, totalCost, cost);
+		//	Console.WriteLine("{0}&{1}to{2}&{3} total {4} cost {5}", fromX, fromY, x, y, totalCost, cost);
 		}
 
 		public void Relocate(Point oldP, Point newP)

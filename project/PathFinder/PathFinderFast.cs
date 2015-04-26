@@ -436,7 +436,7 @@ namespace Algorithms
 				{
 					mClose.Clear();
 
-					PathFinderNodeFast fNodeTmp = mCalcGrid[(mNewLocationX << mGridYLog2) + mNewLocationY];
+					PathFinderNodeFast fNodeTmp = mCalcGrid[mNewLocation];
 					PathFinderNode fNode;
 					fNode.F = fNodeTmp.F;
 					fNode.G = fNodeTmp.G;

@@ -20,9 +20,28 @@ namespace project
     /// </summary>
     public partial class MainWindow : Window
     {
+        GA ga;
+        Player enemy;
+        Squad[] army;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            enemy = new Player(true, 4);
+            Unit humanKnights = new Unit(2, 4, 17, 3, 5, 14, 25, 1);
+            army = new Squad[10];
+            for (int i = 0; i < army.Length; i++)
+            {
+                army[i] = new Squad(humanKnights, humanKnights.MaxAmount);
+            }
+
+            ga = new GA(enemy,army);
+
+            ga.Go();
         }
     }
 }

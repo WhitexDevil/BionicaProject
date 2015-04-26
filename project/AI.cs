@@ -11,13 +11,14 @@ namespace project
 
     public static class Random
     {
-        private static readonly List<System.Random> Randoms = new List<System.Random>(); 
+        private static readonly List<System.Random> Randoms = new List<System.Random>();
 
-        private static void InitRandoms(){
+        private static void InitRandoms()
+        {
             int max = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            if (max < Randoms.Count) return;
+            if (max <= Randoms.Count) return;
             lock (Randoms)
-                for (int i = 0; i < max-Randoms.Count; i++)
+                for (int i = 0; i < max - Randoms.Count; i++)
                     Randoms.Add(new System.Random());
         }
         public static byte[] NextBytes(byte[] buffer)
@@ -30,12 +31,12 @@ namespace project
         public static double NextDouble()
         {
             InitRandoms();
-            return Random.NextDouble();
+            return Randoms[System.Threading.Thread.CurrentThread.ManagedThreadId].NextDouble();
         }
         public static int Next()
         {
             InitRandoms();
-            return Random.Next();
+            return Randoms[System.Threading.Thread.CurrentThread.ManagedThreadId].Next();
         }
         public static int Next(int minValue, int maxValue)
         {
@@ -51,6 +52,8 @@ namespace project
 
     class AI
     {
+       
+
         private Player Player;
         private BattleData BattleData;
 

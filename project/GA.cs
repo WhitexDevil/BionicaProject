@@ -23,15 +23,19 @@ namespace project
         /// Default constructor sets mutation rate to 5%, crossover to 80%, population to 10,
         /// and generations to 10.
         /// </summary>
-        public GA()
+        public GA(Player enemy, Squad[] army)
         {
             InitialValues();
             m_mutationRate = 0.05;
             m_crossoverRate = 0.80;
-            m_populationSize = 10;
-            m_generationSize = 10;
-            m_battleCount = 100;
+            m_populationSize = 5;
+            m_generationSize = 5;
+            m_battleCount = 10;
             m_strFitness = "";
+
+            Enemy = enemy;
+            AllyArmy = army;
+            EnemyArmy = army;
             
 
         }
@@ -65,6 +69,7 @@ namespace project
         /// </summary>
         public void Go()
         {
+           
             if (getFitness == null)
                 throw new ArgumentNullException("Need to supply fitness function");
             if (m_genomeSize == 0)
@@ -79,6 +84,14 @@ namespace project
 
             CreateGenomes();
             RankPopulation();
+
+            for (int i = 0; i < m_generationSize; i++)
+            {
+                CreateNextGeneration();
+                RankPopulation();
+               
+            }
+           
 
           
         }
@@ -214,7 +227,7 @@ namespace project
         static private GAFunction getFitness;
        
 
-        double FitnessFunction(Player player,  Squad[] allyArmy)
+        double FitnessFunction(Player player)
          {
              double temp = 0;
              for (int i = 0; i < m_battleCount; i++)

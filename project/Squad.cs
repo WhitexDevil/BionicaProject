@@ -19,12 +19,12 @@ namespace project
         public int DamageLeft;
         public Point Position;
      
-        public Squad(Unit unit, int _amount, Point position)
+        public Squad(Unit unit, int _amount)
         {
             Unit = unit;
             amount = _amount;
             DamageLeft = 0;
-            Position = position;
+            Position = new Point();
         }
 
         public void Attack(ref Squad target){

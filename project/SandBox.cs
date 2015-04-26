@@ -15,40 +15,41 @@ namespace project
 
 		private AI Side1;
 		private AI Side2;
-
+        private int MapSize;
 		private BattleData BattleData;
 
-		public SandBox(Player enemy, Player player, Squad[] enemyArmy, Squad[] allyArmy)
+        public SandBox(Player enemy, Player player, Squad[] enemyArmy, Squad[] allyArmy, int mapSize)
 		{
 			// TODO: Complete member initialization
 			this.Enemy = enemy;
 			this.Player = player;
-			BattleData = new BattleData(enemyArmy, allyArmy, new Squad[100, 100]);
+            MapSize = mapSize;
+			BattleData = new BattleData(enemyArmy, allyArmy, new Squad[MapSize, MapSize]);
 			setMap();
-
+            
 			Side1 = new AI(Player, BattleData);
 			Side2 = new AI(Enemy, BattleData);
 
 		}
 		void setMap()
 		{
-			for (int i = 0; i < BattleData.AllyArmy.Length / 100; i++)
+			for (int i = 0; i < BattleData.AllyArmy.Length / MapSize; i++)
 			{
-				int step = 100 / Math.Min((BattleData.AllyArmy.Length - i * 100), 100);
-				for (int j = i * 100; j < Math.Min(BattleData.AllyArmy.Length, (i + 1) * 100); j++)
+				int step = MapSize / Math.Min((BattleData.AllyArmy.Length - i * MapSize), MapSize);
+				for (int j = i * MapSize; j < Math.Min(BattleData.AllyArmy.Length, (i + 1) * MapSize); j++)
 				{
-					BattleData.Map[i, (j % 100) * step] = BattleData.AllyArmy[j];
+					BattleData.Map[i, (j % MapSize) * step] = BattleData.AllyArmy[j];
 
 				}
 			}
 
 			int temp = BattleData.Map.GetLength(1);
-			for (int i = 0; i < BattleData.EnemyArmy.Length / 100; i++)
+			for (int i = 0; i < BattleData.EnemyArmy.Length / MapSize; i++)
 			{
-				int step = 100 / Math.Min((BattleData.EnemyArmy.Length - i * 100), 100);
-				for (int j = i * 100; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * 100); j++)
+				int step = MapSize / Math.Min((BattleData.EnemyArmy.Length - i * MapSize), MapSize);
+				for (int j = i * MapSize; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
 				{
-					BattleData.Map[temp - i, (j % 100) * step] = BattleData.EnemyArmy[j];
+					BattleData.Map[temp - i, (j % MapSize) * step] = BattleData.EnemyArmy[j];
 
 				}
 			}

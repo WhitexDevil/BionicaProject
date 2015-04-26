@@ -32,7 +32,7 @@ namespace project
             m_generationSize = 5;
             m_battleCount = 10;
             m_strFitness = "";
-
+            m_genomeSize = 4;
             Enemy = enemy;
             AllyArmy = army;
             EnemyArmy = army;
@@ -70,8 +70,7 @@ namespace project
         public void Go()
         {
            
-            if (getFitness == null)
-                throw new ArgumentNullException("Need to supply fitness function");
+          
             if (m_genomeSize == 0)
                 throw new IndexOutOfRangeException("Genome size not set");
 
@@ -232,7 +231,7 @@ namespace project
              double temp = 0;
              for (int i = 0; i < m_battleCount; i++)
              {
-                 SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy);
+                 SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, 64);
                  if (sb.Fight())
                      temp+=1d;
              }

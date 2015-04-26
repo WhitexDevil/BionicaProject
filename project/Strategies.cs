@@ -180,6 +180,7 @@ namespace project
 					battleData.AllyArmy[i].Position,
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
+                if (Path!=null && Path.Length>0)
 				if (Path[Path.Length - 1].Value <= battleData.AllyArmy[i].Unit.MovementSpeed)
 					Strategy.MoveAndAttak(battleData.AllyArmy[i], ref battleData.EnemyArmy[TargetIndex], Path);
 			}

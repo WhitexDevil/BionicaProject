@@ -6,7 +6,7 @@ using System.Text;
 
 namespace project
 {
-     public struct Squad
+     public class Squad
     {
         public readonly Unit Unit;
         private int amount;

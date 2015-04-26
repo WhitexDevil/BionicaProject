@@ -38,9 +38,9 @@ namespace project
             for (int i = 0; i < army.Length; i++)
             {
                 if (i<army.Length/2)
-                army[i] = new Squad(humanKnights, humanKnights.MaxAmount);
+                army[i] = new Squad(humanKnights);
                 else
-                army[i] = new Squad(humanSoliders, humanSoliders.MaxAmount);
+                army[i] = new Squad(humanSoliders);
             }
 
             ga = new GA(enemy,army);

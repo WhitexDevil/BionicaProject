@@ -25,10 +25,10 @@ namespace project
             set { position = value; }
         }
      
-        public Squad(Unit unit, int _amount)
+        public Squad(Unit unit)
         {
             Unit = unit;
-            amount = _amount;
+            amount = unit.MaxAmount;
             DamageLeft = 0;
             Position = new Point();
         }

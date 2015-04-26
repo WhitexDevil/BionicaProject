@@ -39,6 +39,7 @@ namespace project
 				for (int j = i * MapSize; j < Math.Min(BattleData.AllyArmy.Length, (i + 1) * MapSize); j++)
 				{
 					BattleData.Map[i, (j % MapSize) * step] = BattleData.AllyArmy[j];
+                   
 
 				}
 			}

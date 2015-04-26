@@ -6,7 +6,7 @@ using System.Text;
 
 namespace project
 {
-     public struct Squad
+     public class Squad
     {
         public readonly Unit Unit;
         private int amount;
@@ -17,7 +17,13 @@ namespace project
             private set { amount = value; }
         }
         public int DamageLeft;
-        public Point Position;
+        private Point position;
+
+        public Point Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
      
         public Squad(Unit unit, int _amount)
         {

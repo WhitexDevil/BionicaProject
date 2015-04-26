@@ -6,15 +6,18 @@ using System.Threading.Tasks;
 
 namespace project
 {
-    public struct Player
+    public class Player
     {
-     
-        //public Player(int length)
-        //{
-        //    m_length = length;
-        //    m_genes = new double[length];
-        //    CreateGenes();
-        //}
+
+        public Player()
+        {
+            m_length = 4;
+            Aggression = 0;
+            Wairness = 0;
+            Perception = 0;
+            Pride = 0;
+            CreateGenes();
+        }
    
         public double Aggression;
         public double Wairness;

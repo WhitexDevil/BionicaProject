@@ -10,30 +10,9 @@ namespace project
 {
 
 
-    //    class GA
-    //    {
-    //        Player Enemy;
-    //        Player[] generation;
-    //        int BattleCount;
+ 
 
-    //        void fitness()
-    //        {
-    //            for (int i = 0; i < generation.Length; i++)
-    //            {
-    //                int wins = 0;
-    //                SandBox sb = new SandBox(Enemy, generation[i]);
-    //                for (int j = 0; j < BattleCount; j++)
-    //                    if (sb.Fight())
-    //                        wins++;
-
-    //                generation[i].fitness = wins;
-    //            }
-    //        }
-
-    //    }
-    //}
-
-    public delegate double GAFunction(double[] values);
+    public delegate double GAFunction(Player player, Player Enemy,  Squad[] allyArmy,Squad[] enemyArmy);
     
     /// <summary>
     /// Genetic Algorithm class
@@ -42,7 +21,7 @@ namespace project
     {
         /// <summary>
         /// Default constructor sets mutation rate to 5%, crossover to 80%, population to 10,
-        /// and generations to 20.
+        /// and generations to 10.
         /// </summary>
         public GA()
         {
@@ -50,8 +29,11 @@ namespace project
             m_mutationRate = 0.05;
             m_crossoverRate = 0.80;
             m_populationSize = 10;
-            m_generationSize = 20;
+            m_generationSize = 10;
+            m_battleCount = 100;
             m_strFitness = "";
+            
+
         }
 
         public GA(double crossoverRate, double mutationRate, int populationSize, int generationSize, int genomeSize)
@@ -98,29 +80,7 @@ namespace project
             CreateGenomes();
             RankPopulation();
 
-            //StreamWriter outputFitness = null;
-            //bool write = false;
-            //if (m_strFitness != "")
-            //{
-            //    write = true;
-            //    outputFitness = new StreamWriter(m_strFitness);
-            //}
-
-            //for (int i = 0; i < m_generationSize; i++)
-            //{
-            //    CreateNextGeneration();
-            //    RankPopulation();
-            //    if (write)
-            //    {
-            //        if (outputFitness != null)
-            //        {
-            //            double d = (double)((Player)m_thisGeneration[m_populationSize - 1]).Fitness;
-            //            outputFitness.WriteLine("{0},{1}", i, d);
-            //        }
-            //    }
-            //}
-            //if (outputFitness != null)
-            //    outputFitness.Close();
+          
         }
 
         /// <summary>
@@ -167,7 +127,8 @@ namespace project
             for (int i = 0; i < m_populationSize; i++)
             {
                 Player g = ((Player)m_thisGeneration[i]);
-                g.Fitness = FitnessFunction(g.Genes());
+                g.Fitness = FitnessFunction(g);
+               
                 m_totalFitness += g.Fitness;
             }
             m_thisGeneration.Sort(new GenomeComparer());
@@ -241,23 +202,31 @@ namespace project
         private double m_totalFitness;
         private string m_strFitness;
         private bool m_elitism;
+        private Player Enemy;
+        private Squad[] AllyArmy;
+        private Squad[] EnemyArmy;
+        private int m_battleCount ;
 
         private ArrayList m_thisGeneration;
         private ArrayList m_nextGeneration;
         private ArrayList m_fitnessTable;
 
         static private GAFunction getFitness;
-        public GAFunction FitnessFunction
-        {
-            get
-            {
-                return getFitness;
-            }
-            set
-            {
-                getFitness = value;
-            }
-        }
+       
+
+        double FitnessFunction(Player player,  Squad[] allyArmy)
+         {
+             double temp = 0;
+             for (int i = 0; i < m_battleCount; i++)
+             {
+                 SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy);
+                 if (sb.Fight())
+                     temp+=1d;
+             }
+
+             return temp / m_battleCount;
+         }
+
 
 
         //  Properties

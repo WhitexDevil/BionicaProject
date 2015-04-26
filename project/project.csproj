@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BattleData.cs" />
     <Compile Include="DistanceAndPath.cs" />
     <Compile Include="PathFinder\AuthorAttribute.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />

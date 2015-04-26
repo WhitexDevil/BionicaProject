@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Threading;
 namespace project
 {
 
@@ -272,14 +273,14 @@ namespace project
           
              //Stopwatch sw = new Stopwatch();
              //sw.Start();
-             double temp = 0;
-             for (int i = 0; i < m_battleCount; i++)
+             int temp = 0;
+            Parallel.For(0 , m_battleCount,i=>
              {
                  SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, 64);
                  if (sb.Fight())
-                     temp+=1d;
+                 Interlocked.Add(ref temp,1);
              }
-
+            );
 
              
              //sw.Stop();

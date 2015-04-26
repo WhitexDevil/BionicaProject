@@ -54,19 +54,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BattleData.cs" />
-    <Compile Include="DistanceAndPath.cs" />
+    <Compile Include="AI\BattleData.cs" />
+    <Compile Include="AI\DistanceAndPath.cs" />
     <Compile Include="PathFinder\AuthorAttribute.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
     <Compile Include="PathFinder\PriorityQueueB.cs" />
-    <Compile Include="GenomComparer.cs" />
-    <Compile Include="Player.cs" />
-    <Compile Include="SandBox.cs" />
-    <Compile Include="Squad.cs" />
-    <Compile Include="AI.cs" />
-    <Compile Include="Strategies.cs" />
-    <Compile Include="Unit.cs" />
+    <Compile Include="GA\GenomComparer.cs" />
+    <Compile Include="AI\Player.cs" />
+    <Compile Include="AI\SandBox.cs" />
+    <Compile Include="Army\Squad.cs" />
+    <Compile Include="AI\AI.cs" />
+    <Compile Include="AI\Strategies.cs" />
+    <Compile Include="Army\Unit.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,7 +75,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GA.cs" />
+    <Compile Include="GA\GA.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

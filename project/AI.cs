@@ -16,10 +16,13 @@ namespace project
         private static void InitRandoms()
         {
             int max = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            if (max <= Randoms.Count) return;
-            lock (Randoms)
-                for (int i = 0; i < max - Randoms.Count; i++)
-                    Randoms.Add(new System.Random());
+            if (max < Randoms.Count) return;
+			lock (Randoms)
+			{
+				max = max - Randoms.Count + 1;
+				for (int i = 0; i < max; i++)
+					Randoms.Add(new System.Random());
+			}
         }
         public static byte[] NextBytes(byte[] buffer)
         {

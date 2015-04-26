@@ -105,7 +105,7 @@ namespace Algorithms
         private int                             mHEstimate              = 2;
         private bool                            mPunishChangeDirection  = false;
         private bool                            mTieBreaker             = false;
-        private bool                            mHeavyDiagonals         = false;
+        private bool                            mHeavyDiagonals         = true;
         private int                             mSearchLimit            = 2000;
         private TimeSpan                        mCompletedTime          = TimeSpan.Zero;
         private bool                            mDebugProgress          = false;

@@ -25,7 +25,7 @@ namespace project
         public double Pride;
 
       //  public double[] m_genes;
-        private int m_length;
+        private static int m_length = 4;
         private double m_fitness;
         private static double m_mutationRate;
 
@@ -112,12 +112,12 @@ namespace project
             }
         }
 
-        public void Mutate()
+        public  void Mutate()
         {
             for (int pos = 0; pos < m_length; pos++)
             {
                 if (Random.NextDouble() < m_mutationRate)
-                    this[pos] = (this[pos] + Random.NextDouble()) / 2.0;
+                    this[pos] =  Random.NextDouble();
             }
         }
 

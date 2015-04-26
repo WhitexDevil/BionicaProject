@@ -63,7 +63,7 @@
     <Compile Include="PathFinder\PathFinderFast.cs" />
     <Compile Include="PathFinder\PriorityQueueB.cs" />
     <Compile Include="GA\GenomComparer.cs" />
-    <Compile Include="AI\Player.cs" />
+    <Compile Include="GA\Player.cs" />
     <Compile Include="AI\SandBox.cs" />
     <Compile Include="Army\Squad.cs" />
     <Compile Include="AI\AI.cs" />

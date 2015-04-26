@@ -87,7 +87,7 @@ namespace project
             if (ManeuverTrust <= 0)
             {
                 double R = Random.NextDouble();
-                if (R >= Player.Wairness)
+                if (R <= Player.Wairness)
                     Maneuver = Strategy.Maneuvers[0];
                 else 
                     Maneuver = Strategy.Maneuvers[1];              

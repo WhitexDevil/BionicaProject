@@ -8,6 +8,8 @@ namespace project
 	{
 		static void Ambysh(BattleData battleData)
 		{
+            if (battleData.EnemyArmy.Length < 1)
+                return;
 			for (int i = 0; i < battleData.AllyArmy.Length; i++)
 			{
 				int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
@@ -25,6 +27,8 @@ namespace project
 		}
 		static void HitAndRun(BattleData battleData)
 		{
+            if (battleData.EnemyArmy.Length < 1)
+                return;
 			for (int i = 0; i < battleData.AllyArmy.Length; i++)
 			{
 				int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
@@ -34,7 +38,7 @@ namespace project
 					battleData.AllyArmy[i].Position,
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
-
+                if (Path!=null)
 				if (Path.Length == 0)
 				{
 					battleData.AllyArmy[i].Attack(ref battleData.EnemyArmy[TargetIndex]);

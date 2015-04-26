@@ -19,7 +19,7 @@ namespace project
         }
         protected static int NearestToPoint(Point p1, Squad[] Army)
         {
-            int Temp = 0;
+            int Temp = -1;
             double minDistance = Double.MaxValue;
             for (int i = 0; i < Army.Length; i++)
             {
@@ -41,7 +41,7 @@ namespace project
         /// <returns></returns>
         protected static int NearestToAll(Squad[] Army, Squad[] Targets)
         {
-            int Temp = 0;
+            int Temp = -1;
             double[] distances = new double[Targets.Length];
 
             for (int i = 0; i < Targets.Length; i++)

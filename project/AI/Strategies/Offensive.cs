@@ -8,6 +8,8 @@ namespace project
     {
         static void Surround(BattleData battleData)
         {
+            if (battleData.EnemyArmy.Length < 1)
+                return;
             int TargetIndex = Strategy.NearestToAll(battleData.AllyArmy, battleData.EnemyArmy);
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
@@ -23,6 +25,8 @@ namespace project
         }
         static void Rush(BattleData battleData)
         {
+            if (battleData.EnemyArmy.Length < 1)
+                return;
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
                 int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);

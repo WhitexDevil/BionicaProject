@@ -34,7 +34,7 @@ namespace project
             enemy = new Player(new double[4]{0.9,0.1,0.1,0.9});
             Unit humanKnights = new Unit( 4, 17, 3, 5, 14, 25, 1.5f);
             Unit humanSoliders = new Unit( 4, 16, 2, 4, 7, 30, 1.5f);
-            army = new Squad[10];
+            army = new Squad[2];
             for (int i = 0; i < army.Length; i++)
             {
                 if (i<army.Length/2)

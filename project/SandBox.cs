@@ -7,7 +7,7 @@ using Algorithms;
 
 namespace project
 {
-	
+
 	class SandBox
 	{
 		private Player Enemy;
@@ -15,18 +15,21 @@ namespace project
 
 		private AI Side1;
 		private AI Side2;
-        private int MapSize;
+		private int MapSize;
 		private BattleData BattleData;
 
-        public SandBox(Player enemy, Player player, Squad[] enemyArmy, Squad[] allyArmy, int mapSize)
+		public SandBox(Player enemy, Player player, Squad[] enemyArmy, Squad[] allyArmy, int mapSize)
 		{
 			// TODO: Complete member initialization
 			this.Enemy = enemy;
 			this.Player = player;
-            MapSize = mapSize;
-			BattleData = new BattleData(enemyArmy, allyArmy, new byte[mapSize*mapSize], mapSize);
+			MapSize = mapSize;
+			BattleData = new BattleData(
+				enemyArmy.Select(x => (Squad)x.Clone()).ToArray(),
+				allyArmy.Select(x => (Squad)x.Clone()).ToArray(),
+				new byte[mapSize * mapSize], mapSize);
 			setMap();
-            
+
 			Side1 = new AI(Player, BattleData);
 			Side2 = new AI(Enemy, BattleData);
 
@@ -37,14 +40,20 @@ namespace project
 			{
 				int step = MapSize / Math.Min((BattleData.AllyArmy.Length - i * MapSize), MapSize);
 				for (int j = i * MapSize; j < Math.Min(BattleData.AllyArmy.Length, (i + 1) * MapSize); j++)
+				{
 					BattleData.Map[i + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
+					BattleData.AllyArmy[i].Position = new Microsoft.Xna.Framework.Point(i, (j % MapSize) * step);
+				}
 			}
 
 			for (int i = 0; i < BattleData.EnemyArmy.Length / MapSize; i++)
 			{
 				int step = MapSize / Math.Min((BattleData.EnemyArmy.Length - i * MapSize), MapSize);
 				for (int j = i * MapSize; j < Math.Min(BattleData.EnemyArmy.Length, (i + 1) * MapSize); j++)
+				{
 					BattleData.Map[(BattleData.MapWidth - i) + (((j % MapSize) * step) << BattleData.MapHeightLog2)] = 1;
+					BattleData.AllyArmy[i].Position = new Microsoft.Xna.Framework.Point((BattleData.MapWidth - i), (j % MapSize) * step);
+				}
 			}
 		}
 

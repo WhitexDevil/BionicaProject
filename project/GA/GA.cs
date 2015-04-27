@@ -122,7 +122,7 @@ namespace project
             CreateGenomes();
             RankPopulation();
 
-            for (int i = 0; i < m_generationSize; i++)
+            for (m_currentGeneration = 1; m_currentGeneration <= m_generationSize; m_currentGeneration++)
             {
                 CreateNextGeneration();
                 RankPopulation();
@@ -143,28 +143,12 @@ namespace project
         {
             double randomFitness = Random.NextDouble() * m_totalFitness;
             int idx = -1;
-            int mid;
-            int first = 0;
-            int last = m_populationSize - 1;
-            mid = (last - first) / 2;
-
-            //  ArrayList's BinarySearch is for exact values only
-            //  so do this by hand.
-            while (idx == -1 && first < last)
-            {
-                if (randomFitness < (double)m_fitnessTable[mid])
+            for (int i = 0;i<m_populationSize;i++)
+                if (randomFitness<=(double)m_fitnessTable[i])
                 {
-                    last = mid;
+                    idx = i;
+                    break;
                 }
-                else if (randomFitness > (double)m_fitnessTable[mid])
-                {
-                    first = mid;
-                }
-                mid = (first + last) / 2;
-                //  lies between i and i+1
-                if ((last - first) <= 1)
-                    idx = last;
-            }
             return idx;
         }
 
@@ -212,29 +196,38 @@ namespace project
             if (m_elitism)
                 g = (Player)m_thisGeneration[m_populationSize - 1];
 
-            for (int i = 0; i < m_populationSize; i += 2)
-            {
-                int pidx1 = RouletteSelection();
-                int pidx2 = RouletteSelection();
-                Player parent1, parent2, child1, child2;
-                parent1 = ((Player)m_thisGeneration[pidx1]);
-                parent2 = ((Player)m_thisGeneration[pidx2]);
-
-                if (Random.NextDouble() < m_crossoverRate)
+            System.Collections.Concurrent.ConcurrentBag<Player> bag = new System.Collections.Concurrent.ConcurrentBag<Player>();
+                Parallel.For(0, m_populationSize / 2, i =>
                 {
-                    parent1.Crossover(ref parent2, out child1, out child2);
-                }
-                else
-                {
-                    child1 = parent1;
-                    child2 = parent2;
-                }
-                child1.Mutate();
-                child2.Mutate();
 
-                m_nextGeneration.Add(child1);
-                m_nextGeneration.Add(child2);
-            }
+                    int pidx1 = RouletteSelection();
+                    int pidx2 = RouletteSelection();
+                    Player parent1, parent2, child1, child2;
+                    parent1 = ((Player)m_thisGeneration[pidx1]);
+                    parent2 = ((Player)m_thisGeneration[pidx2]);
+
+                    if (Random.NextDouble() < m_crossoverRate)
+                    {
+                        parent1.Crossover(ref parent2, out child1, out child2);
+                    }
+                    else
+                    {
+                        child1 = parent1;
+                        child2 = parent2;
+                    }
+                    child1.Mutate();
+                    child2.Mutate();
+
+                    bag.Add(child1);
+                    bag.Add(child2);
+                });
+
+          foreach (var item in bag)
+	        {
+            m_nextGeneration.Add(item);
+	        }
+           
+       
             if (m_elitism)
                 m_nextGeneration[0] = g;
 
@@ -256,7 +249,7 @@ namespace project
         private Squad[] AllyArmy;
         private Squad[] EnemyArmy;
         private int m_battleCount ;
-
+        private int m_currentGeneration = 0;
         private ArrayList m_thisGeneration;
         private ArrayList m_nextGeneration;
         private ArrayList m_fitnessTable;
@@ -273,7 +266,7 @@ namespace project
             Parallel.For(0 , m_battleCount,i=>
              {
                  SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, 64);
-                 if (sb.Fight())
+                 if (sb.Fight(m_currentGeneration))
                  Interlocked.Add(ref temp,1);
              }
             );
@@ -282,7 +275,7 @@ namespace project
              //sw.Stop();
              //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
              //sw.Reset();
-             return temp / m_battleCount;
+             return (double)temp / (double)m_battleCount;
          }
 
 

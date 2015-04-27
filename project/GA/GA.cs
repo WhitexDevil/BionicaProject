@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -201,7 +202,7 @@ namespace project
             if (m_elitism)
                 g = (Player)m_thisGeneration[m_populationSize - 1];
 
-            System.Collections.Concurrent.ConcurrentBag<Player> bag = new System.Collections.Concurrent.ConcurrentBag<Player>();
+            ConcurrentBag<Player> bag = new ConcurrentBag<Player>();
                 Parallel.For(0, m_populationSize / 2, i =>
                 {
 

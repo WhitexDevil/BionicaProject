@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Drawing;
 
 namespace project
 {
@@ -27,7 +28,8 @@ namespace project
         public int InitiativeMod;
        // public bool Magic;
        // public Texture2D Texture = null;
-		public Sprite Sprite = new Sprite(); 
+		public Sprite SideASprite = new Sprite(Color.Violet);
+		public Sprite SideBSprite = new Sprite(Color.LightBlue); 
 
         public Unit( int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, float range)
         {

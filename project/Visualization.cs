@@ -11,18 +11,23 @@ namespace project
 
 	public class Sprite
 	{
-		public Bitmap Texture;
-		public Bitmap MiroredTexture;
-		public RectangleF[][][] Animations;
-		public int Width;
-		public int Height;
-		public bool DisableTextures = true;
+		private Bitmap Texture;
+		private Bitmap MirroredTexture;
+		private RectangleF[][][] Animations;
+		private bool DisableTextures;
+		private Color Color;
 
-		//public Sprite(Bitmap texture, RectangleF[][][] animations)
-		//{
-		//	Animations = animations;
-		//	this.Texture = texture;
-		//}
+		public Sprite(Color color) { 
+			DisableTextures = true;
+			this.Color = color;
+		}
+		public Sprite(Bitmap texture, RectangleF[][][] animations)
+		{
+			this.Animations = animations;
+			this.Texture = texture;
+			this.MirroredTexture = new Bitmap(Texture);
+			this.MirroredTexture.RotateFlip(RotateFlipType.RotateNoneFlipX);
+		}
 
 		public enum AnimationAction { Standing, Moving, Attacking, TakingDamage, Dying };
 
@@ -37,11 +42,11 @@ namespace project
 		{
 			if (DisableTextures)
 			{
-				g.FillRectangle(Brushes.Violet, new RectangleF(position, size));
+				g.FillRectangle(new SolidBrush(Color), new RectangleF(position, size));
 			}
 			else
 			{
-				var Texture = directionDegree > 180 ? MiroredTexture : this.Texture;
+				var Texture = directionDegree > 180 ? MirroredTexture : this.Texture;
 				var Animation = GetAnimation(action, directionDegree);
 				g.DrawImage(Texture, new RectangleF(position, size),
 					Animation[(int)(frame * Animation.Length / Visualization.SubturnFramerate)], GraphicsUnit.Pixel);
@@ -302,7 +307,7 @@ namespace project
 				if (Subturn >= Turns.Count)
 				{
 					Turn++;
-					BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B"), Turn-1));
+					BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B"), Turn - 1));
 				}
 			}
 		}
@@ -338,7 +343,7 @@ namespace project
 			{
 				case ActionType.None:
 
-					Squad.Unit.Sprite.DrawStanding(g,
+					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
 						SideA ? 0 : 180, Squad.Amount, frame);
 
@@ -347,12 +352,12 @@ namespace project
 
 					var Target = Squads[Action.Target];
 
-					Squad.Unit.Sprite.DrawAttack(g,
+					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawAttack(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
 						DirectionDegree(Squad.Position, Target.Position),
 						Squad.Amount, frame);
 
-					Target.Unit.Sprite.DrawTakingDamage(g,
+					(SideA ? Squad.Unit.SideBSprite : Squad.Unit.SideASprite).DrawTakingDamage(g,
 						new PointF(Target.Position.X * wK, Target.Position.Y * hK), Size,
 						SideA ? 180 : 0, Target.Amount, Action.Damage, frame);
 
@@ -365,7 +370,7 @@ namespace project
 					float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
 					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
 
-					Squad.Unit.Sprite.DrawMove(g, new PointF(X * wK, Y * hK), Size,
+					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawMove(g, new PointF(X * wK, Y * hK), Size,
 							DirectionDegree(Action.Path[start], Action.Path[start - 1]), Squad.Amount, frame);
 					break;
 			}
@@ -374,7 +379,7 @@ namespace project
 			{
 				if (i == Action.Squad || i == Action.Target) continue;
 
-				Squads[i].Unit.Sprite.DrawStanding(g,
+				(i >= BD.AllyArmy.Length ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
 					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
 					SideA ? 0 : 180, Squads[i].Amount, frame);
 			}

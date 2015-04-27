@@ -8,13 +8,98 @@ using System.Drawing;
 namespace project
 {
 	using Step = KeyValuePair<Point, float>;
+
+	public class Sprite
+	{
+		public Bitmap Texture;
+		public Bitmap MiroredTexture;
+		public RectangleF[][][] Animations;
+		public int Width;
+		public int Height;
+
+		public Sprite(Bitmap texture, RectangleF[][][] animations)
+		{
+			Animations = animations;
+			this.Texture = texture;
+		}
+
+		public enum AnimationAction { Standing, Moving, Attacking, TakingDamage, Dying };
+
+		private RectangleF[] GetAnimation(AnimationAction action, float directionDegree)
+		{
+			if (directionDegree > 180) directionDegree = 180 - (directionDegree % 180);
+			RectangleF[][] ActionAnimations = Animations[(int)action];
+			return ActionAnimations[(int)(directionDegree * ActionAnimations.Length / 180F)];
+		}
+
+		private void DrawSpriteFrame(Graphics g, PointF position, SizeF size, AnimationAction action, float directionDegree, float frame)
+		{
+			var Texture = directionDegree > 180 ? MiroredTexture : this.Texture;
+			var Animation = GetAnimation(action, directionDegree);
+			g.DrawImage(Texture, new RectangleF(position, size),
+				Animation[(int)(frame * Animation.Length / Visualization.SubturnFramerate)], GraphicsUnit.Pixel);
+		}
+		private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
+		{
+			g.DrawString(damage.ToString(), new Font("Arial", 11),
+				new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / Visualization.SubturnFramerate), Color.Red)),
+				new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2,
+					position.Y + (size.Height * 2 / 3) - (size.Height * frame / 2 / Visualization.SubturnFramerate)));
+		}
+		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
+		{
+			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
+				new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2, position.Y + size.Height * 2 / 3));
+		}
+		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
+		{
+			DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
+		}
+		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
+		{
+			if (health > 0)
+			{
+				DrawSpriteFrame(g, position, size, AnimationAction.Standing, directionDegree, frame);
+				DrawHealth(g, position, size, directionDegree, health);
+			}
+			else
+			{
+				DrawDie(g, position, size, directionDegree, Visualization.SubturnFramerate);
+			}
+		}
+		public void DrawTakingDamage(Graphics g, PointF position, SizeF size, float directionDegree, int health, int damage, float frame)
+		{
+			if (damage >= health)
+			{
+				DrawDie(g, position, size, directionDegree, frame);
+				DrawDamage(g, position, size, directionDegree, damage, frame);
+			}
+			else
+			{
+				DrawSpriteFrame(g, position, size, AnimationAction.TakingDamage, directionDegree, frame);
+				DrawHealth(g, position, size, directionDegree, health - damage);
+				DrawDamage(g, position, size, directionDegree, damage, frame);
+			}
+		}
+		public void DrawAttack(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
+		{
+			DrawSpriteFrame(g, position, size, AnimationAction.Attacking, directionDegree, frame);
+			DrawHealth(g, position, size, directionDegree, health);
+		}
+		public void DrawMove(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
+		{
+			DrawSpriteFrame(g, position, size, AnimationAction.Moving, directionDegree, frame);
+			DrawHealth(g, position, size, directionDegree, health);
+		}
+	}
+
 	public class Visualization
 	{
 		Squad[] AllyIndex;
 		Squad[] EnemyIndex;
 		BattleData InitBD;
 		BattleData BD;
-		List<Action[,]> Timeline = new List<Action[,]>();
+		List<List<Action>> Timeline = new List<List<Action>>();
 		int Turn { get { return Subturn / 2; } }
 		bool SecondAction { get { return Subturn % 2 == 1; } }
 		int Subturn = 0;
@@ -29,84 +114,6 @@ namespace project
 			public Point[] Path;
 			public int Damage;
 			public ActionType Type;
-		}
-
-		public class Sprite
-		{
-			Bitmap Texture;
-			Bitmap MiroredTexture;
-			RectangleF[][][] Animations;
-			public int Width;
-			public int Height;
-
-			enum AnimationAction { Standing, Moving, Attacking, TakingDamage, Dying };
-
-			private RectangleF[] GetAnimation(AnimationAction action, float directionDegree)
-			{
-				if (directionDegree > 180) directionDegree = 180 - (directionDegree % 180);
-				RectangleF[][] ActionAnimations = Animations[(int)action];
-				return ActionAnimations[(int)(directionDegree * ActionAnimations.Length / 180F)];
-			}
-
-			private void DrawSpriteFrame(Graphics g, PointF position, SizeF size, AnimationAction action, float directionDegree, float frame)
-			{
-				var Texture = directionDegree > 180 ? MiroredTexture : this.Texture;
-				var Animation = GetAnimation(action, directionDegree);
-				g.DrawImage(Texture, new RectangleF(position, size),
-					Animation[(int)(frame * Animation.Length / SubturnFramerate)], GraphicsUnit.Pixel);
-			}
-			private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
-			{
-				g.DrawString(damage.ToString(), new Font("Arial", 11),
-					new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / SubturnFramerate), Color.Red)),
-					new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2,
-						position.Y + (size.Height * 2 / 3) - (size.Height * frame / 2 / SubturnFramerate)));
-			}
-			private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
-			{
-				g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
-					new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2, position.Y + size.Height * 2 / 3));
-			}
-			private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
-			{
-				DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
-			}
-			public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
-			{
-				if (health > 0)
-				{
-					DrawSpriteFrame(g, position, size, AnimationAction.Standing, directionDegree, frame);
-					DrawHealth(g, position, size, directionDegree, health);
-				}
-				else
-				{
-					DrawDie(g, position, size, directionDegree, SubturnFramerate);
-				}
-			}
-			public void DrawTakingDamage(Graphics g, PointF position, SizeF size, float directionDegree, int health, int damage, float frame)
-			{
-				if (damage >= health)
-				{
-					DrawDie(g, position, size, directionDegree, frame);
-					DrawDamage(g, position, size, directionDegree, damage, frame);
-				}
-				else
-				{
-					DrawSpriteFrame(g, position, size, AnimationAction.TakingDamage, directionDegree, frame);
-					DrawHealth(g, position, size, directionDegree, health - damage);
-					DrawDamage(g, position, size, directionDegree, damage, frame);
-				}
-			}
-			public void DrawAttack(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
-			{
-				DrawSpriteFrame(g, position, size, AnimationAction.Attacking, directionDegree, frame);
-				DrawHealth(g, position, size, directionDegree, health);
-			}
-			public void DrawMove(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
-			{
-				DrawSpriteFrame(g, position, size, AnimationAction.Moving, directionDegree, frame);
-				DrawHealth(g, position, size, directionDegree, health);
-			}
 		}
 
 		public Visualization(BattleData battleData)

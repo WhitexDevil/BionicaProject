@@ -18,10 +18,8 @@ namespace project
 		public  Squad[] EnemyArmy;
 		public  Squad[] AllyArmy;
 		public readonly PathFinderFast PathFinder;
-        private Squad[] squad1;
-        private Squad[] squad2;
-        private byte[] p;
-        private BattleData BattleDataSide1;
+     
+  
 
 		public readonly Visualization Visualization = null;
 
@@ -44,13 +42,7 @@ namespace project
           
         }
 
-        //public BattleData(ref Squad[] enemyArmy, ref Squad[] allyArmy, ref byte[] map)
-        //{
-        //    // TODO: Complete member initialization
-        //    this.EnemyArmy = enemyArmy;
-        //    this.AllyArmy = allyArmy;
-        //    this.Map = map;
-        //}
+
 
       
 

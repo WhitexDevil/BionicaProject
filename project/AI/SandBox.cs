@@ -135,6 +135,7 @@ namespace project
                
                 ForceBalance = NewForceBalance;
                 Side1.NextTurn(DeltaBalance)(CurrentBattleData);
+
                 Side2.NextTurn(-DeltaBalance)(BattleData.Reverse(CurrentBattleData));
 			}
 			return Win;

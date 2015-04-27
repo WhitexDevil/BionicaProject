@@ -39,7 +39,7 @@ namespace project
 			}
 		}
 		public readonly PathFinderFast PathFinder;
-		public readonly Visualization Visualization = null;
+		public readonly Visualization Visualization = new Visualization();
 
 		public BattleData(Squad[] enemyArmy, Squad[] allyArmy, byte[] map, int mapWidth)
 		{

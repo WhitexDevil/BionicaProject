@@ -34,10 +34,10 @@ namespace project
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
-           
 
+			ga = new GA(enemy, army, battleCount: 1);
             ga.Go();
-
+			
             sw.Stop();
             System.Windows.MessageBox.Show(sw.Elapsed.TotalSeconds.ToString());
        

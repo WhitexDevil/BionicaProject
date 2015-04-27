@@ -110,6 +110,7 @@ namespace project
 		{
 			InitBD = (BattleData)battleData.Clone();
 			RecordEndOfTurn();
+			SetTime(0);
 			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
 			{
 				InitBD.Map[InitBD.AllyArmy[i].Position.X +
@@ -154,7 +155,7 @@ namespace project
 
 		public void SetTime(int subturn)
 		{
-			if (subturn < Subturn)
+			if (subturn < Subturn || subturn == 0)
 			{
 				BD = (BattleData)InitBD.Clone();
 				Subturn = 0;

@@ -4,10 +4,12 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="358*"/>
-            <ColumnDefinition Width="159*"/>
+            <ColumnDefinition Width="469*"/>
+            <ColumnDefinition Width="48*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="Start" HorizontalAlignment="Left" Margin="10,275,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="-2.624,1.809"/>
+        <Button Content="Start" HorizontalAlignment="Left" Margin="10,289,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" RenderTransformOrigin="-2.624,1.809" Height="20"/>
+        <Image x:Name="PictureBox" HorizontalAlignment="Left" Height="276" Margin="90,10,0,0" VerticalAlignment="Top" Width="369"/>
+        <Slider x:Name="TimeSlider" HorizontalAlignment="Left" Margin="90,291,0,0" VerticalAlignment="Top" Width="369"/>
 
     </Grid>
 </Window>

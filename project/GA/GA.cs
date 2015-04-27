@@ -381,6 +381,10 @@ namespace project
             g.GetValues(ref values);
             fitness = (double)g.Fitness;
         }
+         public Player GetBest()
+            {
+             return ((Player)m_thisGeneration[m_populationSize - 1]);
+            }
 
         public void GetWorst(out double[] values, out double fitness)
         {

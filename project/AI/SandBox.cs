@@ -18,7 +18,13 @@ namespace project
 		private AI Side1;
 		private AI Side2;
 		private int MapSize;
-		private BattleData CurrentBattleData;
+        private BattleData CurrentBattleData;
+
+        public BattleData BattleData
+        {
+            get { return CurrentBattleData; }
+           private set { CurrentBattleData = value; }
+        }
 		bool Finish;
 		bool Win;
 		//private BattleData BattleDataSide2;

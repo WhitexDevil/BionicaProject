@@ -97,7 +97,7 @@ namespace project
         public Maneuver NextTurn(double DeltaBalance)
         {
             if (DeltaBalance == 0)
-                DeltaBalance = -50; 
+                DeltaBalance = -5; 
             double DeltaTrust =DeltaBalance * ((Player.Perception) + (1 + Math.Sign(DeltaBalance) * Player.Pride));
             StrategyTrust += DeltaTrust;
             ManeuverTrust += DeltaTrust;

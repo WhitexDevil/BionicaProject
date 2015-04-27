@@ -149,6 +149,7 @@ namespace project
                     idx = i;
                     break;
                 }
+          
             return idx;
         }
 
@@ -157,7 +158,7 @@ namespace project
         /// </summary>
         private void RankPopulation()
         {
-            m_totalFitness = 0;
+            m_totalFitness = 0.0;
             for (int i = 0; i < m_populationSize; i++)
             {
                 Player g = ((Player)m_thisGeneration[i]);

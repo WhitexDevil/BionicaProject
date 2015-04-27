@@ -5,7 +5,7 @@ using System.Drawing;
 namespace project
 {
     using Step = KeyValuePair<Point, float>;
-   class Deffensive : Strategy
+   public class Deffensive : Strategy
 	{
 		static void Ambysh(BattleData battleData)
 		{
@@ -20,8 +20,8 @@ namespace project
 					battleData.AllyArmy[i].Position,
 					battleData.EnemyArmy[TargetIndex].Position,
 					battleData.AllyArmy[i].Unit.Range);
-                if (Path!=null && Path.Length>0)
-				if (Path[Path.Length - 1].Value <= battleData.AllyArmy[i].Unit.MovementSpeed)
+                if (Path!=null)// && Path.Length>0)
+				//if (Path[Path.Length - 1].Value <= battleData.AllyArmy[i].Unit.MovementSpeed)
                     Strategy.MoveAndAttack(battleData.AllyArmy[i], battleData.EnemyArmy[TargetIndex], Path, battleData);
 			}
 

@@ -25,23 +25,30 @@ namespace project
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            enemy = new Player(new double[4]{0.9,0.1,0.1,0.9});
-            Unit humanKnights = new Unit( 4, 17, 3, 5, 13, 25, 1.5f);
-            Unit humanSoliders = new Unit( 4, 16, 2, 4, 7, 30, 1.5f);
-            int n = 6;
-            army = new Squad[2*n];
-            for (int i = 0; i < army.Length; i++)
+            enemy = new Player(new double[4]{0.1,0.9,0.9,0.9});
+            Unit humanKnights =  new Unit( 4, 17, 3, 5, 7, 25, 1.5f);
+            Unit humanSoliders = new Unit( 4, 16, 2, 4,  4, 30, 1.5f);
+            Unit humanArcher =   new Unit( 4, 12, 5, 4,  3, 20, 10f);
+            int n = 4;
+            army = new Squad[3*n];
+            for (int i = 0; i < army.Length; i+=3)
             {
-                if (i<army.Length/2)
                 army[i] = new Squad(humanKnights);
-                else
-                army[i] = new Squad(humanSoliders);
+                army[i+1] = new Squad(humanSoliders);
+                army[i+2] = new Squad(humanArcher);
             }
+            //for (int i = 0; i < ; i++)
+            //{
+            //    if (i<army.Length/2)
+            //    army[i] = new Squad(humanKnights);
+            //    else
+            //    army[i] = new Squad(humanSoliders);
+            //}
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            ga = new GA(enemy, army, battleCount: 1,populationSize:2,generationSize:2);
+            ga = new GA(enemy, army, battleCount: 10,generationSize:3,populationSize:50);
             ga.Go();
 
             sw.Stop();

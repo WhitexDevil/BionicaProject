@@ -1,6 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace project
 {
@@ -35,25 +40,65 @@ namespace project
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
-           
 
-            ga = new GA(enemy, army, battleCount: 10,populationSize:10,generationSize:10);
+            ga = new GA(enemy, army, battleCount: 1,populationSize:2,generationSize:2);
             ga.Go();
 
             sw.Stop();
             System.Windows.MessageBox.Show(sw.Elapsed.TotalSeconds.ToString());
-
+		
 			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64) { Visualization = true };
-			var v = sb.BattleData.Visualization;
+			v = sb.BattleData.Visualization;
 			sb.Fight();
+			if (b.Width != PictureBox.ActualWidth || b.Height != PictureBox.ActualHeight)
+				b = new Bitmap((int)Math.Max(PictureBox.ActualWidth, 100), (int)Math.Max(PictureBox.ActualHeight, 100));
 
-			//Bitmap b = new Bitmap((int)PictureBox.Width, (int)PictureBox.Height);
-			//using (Graphics g = Graphics.FromImage(b))
-			//{
-			//	v.DrawFrame(g, b.Width, b.Height, 0);
-			//}
-			//PictureBox.DataContext = b;
+				v.DrawFrame(b, 0);
+
+			PictureBox.Source = BitmapToImageSource(b);
                         
         }
+		Visualization v;
+		BitmapImage BitmapToImageSource(Bitmap bitmap)
+		{
+			using (MemoryStream memory = new MemoryStream())
+			{
+				bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+				memory.Position = 0;
+				BitmapImage bitmapimage = new BitmapImage();
+				bitmapimage.BeginInit();
+				bitmapimage.StreamSource = memory;
+				bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapimage.EndInit();
+
+				return bitmapimage;
+			}
+		}
+		Bitmap b;
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			b = new Bitmap((int)Math.Max(PictureBox.ActualWidth, 100), (int)Math.Max(PictureBox.ActualHeight,100));
+		}
+
+		private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+		{
+			SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * v.BattleLength / TimeSlider.Maximum)).ToString();
+			v.SetTime((int)(e.NewValue * v.BattleLength / TimeSlider.Maximum));
+			if (b.Width != (int)PictureBox.ActualWidth || b.Height != (int)PictureBox.ActualHeight)
+				b = new Bitmap((int)Math.Max(PictureBox.ActualWidth, 100), (int)Math.Max(PictureBox.ActualHeight, 100));
+
+				v.DrawFrame(b, (int)(e.NewValue * v.BattleLength * 60 / TimeSlider.Maximum) % 60);
+
+			PictureBox.Source = BitmapToImageSource(b);
+		}
+
+		private async void Button_Click_1(object sender, RoutedEventArgs e)
+		{
+			while (TimeSlider.Value < TimeSlider.Maximum)
+			{
+				TimeSlider.Value += TimeSlider.Maximum * 0.001;
+				await Task.Delay(1);
+			}
+		}
     }
 }

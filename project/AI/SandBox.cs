@@ -54,10 +54,8 @@ namespace project
 			get { return CurrentBattleData.Visualization != null; }
 			set
 			{
-				if (CurrentBattleData.Visualization == null && value == true){
-					CurrentBattleData.Visualization = new Visualization();
-					CurrentBattleData.Visualization.InitZeroState(BattleData);
-				}
+				if (CurrentBattleData.Visualization == null && value == true)
+					CurrentBattleData.Visualization = new Visualization(CurrentBattleData);
 			}
 		}
 		void setMap()
@@ -126,13 +124,16 @@ namespace project
 
 				ForceBalance = NewForceBalance;
 
+				if (CurrentBattleData.Visualization != null)
+					CurrentBattleData.Visualization.RecordTurn();
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
-				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
-				Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 
 				if (CurrentBattleData.Visualization != null)
-					CurrentBattleData.Visualization.RecordEndOfTurn();
+					CurrentBattleData.Visualization.RecordTurn();
+				Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
+				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
+
 			}
 			return Win;
 		}

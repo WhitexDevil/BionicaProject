@@ -23,7 +23,7 @@ namespace project
         public int Amount
         {
             get { return amount; }
-            private set {
+            set {
                 if (value < 1)
                 {
                     alive = false;

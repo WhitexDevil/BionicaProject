@@ -72,6 +72,8 @@ namespace project
 
 		private int EvaluateForces()
 		{
+			CurrentBattleData.EraseDeadSquads();
+
 			int sumAlly = 0;
 			foreach (var squad in CurrentBattleData.AllyArmy)
 				sumAlly += squad.Amount * squad.Unit.MaxHitpoints;
@@ -102,13 +104,19 @@ namespace project
 				Turns++;
 				int NewForceBalance = EvaluateForces();
 				int DeltaBalance = ForceBalance - NewForceBalance;
+				
+				if (Turns % 10 == 0)
 				Console.WriteLine("Turn {0}, force balance {1}, delta force {2}", Turns, NewForceBalance, DeltaBalance);
 
 				ForceBalance = NewForceBalance;
+
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 				Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
+
+				if (CurrentBattleData.Visualization != null)
+					CurrentBattleData.Visualization.RecordEndOfTurn();
 			}
 			return Win;
 		}

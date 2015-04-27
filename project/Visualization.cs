@@ -65,7 +65,7 @@ namespace project
 		}
 		public void RecordEndOfTurn()
 		{
-		//	Console.WriteLine("NextTurn");
+			//Console.WriteLine("NextTurn");
 			Timeline.Add(new Action[Timeline.Count % 2 == 0 ? InitBD.AllyArmy.Length : InitBD.EnemyArmy.Length, 2]);
 		}
 

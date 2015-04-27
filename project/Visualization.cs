@@ -166,7 +166,7 @@ namespace project
 				var Enemy = Ally == BD.EnemyArmy ? BD.AllyArmy : BD.EnemyArmy;
 				for (int i = 0; i < Ally.Length; i++)
 				{
-					var Action = Timeline[i / 2][i, t % 2];
+					var Action = Timeline[t / 2][i, t % 2];
 					switch (Action.Type)
 					{
 						case ActionType.Attack:

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing;
 using System.Windows;
 
 namespace project
@@ -42,13 +43,16 @@ namespace project
             sw.Stop();
             System.Windows.MessageBox.Show(sw.Elapsed.TotalSeconds.ToString());
 
+			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64) { Visualization = true };
+			var v = sb.BattleData.Visualization;
+			sb.Fight();
 
-            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64);
-            Visualization v = new Visualization();
-            while (sb.Fight())
-               v = sb.BattleData.Visualization;
-
-
+			//Bitmap b = new Bitmap((int)PictureBox.Width, (int)PictureBox.Height);
+			//using (Graphics g = Graphics.FromImage(b))
+			//{
+			//	v.DrawFrame(g, b.Width, b.Height, 0);
+			//}
+			//PictureBox.DataContext = b;
                         
         }
     }

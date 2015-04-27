@@ -18,13 +18,13 @@ namespace project
 		private AI Side1;
 		private AI Side2;
 		private int MapSize;
-        private BattleData CurrentBattleData;
+		private BattleData CurrentBattleData;
 
-        public BattleData BattleData
-        {
-            get { return CurrentBattleData; }
-           private set { CurrentBattleData = value; }
-        }
+		public BattleData BattleData
+		{
+			get { return CurrentBattleData; }
+			private set { CurrentBattleData = value; }
+		}
 		bool Finish;
 		bool Win;
 		//private BattleData BattleDataSide2;
@@ -43,12 +43,22 @@ namespace project
 
 			//BattleDataSide2 = new BattleData(BattleDataSide1.AllyArmy, BattleDataSide1.EnemyArmy, BattleDataSide1.Map, BattleDataSide1.MapWidth);
 			setMap();
-			if (CurrentBattleData.Visualization != null)
-				CurrentBattleData.Visualization.InitZeroState(CurrentBattleData);
 			//		var p  = DistanceAndPath.PathTo(BattleData, BattleData.AllyArmy[0].Position, BattleData.EnemyArmy[0].Position, 2);
 			Side1 = new AI(Player, CurrentBattleData);
 			Side2 = new AI(Enemy, CurrentBattleData);
 
+		}
+
+		public bool Visualization
+		{
+			get { return CurrentBattleData.Visualization != null; }
+			set
+			{
+				if (CurrentBattleData.Visualization == null && value == true){
+					CurrentBattleData.Visualization = new Visualization();
+					CurrentBattleData.Visualization.InitZeroState(BattleData);
+				}
+			}
 		}
 		void setMap()
 		{
@@ -110,9 +120,9 @@ namespace project
 				Turns++;
 				int NewForceBalance = EvaluateForces();
 				int DeltaBalance = ForceBalance - NewForceBalance;
-				
+
 				if (Turns % 10 == 0)
-				Console.WriteLine("Turn {0}, force balance {1}, delta force {2}", Turns, NewForceBalance, DeltaBalance);
+					Console.WriteLine("Turn {0}, force balance {1}, delta force {2}", Turns, NewForceBalance, DeltaBalance);
 
 				ForceBalance = NewForceBalance;
 

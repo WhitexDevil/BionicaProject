@@ -34,14 +34,19 @@ namespace project
 
             Stopwatch sw = new Stopwatch();
             sw.Start();
+           
 
-			ga = new GA(enemy, army, battleCount: 1);
+            ga = new GA(enemy, army, battleCount: 10,populationSize:10,generationSize:10);
             ga.Go();
-			
+
             sw.Stop();
             System.Windows.MessageBox.Show(sw.Elapsed.TotalSeconds.ToString());
-       
 
+
+            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64);
+            Visualization v = new Visualization();
+            while (sb.Fight())
+               v = sb.BattleData.Visualization;
 
 
                         

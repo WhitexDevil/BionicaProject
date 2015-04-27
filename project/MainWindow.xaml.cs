@@ -36,7 +36,7 @@ namespace project
             sw.Start();
            
 
-            ga = new GA(enemy, army, battleCount: 50);
+            ga = new GA(enemy, army, battleCount: 1);
             ga.Go();
 
             sw.Stop();

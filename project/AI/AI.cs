@@ -50,8 +50,6 @@ namespace project
 
     class AI
     {
-       
-
         private Player Player;
         private BattleData BattleData;
 
@@ -95,8 +93,6 @@ namespace project
                 ManeuverTrust = 50*Player.Pride;
             }
         }
-
-
 
         public Maneuver NextTurn(double DeltaBalance)
         {

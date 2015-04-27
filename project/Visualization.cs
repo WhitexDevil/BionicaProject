@@ -39,6 +39,8 @@ namespace project
 		}
 		public void RecordMove(int squadIndex, Point start, Point end, Step[] path)
 		{
+		//	Console.WriteLine("Move");
+
 			Timeline.Last()[squadIndex,
 			Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
 			{
@@ -51,6 +53,7 @@ namespace project
 		}
 		public void RecordAttack(int squadIndex, Point target, int damage)
 		{
+			//Console.WriteLine("Attack");
 			Timeline.Last()[squadIndex,
 				Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
 			{
@@ -62,6 +65,7 @@ namespace project
 		}
 		public void RecordEndOfTurn()
 		{
+		//	Console.WriteLine("NextTurn");
 			Timeline.Add(new Action[Timeline.Count % 2 == 0 ? InitBD.AllyArmy.Length : InitBD.EnemyArmy.Length, 2]);
 		}
 

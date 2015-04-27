@@ -96,15 +96,19 @@ namespace project
 
 		public bool Fight()
 		{
+			int Turns = 0;
 			while (!Finish)
 			{
+				Turns++;
 				int NewForceBalance = EvaluateForces();
 				int DeltaBalance = ForceBalance - NewForceBalance;
+				Console.WriteLine("Turn {0}, force balance {1}, delta force {2}", Turns, NewForceBalance, DeltaBalance);
 
 				ForceBalance = NewForceBalance;
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 				Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
+				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 			}
 			return Win;
 		}

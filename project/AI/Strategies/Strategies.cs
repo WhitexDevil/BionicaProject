@@ -71,7 +71,7 @@ namespace project
 			attacker.Attack(target);
 
 			if (bd.Visualization != null)
-				bd.Visualization.RecordAttack(attacker, target.Position, dmg - target.Amount);
+				bd.Visualization.RecordAttack(attacker, target, dmg - target.Amount);
 
 			Move(attacker, Path, bd);
 		}
@@ -85,7 +85,7 @@ namespace project
 				attacker.Attack(target);
 
 				if (bd.Visualization != null)
-					bd.Visualization.RecordAttack(attacker, target.Position, dmg - target.Amount);
+					bd.Visualization.RecordAttack(attacker, target, dmg - target.Amount);
 			}
 
 		}

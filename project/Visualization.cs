@@ -16,12 +16,13 @@ namespace project
 		public RectangleF[][][] Animations;
 		public int Width;
 		public int Height;
+		public bool DisableTextures = true;
 
-		public Sprite(Bitmap texture, RectangleF[][][] animations)
-		{
-			Animations = animations;
-			this.Texture = texture;
-		}
+		//public Sprite(Bitmap texture, RectangleF[][][] animations)
+		//{
+		//	Animations = animations;
+		//	this.Texture = texture;
+		//}
 
 		public enum AnimationAction { Standing, Moving, Attacking, TakingDamage, Dying };
 
@@ -34,10 +35,17 @@ namespace project
 
 		private void DrawSpriteFrame(Graphics g, PointF position, SizeF size, AnimationAction action, float directionDegree, float frame)
 		{
-			var Texture = directionDegree > 180 ? MiroredTexture : this.Texture;
-			var Animation = GetAnimation(action, directionDegree);
-			g.DrawImage(Texture, new RectangleF(position, size),
-				Animation[(int)(frame * Animation.Length / Visualization.SubturnFramerate)], GraphicsUnit.Pixel);
+			if (DisableTextures)
+			{
+				g.FillRectangle(Brushes.Violet, new RectangleF(position, size));
+			}
+			else
+			{
+				var Texture = directionDegree > 180 ? MiroredTexture : this.Texture;
+				var Animation = GetAnimation(action, directionDegree);
+				g.DrawImage(Texture, new RectangleF(position, size),
+					Animation[(int)(frame * Animation.Length / Visualization.SubturnFramerate)], GraphicsUnit.Pixel);
+			}
 		}
 		private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
 		{
@@ -95,13 +103,26 @@ namespace project
 
 	public class Visualization
 	{
-		Squad[] AllyIndex;
-		Squad[] EnemyIndex;
+		Squad[] Squads;
 		BattleData InitBD;
 		BattleData BD;
-		List<List<Action>> Timeline = new List<List<Action>>();
-		int Turn { get { return Subturn / 2; } }
-		bool SecondAction { get { return Subturn % 2 == 1; } }
+		List<List<Action>> Turns = new List<List<Action>>();
+		List<Action> Timeline = new List<Action>();
+		public List<string> BattleLog = new List<string>();
+
+		private int turn;
+
+		public int Turn
+		{
+			get { return turn; }
+			set
+			{
+				turn = value;
+				SideA = turn % 2 == 0;
+			}
+		}
+
+		bool SideA { get; set; }
 		int Subturn = 0;
 		public static float SubturnFramerate = 60;
 
@@ -109,8 +130,8 @@ namespace project
 
 		struct Action
 		{
-			public Point a;
-			public Point Target;
+			public int Squad;
+			public int Target;
 			public Point[] Path;
 			public int Damage;
 			public ActionType Type;
@@ -121,50 +142,48 @@ namespace project
 			InitZeroState(battleData);
 		}
 
-		private int FindIndex(Squad s)
+		private int FindIndex(Squad squad)
 		{
-			for (int i = 0; i < AllyIndex.Length; i++)
-				if (AllyIndex[i] == s) return i;
-			for (int i = 0; i < EnemyIndex.Length; i++)
-				if (EnemyIndex[i] == s) return i;
+			for (int i = 0; i < Squads.Length; i++)
+				if (Squads[i] == squad) return i;
 			return -1;
 		}
-		public void RecordMove(Squad s, Point start, Point end, Step[] path)
+		public void RecordMove(Squad squad, Point start, Point end, Step[] path)
 		{
 			//	Console.WriteLine("Move");
-			int squadIndex = FindIndex(s);
-			Timeline.Last()[squadIndex,
-			Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
+			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).ToArray();
+			if (pathcutted.Length < 2) return;
+			Timeline.Add(new Action()
 			{
 				Type = ActionType.Move,
-				a = start,
-				Target = end,
-				Path = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).ToArray(),
+				Squad = FindIndex(squad),
+				Target = -1,
+				Path = pathcutted,
 				Damage = 0
-			};
+			});
+			Turns.Last().Add(Timeline.Last());
 		}
-		public void RecordAttack(Squad s, Point target, int damage)
+		public void RecordAttack(Squad squad, Squad target, int damage)
 		{
 			//Console.WriteLine("Attack");
-			int squadIndex = FindIndex(s);
-			Timeline.Last()[squadIndex,
-				Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
+			int squadIndex = FindIndex(squad);
+			Timeline.Add(new Action()
 			{
 				Type = ActionType.Attack,
-				Target = target,
+				Squad = FindIndex(squad),
+				Target = FindIndex(target),
 				Path = null,
 				Damage = damage
-			};
+			});
+			Turns.Last().Add(Timeline.Last());
 		}
 		public void RecordTurn()
 		{
 			//Console.WriteLine("NextTurn");
-			Timeline.Add(new Action[Timeline.Count % 2 == 0 ? InitBD.AllyArmy.Length : InitBD.EnemyArmy.Length, 2]);
+			Turns.Add(new List<Action>());
 		}
 
-		public int BattleLength { get { return Timeline.Count * 2; } }
-
-		bool AllyTurn() { return Turn % 2 == 0; }
+		public int BattleLength { get { return Timeline.Count; } }
 
 		//public void NextTurn()
 		//{
@@ -203,8 +222,7 @@ namespace project
 
 		private void InitZeroState(BattleData battleData)
 		{
-			AllyIndex = battleData.AllyArmy;
-			EnemyIndex = battleData.EnemyArmy;
+			Squads = battleData.AllyArmy.Union(battleData.EnemyArmy).ToArray();
 			InitBD = (BattleData)battleData.Clone();
 			SetTime(0);
 			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
@@ -254,29 +272,46 @@ namespace project
 			if (subturn < Subturn || subturn == 0)
 			{
 				BD = (BattleData)InitBD.Clone();
+				Squads = BD.AllyArmy.Union(BD.EnemyArmy).ToArray();
 				Subturn = 0;
+				Turn = 0;
+				BattleLog.Clear();
 			}
-			for (int t = Subturn; t < Math.Min(subturn, (Timeline.Count * 2) - 1); t++)
+			for (int t = Subturn; t < Math.Min(subturn, Timeline.Count - 1); t++)
 			{
-				var Ally = ((t / 2) % 2) == 0 ? BD.AllyArmy : BD.EnemyArmy;
-				var Enemy = Ally == BD.EnemyArmy ? BD.AllyArmy : BD.EnemyArmy;
-				for (int i = 0; i < Ally.Length; i++)
+				//var Ally = SideA ? BD.AllyArmy : BD.EnemyArmy;
+				//var Enemy = Ally == BD.EnemyArmy ? BD.AllyArmy : BD.EnemyArmy;
+
+				switch (Timeline[t].Type)
 				{
-					var Action = Timeline[t / 2][i, t % 2];
-					switch (Action.Type)
-					{
-						case ActionType.Attack:
-							for (int i2 = 0; i2 < Enemy.Length; i2++)
-								if (Enemy[i2].Position == Action.Target)
-									Enemy[i2].Amount -= Action.Damage;
-							break;
-						case ActionType.Move:
-							Ally[i].Position = Action.Path.First();
-							break;
-					}
+					case ActionType.Attack:
+						Squads[Timeline[t].Target].Amount -= Timeline[t].Damage;
+						BattleLog.Add(String.Format("Отряд #{0} атакует отряд {1} и наносит {2} урона",
+							Timeline[t].Squad, Timeline[t].Target, Timeline[t].Damage));
+						if (!Squads[Timeline[t].Target].Alive)
+							BattleLog.Add(String.Format("Отряд #{0} погибает", Timeline[t].Target));
+						break;
+					case ActionType.Move:
+						Squads[Timeline[t].Squad].Position = Timeline[t].Path.First();
+						BattleLog.Add(String.Format("Отряд #{0} идет в точку {1}:{2}",
+							Timeline[t].Squad, Timeline[t].Path.First().X, Timeline[t].Path.First().X));
+						break;
 				}
+
 				Subturn = t + 1;
+				if (Subturn >= Turns.Count)
+				{
+					Turn++;
+					BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B"), Turn-1));
+				}
 			}
+		}
+
+		private float DirectionDegree(Point source, Point destination)
+		{
+			float xDiff = destination.X - source.X;
+			float yDiff = destination.Y - destination.Y;
+			return (float)(Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI);
 		}
 
 		public void DrawFrame(Bitmap b, int frame)
@@ -296,51 +331,99 @@ namespace project
 			for (float y = 0; y < height; y += hK)
 				g.DrawLine(Pens.LightGray, 0, y, width, y);
 
-
-			for (int a = 0; a < 2; a++)
+			var Action = Timeline[Subturn];
+			var Squad = Squads[Action.Squad];
+			var Size = new SizeF(wK, hK);
+			switch (Action.Type)
 			{
-				bool sideA = (a % 2) == 0;
+				case ActionType.None:
 
-				var Army = AllyTurn() == sideA ? BD.EnemyArmy : BD.AllyArmy;
-				for (int i = 0; i < Army.Length; i++)
-				{
-					var Action = sideA ? new Action() : Timeline[Turn][i, SecondAction ? 1 : 0];
-					var Position = Army[i].Position;
+					Squad.Unit.Sprite.DrawStanding(g,
+						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
+						SideA ? 0 : 180, Squad.Amount, frame);
 
-					switch (Action.Type)
-					{
-						case ActionType.Attack:
-							g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, Position.X * wK, Position.Y * hK, 10, 10);
-							g.DrawString(Action.Damage.ToString(), new Font("Arial", 15), Brushes.Red, Action.Target.X * wK, Action.Target.Y * hK - (hK * frame / SubturnFramerate));
-							g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, Position.X * wK - wK / 3, Position.Y * hK - hK / 3);
-							break;
-						default:
-							if (Action.Path != null && Action.Path.Length >= 2)
-							{
-								float framecost = SubturnFramerate / (Action.Path.Length - 1);
-								int pp = (int)(frame / framecost);
-								int start = Action.Path.Length - 1 - pp;
-								float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
-								float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
-								g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, X * wK, Y * hK, 10, 10);
-								g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, X * wK - wK / 3, Y * hK - hK / 3);
-							}
-							else
-							{
-								if (Army[i].Alive)
-								{
-									g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, Position.X * wK,
-										(Position.Y * hK), 10, 10);
-									g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, Position.X * wK - wK / 3, Position.Y * hK - hK / 3);
-								}
-								else g.FillRectangle(AllyTurn() == sideA ? Brushes.LightGray : Brushes.LightGray, Position.X * wK,
-									 (Position.Y * hK), 10, 10);
-							}
-							break;
-					}
-				}
+					break;
+				case ActionType.Attack:
 
+					var Target = Squads[Action.Target];
+
+					Squad.Unit.Sprite.DrawAttack(g,
+						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
+						DirectionDegree(Squad.Position, Target.Position),
+						Squad.Amount, frame);
+
+					Target.Unit.Sprite.DrawTakingDamage(g,
+						new PointF(Target.Position.X * wK, Target.Position.Y * hK), Size,
+						SideA ? 180 : 0, Target.Amount, Action.Damage, frame);
+
+					break;
+				case ActionType.Move:
+
+					float framecost = SubturnFramerate / (Action.Path.Length - 1);
+					int pp = (int)(frame / framecost);
+					int start = Action.Path.Length - 1 - pp;
+					float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
+					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
+
+					Squad.Unit.Sprite.DrawMove(g, new PointF(X * wK, Y * hK), Size,
+							DirectionDegree(Action.Path[start], Action.Path[start - 1]), Squad.Amount, frame);
+					break;
 			}
+
+			for (int i = 0; i < Squads.Length; i++)
+			{
+				if (i == Action.Squad || i == Action.Target) continue;
+
+				Squads[i].Unit.Sprite.DrawStanding(g,
+					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
+					SideA ? 0 : 180, Squads[i].Amount, frame);
+			}
+
+			#region old
+			//for (int a = 0; a < 2; a++)
+			//{
+			//	bool sideA = (a % 2) == 0;
+
+			//	var Army = AllyTurn() == sideA ? BD.EnemyArmy : BD.AllyArmy;
+			//	for (int i = 0; i < Army.Length; i++)
+			//	{
+			//		var Action = sideA ? new Action() : Timeline[Turn][i, SecondAction ? 1 : 0];
+			//		var Position = Army[i].Position;
+
+			//		switch (Action.Type)
+			//		{
+			//			case ActionType.Attack:
+			//				g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, Position.X * wK, Position.Y * hK, 10, 10);
+			//				g.DrawString(Action.Damage.ToString(), new Font("Arial", 15), Brushes.Red, Action.Target.X * wK, Action.Target.Y * hK - (hK * frame / SubturnFramerate));
+			//				g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, Position.X * wK - wK / 3, Position.Y * hK - hK / 3);
+			//				break;
+			//			default:
+			//				if (Action.Path != null && Action.Path.Length >= 2)
+			//				{
+			//					float framecost = SubturnFramerate / (Action.Path.Length - 1);
+			//					int pp = (int)(frame / framecost);
+			//					int start = Action.Path.Length - 1 - pp;
+			//					float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
+			//					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
+			//					g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, X * wK, Y * hK, 10, 10);
+			//					g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, X * wK - wK / 3, Y * hK - hK / 3);
+			//				}
+			//				else
+			//				{
+			//					if (Army[i].Alive)
+			//					{
+			//						g.FillRectangle(AllyTurn() == sideA ? Brushes.LightBlue : Brushes.Violet, Position.X * wK,
+			//							(Position.Y * hK), 10, 10);
+			//						g.DrawString(Army[i].Amount.ToString(), new Font("Arial", 10), Brushes.Green, Position.X * wK - wK / 3, Position.Y * hK - hK / 3);
+			//					}
+			//					else g.FillRectangle(AllyTurn() == sideA ? Brushes.LightGray : Brushes.LightGray, Position.X * wK,
+			//						 (Position.Y * hK), 10, 10);
+			//				}
+			//				break;
+			//		}
+			//	}
+
+			//}
 
 
 			//var army = AllyTurn() ? BD.EnemyArmy : BD.AllyArmy;
@@ -358,7 +441,8 @@ namespace project
 			//		DrawArmy(g, wK, hK, BD.AllyArmy, 1, frame);
 			//	else
 			//		DrawArmy(g, wK, hK, BD.EnemyArmy, 1 + BD.AllyArmy.Length, frame);
-			//}
+			//} 
+			#endregion
 		}
 	}
 }

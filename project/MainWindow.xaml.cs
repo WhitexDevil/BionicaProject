@@ -47,7 +47,7 @@ namespace project
 
 			Stopwatch sw = Stopwatch.StartNew();
 
-            ga = new GA(enemy, army, battleCount: 10,populationSize:50, mapSize :32);
+            ga = new GA(enemy, army, battleCount: 1,populationSize:5, mapSize :32);
             ga.Go();
 
             sw.Stop();
@@ -66,37 +66,36 @@ namespace project
         }
 
 
-		void HowToCreateSprite()
-		{
+		//void HowToCreateSprite()
+		//{
 
-			RectangleF[][][] Animations = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
-			for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
-			{
-				switch ((Sprite.AnimationAction)i)
-				{
-					case Sprite.AnimationAction.Standing:
-						Animations[i] = new RectangleF[directions][];
-						Animations[i][direction] = new RectangleF[frames];
-						
-						Animations[i][direction][frame1] = new RectangleF(0, 0, 50, 50);
-						Animations[i][direction][frame2] = new RectangleF(50, 0, 50, 50);
-						Animations[i][direction][frame3] = new RectangleF(100, 0, 50, 50);
+		//	RectangleF[][][] Animations = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
+		//	for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
+		//	{
+		//		switch ((Sprite.AnimationAction)i)
+		//		{
+		//			case Sprite.AnimationAction.Standing:
+		//				Animations[i] = new RectangleF[directions][];
+		//				Animations[i][direction] = new RectangleF[frames];
 
-						break;
-					case Sprite.AnimationAction.Moving:
-						break;
-					case Sprite.AnimationAction.Attacking:
-						break;
-					case Sprite.AnimationAction.TakingDamage:
-						break;
-					case Sprite.AnimationAction.Dying:
-						break;
-				}
-			
+		//				Animations[i][direction][frame1] = new RectangleF(0, 0, 50, 50);
+		//				Animations[i][direction][frame2] = new RectangleF(50, 0, 50, 50);
+		//				Animations[i][direction][frame3] = new RectangleF(100, 0, 50, 50);
 
-			var Sprite = new Sprite(texture, Animations);
+		//				break;
+		//			case Sprite.AnimationAction.Moving:
+		//				break;
+		//			case Sprite.AnimationAction.Attacking:
+		//				break;
+		//			case Sprite.AnimationAction.TakingDamage:
+		//				break;
+		//			case Sprite.AnimationAction.Dying:
+		//				break;
+		//		}
+		//	}
 
-		}
+
+		//}
 
 		Visualization v;
 		BitmapImage BitmapToImageSource(Bitmap bitmap)

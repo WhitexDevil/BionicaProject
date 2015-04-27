@@ -52,7 +52,8 @@ namespace project
             int populationSize = 2,
             int generationSize = 2,
             int genomeSize = 4,
-            int battleCount = 5 ):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize,battleCount){}
+            int battleCount = 5 ,
+            int mapSize=64):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize,battleCount,mapSize){}
 
         /// <summary>
         /// Sets different army to each side;
@@ -74,7 +75,8 @@ namespace project
             int populationSize = 2,
             int generationSize =2,
             int genomeSize=4,
-            int battleCount = 5)
+            int battleCount = 5,
+            int mapSize = 64)
         {
             InitialValues();
             m_mutationRate = mutationRate;
@@ -87,6 +89,8 @@ namespace project
               AllyArmy = allyArmy;
             EnemyArmy = enemyArmy;
             m_battleCount = battleCount;
+            m_mapSize = mapSize;
+       
         }
 
         public GA(int genomeSize)
@@ -141,7 +145,7 @@ namespace project
         /// <returns>Random individual biased towards highest fitness</returns>
         private int RouletteSelection()
         {
-            double randomFitness = Random.NextDouble() * m_totalFitness;
+            double randomFitness = Random.NextDouble() * (double)m_fitnessTable[m_populationSize-1];
             int idx = -1;
             for (int i = 0;i<m_populationSize;i++)
                 if (randomFitness<=(double)m_fitnessTable[i])
@@ -254,7 +258,13 @@ namespace project
         private ArrayList m_thisGeneration;
         private ArrayList m_nextGeneration;
         private ArrayList m_fitnessTable;
+        private int m_mapSize = 64;
 
+        public int MapSize
+        {
+            get { return m_mapSize; }
+            set { m_mapSize = value; }
+        }
         static private GAFunction getFitness;
        
          
@@ -266,7 +276,7 @@ namespace project
              int temp = 0;
             Parallel.For(0 , m_battleCount,i=>
              {
-                 SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, 64);
+                 SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, m_mapSize);
                  if (sb.Fight(m_currentGeneration))
                  Interlocked.Add(ref temp,1);
              }

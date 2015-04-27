@@ -45,7 +45,7 @@ namespace project
 
 			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64) { Visualization = true };
 			var v = sb.BattleData.Visualization;
-			sb.Fight();
+			sb.Fight(0);
 
 			//Bitmap b = new Bitmap((int)PictureBox.Width, (int)PictureBox.Height);
 			//using (Graphics g = Graphics.FromImage(b))

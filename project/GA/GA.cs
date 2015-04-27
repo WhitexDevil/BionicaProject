@@ -122,7 +122,7 @@ namespace project
             CreateGenomes();
             RankPopulation();
 
-            for (int i = 0; i < m_generationSize; i++)
+            for (m_currentGeneration = 1; m_currentGeneration <= m_generationSize; m_currentGeneration++)
             {
                 CreateNextGeneration();
                 RankPopulation();
@@ -249,7 +249,7 @@ namespace project
         private Squad[] AllyArmy;
         private Squad[] EnemyArmy;
         private int m_battleCount ;
-
+        private int m_currentGeneration = 0;
         private ArrayList m_thisGeneration;
         private ArrayList m_nextGeneration;
         private ArrayList m_fitnessTable;
@@ -266,7 +266,7 @@ namespace project
             Parallel.For(0 , m_battleCount,i=>
              {
                  SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, 64);
-                 if (sb.Fight())
+                 if (sb.Fight(m_currentGeneration))
                  Interlocked.Add(ref temp,1);
              }
             );
@@ -275,7 +275,7 @@ namespace project
              //sw.Stop();
              //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
              //sw.Reset();
-             return temp / m_battleCount;
+             return (double)temp / (double)m_battleCount;
          }
 
 

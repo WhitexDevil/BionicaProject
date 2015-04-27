@@ -112,7 +112,7 @@ namespace project
 
 
 
-		public bool Fight()
+		public bool Fight(int generation )
 		{
 			int Turns = 0;
 			while (!Finish)
@@ -120,10 +120,6 @@ namespace project
 				Turns++;
 				int NewForceBalance = EvaluateForces();
 				int DeltaBalance = ForceBalance - NewForceBalance;
-
-				if (Turns % 10 == 0)
-					Console.WriteLine("Turn {0}, force balance {1}, delta force {2}", Turns, NewForceBalance, DeltaBalance);
-
 				ForceBalance = NewForceBalance;
 
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
@@ -134,6 +130,7 @@ namespace project
 				if (CurrentBattleData.Visualization != null)
 					CurrentBattleData.Visualization.RecordEndOfTurn();
 			}
+            Console.WriteLine("Generation {0},Turn {1}, Result {2}", generation, Turns,Win);
 			return Win;
 		}
 	}

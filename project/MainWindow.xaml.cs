@@ -47,7 +47,7 @@ namespace project
 
 			Stopwatch sw = Stopwatch.StartNew();
 
-            ga = new GA(enemy, army, battleCount: 1,populationSize:5, mapSize :32);
+            ga = new GA(enemy, army, battleCount: 1,populationSize:4, mapSize :32);
             ga.Go();
 
             sw.Stop();

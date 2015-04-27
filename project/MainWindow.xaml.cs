@@ -20,7 +20,7 @@ namespace project
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             enemy = new Player(new double[4]{0.9,0.1,0.1,0.9});
-            Unit humanKnights = new Unit( 4, 17, 3, 5, 14, 25, 1.5f);
+            Unit humanKnights = new Unit( 4, 17, 3, 5, 13, 25, 1.5f);
             Unit humanSoliders = new Unit( 4, 16, 2, 4, 7, 30, 1.5f);
             int n = 6;
             army = new Squad[2*n];
@@ -36,7 +36,7 @@ namespace project
             sw.Start();
            
 
-            ga = new GA(enemy, army, battleCount: 1);
+            ga = new GA(enemy, army, battleCount: 10,populationSize:4,generationSize:4);
             ga.Go();
 
             sw.Stop();

@@ -9,10 +9,6 @@ using System.Diagnostics;
 using System.Threading;
 namespace project
 {
-
-
- 
-
     public delegate double GAFunction(Player player, Player Enemy,  Squad[] allyArmy,Squad[] enemyArmy);
     
     /// <summary>

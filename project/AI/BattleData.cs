@@ -19,6 +19,7 @@ namespace project
 		private Squad[] ArmyA;
 		private Squad[] ArmyB;
 
+
 		public Squad[] EnemyArmy
 		{
 			get { return Reverse ? ArmyA : ArmyB; }
@@ -52,13 +53,7 @@ namespace project
 			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
 
-		//public BattleData(ref Squad[] enemyArmy, ref Squad[] allyArmy, ref byte[] map)
-		//{
-		//    // TODO: Complete member initialization
-		//    this.EnemyArmy = enemyArmy;
-		//    this.AllyArmy = allyArmy;
-		//    this.Map = map;
-		//}
+	
 
 
 

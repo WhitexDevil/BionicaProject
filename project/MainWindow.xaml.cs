@@ -49,7 +49,7 @@ namespace project
 		
 			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64) { Visualization = true };
 			v = sb.BattleData.Visualization;
-			sb.Fight();
+			sb.Fight(1);
 			if (b.Width != PictureBox.ActualWidth || b.Height != PictureBox.ActualHeight)
 				b = new Bitmap((int)Math.Max(PictureBox.ActualWidth, 100), (int)Math.Max(PictureBox.ActualHeight, 100));
 

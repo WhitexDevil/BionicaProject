@@ -39,9 +39,8 @@ namespace project
 		}
 		public void RecordMove(int squadIndex, Point start, Point end, Step[] path)
 		{
-
 			Timeline.Last()[squadIndex,
-				Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
+			Timeline.Last()[squadIndex, 0].Type == ActionType.None ? 0 : 1] = new Action()
 			{
 				Type = ActionType.Move,
 				a = start,
@@ -112,9 +111,9 @@ namespace project
 				InitBD.Map[InitBD.AllyArmy[i].Position.X +
 					(InitBD.AllyArmy[i].Position.Y << InitBD.MapHeightLog2)] = (byte)(i + 1);
 			}
-			for (int i = 0; i < this.InitBD.EnemyArmy.Length; i++)
+			for (int i = 0; i < InitBD.EnemyArmy.Length; i++)
 			{
-				this.InitBD.Map[InitBD.EnemyArmy[i].Position.X +
+				InitBD.Map[InitBD.EnemyArmy[i].Position.X +
 					(InitBD.EnemyArmy[i].Position.Y << InitBD.MapHeightLog2)] =
 					(byte)(i + 1 + InitBD.AllyArmy.Length);
 			}

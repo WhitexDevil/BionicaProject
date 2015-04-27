@@ -15,17 +15,10 @@ namespace project
 		public readonly int MapWidth;
 		public readonly int MapHeightLog2;
 
-<<<<<<< HEAD
-		public  Squad[] EnemyArmy;
-		public  Squad[] AllyArmy;
-		public readonly PathFinderFast PathFinder;
-     
-  
-=======
 		public bool Reverse = false;
 		private Squad[] ArmyA;
 		private Squad[] ArmyB;
->>>>>>> origin/master
+
 
 		public Squad[] EnemyArmy
 		{
@@ -60,18 +53,8 @@ namespace project
 			PathFinder.PathFinderDebug += PathFinder_PathFinderDebug;
 		}
 
-		//public BattleData(ref Squad[] enemyArmy, ref Squad[] allyArmy, ref byte[] map)
-		//{
-		//    // TODO: Complete member initialization
-		//    this.EnemyArmy = enemyArmy;
-		//    this.AllyArmy = allyArmy;
-		//    this.Map = map;
-		//}
+	
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 
 
 		void PathFinder_PathFinderDebug(int fromX, int fromY, int x, int y, PathFinderNodeType type, int totalCost, float cost)

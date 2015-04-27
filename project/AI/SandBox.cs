@@ -98,23 +98,16 @@ namespace project
 		{
 			while (!Finish)
 			{
-<<<<<<< HEAD
-                int NewForceBalance = EvaluateForces();
-                int DeltaBalance = ForceBalance - NewForceBalance;
-               
-                ForceBalance = NewForceBalance;
-                Side1.NextTurn(DeltaBalance)(CurrentBattleData);
 
-                Side2.NextTurn(-DeltaBalance)(BattleData.Reverse(CurrentBattleData));
-=======
 				int NewForceBalance = EvaluateForces();
 				int DeltaBalance = ForceBalance - NewForceBalance;
 
 				ForceBalance = NewForceBalance;
+
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 				Side2.NextTurn(-DeltaBalance)(CurrentBattleData);
->>>>>>> origin/master
+
 			}
 			return Win;
 		}

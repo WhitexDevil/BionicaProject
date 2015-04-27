@@ -45,8 +45,7 @@ namespace project
             //    army[i] = new Squad(humanSoliders);
             //}
 
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+			Stopwatch sw = Stopwatch.StartNew();
 
             ga = new GA(enemy, army, battleCount: 10,generationSize:3,populationSize:50);
             ga.Go();

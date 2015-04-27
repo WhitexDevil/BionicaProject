@@ -27,7 +27,7 @@ namespace project
         public int InitiativeMod;
        // public bool Magic;
        // public Texture2D Texture = null;
-
+		public Visualization.Sprite Sprite; 
 
         public Unit( int maxHitpoints, int defense, int attack, int damage, int movSpeed, int maxAmount, float range)
         {

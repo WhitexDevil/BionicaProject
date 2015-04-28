@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Selen.Wpf.SystemStyles;component/Styles.xaml"/>
                 <ResourceDictionary Source="Controls/LabelStyle.xaml"/>
                 <ResourceDictionary Source="Controls/FlatSlider.xaml"/>
+                <ResourceDictionary Source="Controls/FlyoutStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

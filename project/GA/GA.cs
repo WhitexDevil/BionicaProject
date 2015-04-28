@@ -275,8 +275,9 @@ namespace project
              //Stopwatch sw = new Stopwatch();
              //sw.Start();
              int temp = 0;
-            Parallel.For(0 , m_battleCount,i=>
-             {
+             Parallel.For(0, m_battleCount, i =>
+              {
+           
                  SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, m_mapSize);
                  if (sb.Fight(m_currentGeneration))
                  Interlocked.Add(ref temp,1);

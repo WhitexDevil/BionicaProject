@@ -14,7 +14,8 @@ namespace project
 			for (int i = 0; i < battleData.AllyArmy.Length; i++)
 			{
 				int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
-
+                if (TargetIndex < 0)
+                    return;
 				Step[] Path = DistanceAndPath.PathTo(
 					battleData,
 					battleData.AllyArmy[i].Position,
@@ -32,7 +33,8 @@ namespace project
 			for (int i = 0; i < battleData.AllyArmy.Length; i++)
 			{
 				int TargetIndex = Strategy.NearestToPoint(battleData.AllyArmy[i].Position, battleData.EnemyArmy);
-
+                if (TargetIndex < 0)
+                    return;
 				Step[] Path = DistanceAndPath.PathTo(
 					battleData,
 					battleData.AllyArmy[i].Position,

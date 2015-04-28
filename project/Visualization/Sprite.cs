@@ -79,8 +79,7 @@ namespace project
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
-			position = new PointF(position.X + size.Height, position.Y);
-			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
+			g.DrawString(health.ToString(), new Font("Arial", 11, FontStyle.Bold), Brushes.White,
 				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X, position.Y + size.Height * 0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)

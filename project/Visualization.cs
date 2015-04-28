@@ -65,6 +65,13 @@ namespace project
 		public Sprite(Bitmap texture, RectangleF[][][] animations, bool mirrored)
 		{
 			this.Animations = animations;
+            for (int i = 0; i < animations[(int)AnimationAction.Moving].Length; i++)
+            {
+                var a = animations[(int)AnimationAction.Moving][i];
+                while (animations[(int)AnimationAction.Moving][i].Length < 30)
+                    animations[(int)AnimationAction.Moving][i] = animations[(int)AnimationAction.Moving][i].Concat(a).ToArray();
+                animations[(int)AnimationAction.Moving][i] = animations[(int)AnimationAction.Moving][i].Take(30).ToArray();
+            }     
 			this.Texture = new Bitmap(texture);
 			this.MirroredTexture = new Bitmap(Texture);
 			(mirrored ? this.Texture : this.MirroredTexture).RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -123,8 +130,8 @@ namespace project
 					new PointF(position.X + size.Width, position.Y),
 					new PointF(position.X, position.Y + size.Height));
 			}
-			//	else
-			//		DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
+            else
+                DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
 		}
 		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
@@ -135,7 +142,7 @@ namespace project
 			}
 			else
 			{
-				DrawDie(g, position, size, directionDegree, Visualization.SubturnFramerate);
+                //DrawDie(g, position, size, directionDegree, Visualization.SubturnFramerate);
 			}
 		}
 		public void DrawTakingDamage(Graphics g, PointF position, SizeF size, float directionDegree, int health, int damage, float frame)

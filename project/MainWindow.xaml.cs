@@ -1,5 +1,4 @@
-﻿using LoadingControl.Control;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -247,14 +246,17 @@ namespace project
             //loading.VerticalAlignment = VerticalAlignment.Center;
             //loading.HorizontalAlignment = HorizontalAlignment.Left;
             //root.Children.Add(loading);
-            loading.Visibility = Visibility.Visible;
+            Start.IsEnabled = false;
+            loading.IsActive = true;
             await Task.Run(() =>
             {
                 AllCalculations();
             });
             //root.Children.Remove(loading);
-            loading.Visibility = Visibility.Hidden;
-
+            loading.IsActive = false;
+            Start.IsEnabled = true;
+            TimeSlider.IsEnabled = true;
+            Animate.IsEnabled = true;
         }
 
 
@@ -336,6 +338,8 @@ namespace project
 
         private void SetUpWindow(object sender, RoutedEventArgs e)
         {
+            Animate.IsEnabled = false;
+            TimeSlider.IsEnabled = false;
             Battle.Width = Battle.ActualHeight;
         }
 

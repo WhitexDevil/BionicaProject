@@ -145,10 +145,68 @@ namespace project
 
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.fighter_transparent_2, Animations2, true);
 
+            RectangleF[][][] Animations3 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
+            for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
+            {
+                switch ((Sprite.AnimationAction)i)
+                {
+                    case Sprite.AnimationAction.Standing:
+                        int lengthS = 23;
+
+                        Animations3[i] = new RectangleF[1][];
+                        Animations3[i][0] = new RectangleF[lengthS];
+                        for (int j = 0; j < lengthS; j++)
+                        {
+                            Animations3[i][0][j] = new RectangleF(56 * j, 104, 56, 80);
+                        }
+                        break;
+                    case Sprite.AnimationAction.Moving:
+                        int lengthM = 12;
+                        Animations3[i] = new RectangleF[1][];
+                        Animations3[i][0] = new RectangleF[lengthM-1];
+                        for (int j = 1; j < lengthM; j++)
+                        {
+                            Animations3[i][0][j-1] = new RectangleF(8 + 80 * j, 184, 72, 80);
+                        }
+                        break;
+                    case Sprite.AnimationAction.Attacking:
+
+                        int lengthA = 38;
+
+                        Animations3[i] = new RectangleF[1][];
+                        Animations3[i][0] = new RectangleF[lengthA];
+                        for (int j = 0; j < lengthA; j++)
+                        {
+                            Animations3[i][0][j] = new RectangleF(232 + (j % 7) * 288, 280 + (j / 7) * 88, 56, 80);
+                        }
+
+                        break;
+                    case Sprite.AnimationAction.TakingDamage:
+                        int lengthT = 13;
+
+                        Animations3[i] = new RectangleF[1][];
+                        Animations3[i][0] = new RectangleF[lengthT];
+                        for (int j = 0; j < lengthT; j++)
+                        {
+                            Animations3[i][0][j] = new RectangleF(64 * j, 24, 64, 80);
+                        }
+
+                        break;
+                    case Sprite.AnimationAction.Dying:
+                        Animations3[i] = Animations3[(int)Sprite.AnimationAction.TakingDamage];
+                        break;
+                }
+
+            }
+
+
+
+            var gSpriteArcher = new Sprite(global::project.Properties.Resources.Archer, Animations3, true);
+
             enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
             Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
-            Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f);
+            Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteArcher, SideBSprite = gSpriteArcher };
 
             int n = 4;
             army = new Squad[3 * n];
@@ -185,15 +243,15 @@ namespace project
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            //LoadingAnimation loading = new LoadingAnimation();
-            //loading.VerticalAlignment = VerticalAlignment.Center;
-            //loading.HorizontalAlignment = HorizontalAlignment.Left;
-            //root.Children.Add(loading);
+            LoadingAnimation loading = new LoadingAnimation();
+            loading.VerticalAlignment = VerticalAlignment.Center;
+            loading.HorizontalAlignment = HorizontalAlignment.Left;
+            root.Children.Add(loading);
             await Task.Run(() =>
             {
                 AllCalculations();
             });
-            //root.Children.Remove(loading);
+            root.Children.Remove(loading);
 
         }
 

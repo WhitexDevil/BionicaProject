@@ -139,7 +139,7 @@ namespace project
 
             }
 
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
+            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.fighter_transparent_2, Animations2, true);
 
             enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
@@ -266,5 +266,10 @@ namespace project
 				await Task.Delay(1);
 			}
 		}
+
+        private void SetUpWindow(object sender, RoutedEventArgs e)
+        {
+           Battle.Width = Battle.ActualHeight;
+        }
 	}
 }

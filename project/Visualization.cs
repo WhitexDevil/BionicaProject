@@ -93,7 +93,7 @@ namespace project
 				var AniRect =  Animation[(int)(frame * Animation.Length / (Visualization.SubturnFramerate+1))];
 				var h =  AniRect.Height * size.Width / AniRect.Width;
 				g.DrawImage(Texture,
-					new RectangleF(directionDegree < 180 ? position.X : position.X - AniRect.Width + size.Width, position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
+					new RectangleF(directionDegree < 180 ? position.X : position.X - spriteK * AniRect.Width + spriteK * size.Width, position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
 
 					directionDegree < 180 ^ Mirrored ? AniRect : 
 					new RectangleF(Texture.Width - (AniRect.X +AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
@@ -122,8 +122,8 @@ namespace project
 					new PointF(position.X + size.Width, position.Y), 
 					new PointF(position.X, position.Y + size.Height));
 			}
-			else
-				DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
+		//	else
+		//		DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
 		}
 		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{

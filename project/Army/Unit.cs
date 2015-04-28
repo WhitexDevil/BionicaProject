@@ -52,7 +52,6 @@ namespace project
             Attack = 0;
             Range = 0;
             Damage = 0;
-           
 
         }
 

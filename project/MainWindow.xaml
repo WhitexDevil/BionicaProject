@@ -1,7 +1,8 @@
 ﻿<Window x:Class="project.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded">
+        xmlns:local="clr-namespace:project"
+        Title="MainWindow" Height="350" Width="525">
     <Grid Margin="0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -11,8 +12,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Content="Start" Margin="10,0,0,10" Click="Button_Click" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1"/>
-        <Image x:Name="PictureBox" Margin="10"/>
-        <Slider x:Name="TimeSlider" Margin="224,0,10,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged"/>
+        <local:Battle x:Name="Battle" Margin="89,10,125,10"/>
+        <Slider x:Name="TimeSlider" Margin="224,0,10,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01"/>
         <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="169,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <Button Content="Animate" Margin="89,0,0,10" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
 

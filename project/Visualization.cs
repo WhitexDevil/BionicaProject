@@ -9,6 +9,45 @@ namespace project
 {
 	using Step = KeyValuePair<Point, float>;
 
+	#region Trying replace graphics wih canvas
+	//using System.Windows.Media;
+	//using System.Windows.Media.Imaging;
+	//using System.IO;
+
+	//class CanvasGraphics
+	//{
+	//	Canvas Canvas;
+	//	Graphics Graphics;
+	//	public void DrawImage(Bitmap image, RectangleF destRect, RectangleF srcRect, GraphicsUnit srcUnit)
+	//	{
+	//		if (Canvas != null)
+	//		{
+	//			var Image = new System.Windows.Controls.Image();
+	//			Image.Source = BitmapToImageSource(image);
+	//		}
+	//		else
+	//			Graphics.DrawImage(image, destRect, srcRect, srcUnit);
+	//	}
+
+	//	BitmapImage BitmapToImageSource(Bitmap bitmap)
+	//	{
+	//		using (MemoryStream memory = new MemoryStream())
+	//		{
+	//			bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Bmp);
+	//			memory.Position = 0;
+	//			BitmapImage bitmapimage = new BitmapImage();
+	//			bitmapimage.BeginInit();
+	//			bitmapimage.dr
+	//			bitmapimage.StreamSource = memory;
+	//			bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+	//			bitmapimage.EndInit();
+
+	//			return bitmapimage;
+	//		}
+	//	}
+	//} 
+	#endregion
+
 	public class Sprite
 	{
 		private Bitmap Texture;
@@ -17,7 +56,8 @@ namespace project
 		private bool DisableTextures;
 		private Color Color;
 
-		public Sprite(Color color) { 
+		public Sprite(Color color)
+		{
 			DisableTextures = true;
 			this.Color = color;
 		}
@@ -42,7 +82,7 @@ namespace project
 		{
 			if (DisableTextures)
 			{
-				g.FillRectangle(new SolidBrush(Color), new RectangleF(position, size));
+				g.FillEllipse(new SolidBrush(Color), new RectangleF(position, size));
 			}
 			else
 			{
@@ -56,17 +96,26 @@ namespace project
 		{
 			g.DrawString(damage.ToString(), new Font("Arial", 11),
 				new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / Visualization.SubturnFramerate), Color.Red)),
-				new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2,
-					position.Y + (size.Height * 2 / 3) - (size.Height * frame / 2 / Visualization.SubturnFramerate)));
+				new PointF(directionDegree >= 180 ? position.X : position.X + size.Width / 3,
+					position.Y + size.Height * 0.5F - (size.Height * frame / 2 / Visualization.SubturnFramerate)));
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
 			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
-				new PointF(directionDegree > 180 ? position.X : position.X - size.Width / 2, position.Y + size.Height * 2 / 3));
+				new PointF(directionDegree >= 180 ? position.X : position.X + size.Width / 3, position.Y + size.Height * 0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
 		{
-			DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
+			if (DisableTextures)
+			{
+				g.FillEllipse(new SolidBrush(Color), new RectangleF(position, size));
+				g.DrawLine(Pens.Red, position, new PointF(position.X + size.Width, position.Y + size.Height));
+				g.DrawLine(Pens.Red, 
+					new PointF(position.X + size.Width, position.Y), 
+					new PointF(position.X, position.Y + size.Height));
+			}
+			else
+				DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
 		}
 		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
@@ -129,6 +178,7 @@ namespace project
 
 		bool SideA { get; set; }
 		int Subturn = 0;
+		int SubturnRelative = 0;
 		public static float SubturnFramerate = 60;
 
 		enum ActionType { None, Attack, Move }
@@ -156,7 +206,7 @@ namespace project
 		public void RecordMove(Squad squad, Point start, Point end, Step[] path)
 		{
 			//	Console.WriteLine("Move");
-			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).ToArray();
+			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).Union(new Point[]{start}).ToArray();
 			if (pathcutted.Length < 2) return;
 			Timeline.Add(new Action()
 			{
@@ -190,46 +240,12 @@ namespace project
 
 		public int BattleLength { get { return Timeline.Count; } }
 
-		//public void NextTurn()
-		//{
-		//	var army = BD.AllyArmy;
-		//	int indexShift = 1;
-		//	if (Turn % 2 == 0)
-		//	{
-		//		army = BD.EnemyArmy;
-		//		indexShift = 1 + BD.AllyArmy.Length;
-		//	}
-		//	for (int i = 0; i < army.Length; i++)
-		//	{
-		//		var action = actions[Turn][i + indexShift, Turn % 2];
-		//		var Position = BD.AllyArmy[i].Position;
-		//		switch (action.Type)
-		//		{
-		//			case ActionType.Attack:
-		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
-		//				g.DrawString(action.damage.ToString(), new Font("Arial", 15), Brushes.Red, Position.X * wK, Position.Y * hK);
-		//				break;
-		//			case ActionType.Move:
-		//				float framecost = SubturnFramerate / (action.path.Length - 1);
-		//				int pp = (int)(frame / framecost);
-		//				float X = action.path[pp].X + (action.path[pp + 1].X - action.path[pp].X) * ((frame % framecost) / framecost);
-		//				float Y = action.path[pp].Y + (action.path[pp + 1].Y - action.path[pp].Y) * ((frame % framecost) / framecost);
-		//				g.DrawRectangle(Pens.Blue, X * wK, Y * hK, 10, 10);
-		//				break;
-		//			default:
-		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
-		//				break;
-		//		}
-		//	}
 
-		//	Turn++;
-		//}
 
 		private void InitZeroState(BattleData battleData)
 		{
 			Squads = battleData.AllyArmy.Union(battleData.EnemyArmy).ToArray();
 			InitBD = (BattleData)battleData.Clone();
-			SetTime(0);
 			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
 			{
 				InitBD.Map[InitBD.AllyArmy[i].Position.X +
@@ -243,35 +259,7 @@ namespace project
 			}
 		}
 
-		//Bitmap[] ally, enemy;
-		//Bitmap[] ally, enemy;
-
-		//void DrawArmy(Graphics g, float wK, float hK, Squad[] army, int indexShift, int frame)
-		//{
-		//	for (int i = 0; i < army.Length; i++)
-		//	{
-		//		var action = actions[Time][i + indexShift, Time % 2];
-		//		var Position = BD.AllyArmy[i].Position;
-		//		switch (action.Type)
-		//		{
-		//			case ActionType.Attack:
-		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
-		//				g.DrawString(action.damage.ToString(), new Font("Arial", 15), Brushes.Red, Position.X * wK, Position.Y * hK);
-		//				break;
-		//			case ActionType.Move:
-		//				float framecost = Framerate / (action.path.Length - 1);
-		//				int pp = (int)(frame / framecost);
-		//				float X = action.path[pp].X + (action.path[pp + 1].X - action.path[pp].X) * ((frame % framecost) / framecost);
-		//				float Y = action.path[pp].Y + (action.path[pp + 1].Y - action.path[pp].Y) * ((frame % framecost) / framecost);
-		//				g.DrawRectangle(Pens.Blue, X * wK, Y * hK, 10, 10);
-		//				break;
-		//			default:
-		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
-		//				break;
-		//		}
-		//	}
-		//}
-
+	
 		public void SetTime(int subturn)
 		{
 			if (subturn < Subturn || subturn == 0)
@@ -279,6 +267,7 @@ namespace project
 				BD = (BattleData)InitBD.Clone();
 				Squads = BD.AllyArmy.Union(BD.EnemyArmy).ToArray();
 				Subturn = 0;
+				SubturnRelative = 0;
 				Turn = 0;
 				BattleLog.Clear();
 			}
@@ -304,8 +293,10 @@ namespace project
 				}
 
 				Subturn = t + 1;
-				if (Subturn >= Turns.Count)
+				SubturnRelative++;
+				if (SubturnRelative >= Turns[Turn].Count)
 				{
+					SubturnRelative = 0;
 					Turn++;
 					BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B"), Turn - 1));
 				}
@@ -319,15 +310,18 @@ namespace project
 			return (float)(Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI);
 		}
 
-		public void DrawFrame(Bitmap b, int frame)
+
+
+		public void DrawFrame(Bitmap b, float frame)
 		{
-			using (Graphics g = Graphics.FromImage(b))
+			using (Graphics g = Graphics.FromImage(b)) 
 				DrawFrame(g, b.Width, b.Height, frame);
 		}
 
-		public void DrawFrame(Graphics g, int width, int height, int frame)
+		public void DrawFrame(Graphics g, int width, int height, float frame)
 		{
-			g.FillRectangle(Brushes.White, 0, 0, width, height);
+			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			g.Clear(Color.White);
 			float wK = (float)width / InitBD.MapWidth;
 			float hK = (float)height / InitBD.MapHeight;
 
@@ -379,9 +373,9 @@ namespace project
 			{
 				if (i == Action.Squad || i == Action.Target) continue;
 
-				(i >= BD.AllyArmy.Length ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
+				(i < BD.AllyArmy.Length ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
 					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
-					SideA ? 0 : 180, Squads[i].Amount, frame);
+					i < BD.AllyArmy.Length ? 0 : 180, Squads[i].Amount, frame);
 			}
 
 			#region old
@@ -447,7 +441,75 @@ namespace project
 			//	else
 			//		DrawArmy(g, wK, hK, BD.EnemyArmy, 1 + BD.AllyArmy.Length, frame);
 			//} 
+
+
+
 			#endregion
 		}
+
+		#region old
+			//Bitmap[] ally, enemy;
+		//Bitmap[] ally, enemy;
+
+		//void DrawArmy(Graphics g, float wK, float hK, Squad[] army, int indexShift, int frame)
+		//{
+		//	for (int i = 0; i < army.Length; i++)
+		//	{
+		//		var action = actions[Time][i + indexShift, Time % 2];
+		//		var Position = BD.AllyArmy[i].Position;
+		//		switch (action.Type)
+		//		{
+		//			case ActionType.Attack:
+		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
+		//				g.DrawString(action.damage.ToString(), new Font("Arial", 15), Brushes.Red, Position.X * wK, Position.Y * hK);
+		//				break;
+		//			case ActionType.Move:
+		//				float framecost = Framerate / (action.path.Length - 1);
+		//				int pp = (int)(frame / framecost);
+		//				float X = action.path[pp].X + (action.path[pp + 1].X - action.path[pp].X) * ((frame % framecost) / framecost);
+		//				float Y = action.path[pp].Y + (action.path[pp + 1].Y - action.path[pp].Y) * ((frame % framecost) / framecost);
+		//				g.DrawRectangle(Pens.Blue, X * wK, Y * hK, 10, 10);
+		//				break;
+		//			default:
+		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
+		//				break;
+		//		}
+		//	}
+		//}
+		//public void NextTurn()
+		//{
+		//	var army = BD.AllyArmy;
+		//	int indexShift = 1;
+		//	if (Turn % 2 == 0)
+		//	{
+		//		army = BD.EnemyArmy;
+		//		indexShift = 1 + BD.AllyArmy.Length;
+		//	}
+		//	for (int i = 0; i < army.Length; i++)
+		//	{
+		//		var action = actions[Turn][i + indexShift, Turn % 2];
+		//		var Position = BD.AllyArmy[i].Position;
+		//		switch (action.Type)
+		//		{
+		//			case ActionType.Attack:
+		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
+		//				g.DrawString(action.damage.ToString(), new Font("Arial", 15), Brushes.Red, Position.X * wK, Position.Y * hK);
+		//				break;
+		//			case ActionType.Move:
+		//				float framecost = SubturnFramerate / (action.path.Length - 1);
+		//				int pp = (int)(frame / framecost);
+		//				float X = action.path[pp].X + (action.path[pp + 1].X - action.path[pp].X) * ((frame % framecost) / framecost);
+		//				float Y = action.path[pp].Y + (action.path[pp + 1].Y - action.path[pp].Y) * ((frame % framecost) / framecost);
+		//				g.DrawRectangle(Pens.Blue, X * wK, Y * hK, 10, 10);
+		//				break;
+		//			default:
+		//				g.DrawRectangle(Pens.Blue, Position.X * wK, Position.Y * hK, 10, 10);
+		//				break;
+		//		}
+		//	}
+
+		//	Turn++;
+		//}
+		#endregion
 	}
 }

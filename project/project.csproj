@@ -49,6 +49,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -59,6 +60,9 @@
     <Compile Include="AI\Strategies\Deffensive.cs" />
     <Compile Include="AI\DistanceAndPath.cs" />
     <Compile Include="AI\Strategies\Offensive.cs" />
+    <Compile Include="Battle.xaml.cs">
+      <DependentUpon>Battle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PathFinder\AuthorAttribute.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
@@ -71,6 +75,10 @@
     <Compile Include="AI\Strategies\Strategies.cs" />
     <Compile Include="Army\Unit.cs" />
     <Compile Include="Visualization.cs" />
+    <Page Include="Battle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -111,6 +119,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="RazorGDIControlWPF\RazorGDIControlWPF.csproj">
+      <Project>{f888ad1b-c734-477a-92ae-2b79abc7e2d0}</Project>
+      <Name>RazorGDIControlWPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

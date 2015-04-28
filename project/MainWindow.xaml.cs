@@ -168,14 +168,14 @@ namespace project
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            ga = new GA(enemy, army, battleCount: 5, populationSize: 6, mapSize: 32);
+            ga = new GA(enemy, army, battleCount: 5, populationSize: 6, mapSize: 16);
             ga.Go();
 
             sw.Stop();
 
             // System.Windows.MessageBox.Show("Genetic algorithm has finished in " + sw.Elapsed.TotalSeconds.ToString());
 
-            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 64) { Visualization = true };
+            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 16) { Visualization = true };
             v = sb.BattleData.Visualization;
             sb.Fight(1);
             v.SetTime(0);

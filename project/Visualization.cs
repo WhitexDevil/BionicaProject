@@ -348,8 +348,8 @@ namespace project
 			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 			g.Clear(Color.White);
 			
-			float wK = (float)width / (InitBD.MapWidth+1);
-			float hK = (float)height / InitBD.MapHeight;
+			float wK = (float)width / InitBD.MapWidth;
+			float hK = (float)height / (1+InitBD.MapHeight);
 
 			for (float x = 0; x < width; x += wK)
 				g.DrawLine(Pens.LightGray, x, 0, x, height);

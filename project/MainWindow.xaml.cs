@@ -182,7 +182,7 @@ namespace project
         }
 		private async void Button_Click(object sender, RoutedEventArgs e)
 		{
-
+            TimeSlider.Value = 0;
             LoadingAnimation loading = new LoadingAnimation();
             loading.VerticalAlignment = VerticalAlignment.Center;
             loading.HorizontalAlignment = HorizontalAlignment.Left;
@@ -266,7 +266,7 @@ namespace project
 
 			while (TimeSlider.Value < TimeSlider.Maximum)
 			{
-				TimeSlider.Value += TimeSlider.Maximum * 0.00005;
+				TimeSlider.Value += TimeSlider.Maximum * 0.000075;
 				await Task.Delay(1);
 			}
 		}

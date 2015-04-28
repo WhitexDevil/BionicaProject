@@ -8,6 +8,7 @@ using System.Drawing;
 namespace project
 {
 	using Step = KeyValuePair<Point, float>;
+	using System.Drawing.Imaging;
 
 	#region Trying replace graphics wih canvas
 	//using System.Windows.Media;
@@ -48,6 +49,7 @@ namespace project
 	//} 
 	#endregion
 
+
 	public class Sprite
 	{
 		private Bitmap Texture;
@@ -56,6 +58,7 @@ namespace project
 		private bool DisableTextures;
 		private Color Color;
 		private bool Mirrored;
+		public static Bitmap Background = global::project.Properties.Resources.Fon;
 
 		public Sprite(Color color)
 		{
@@ -123,7 +126,6 @@ namespace project
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
 		{
-			position = new PointF(position.X, position.Y + size.Height);
 			if (DisableTextures)
 			{
 				g.FillEllipse(new SolidBrush(Color), new RectangleF(position, size));
@@ -346,8 +348,11 @@ namespace project
 		public void DrawFrame(Graphics g, int width, int height, float frame)
 		{
 			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-			g.Clear(Color.White);
-			
+			//g.Clear(Color.White);
+			for (int x = 0; x < Math.Ceiling((float)width / Sprite.Background.Width); x++)
+				for (int y = 0; y < Math.Ceiling((float)height / Sprite.Background.Height); y++)
+					g.DrawImageUnscaled(Sprite.Background, new Point(x, y));
+
 			float wK = (float)width / InitBD.MapWidth;
 			float hK = (float)height / (1+InitBD.MapHeight);
 

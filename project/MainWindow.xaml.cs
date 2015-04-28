@@ -137,16 +137,8 @@ namespace project
                 }
 
             }
-<<<<<<< HEAD
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
-=======
 
-			
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
->>>>>>> origin/master
-
-
-
 
 			enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };

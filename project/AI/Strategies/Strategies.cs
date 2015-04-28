@@ -25,8 +25,9 @@ namespace project
 			{
 
 				double distance = DistanceAndPath.DistanceTo(p1, Army[i].Position);
-				if (distance < minDistance)
+                if ((distance < minDistance) && Army[i].Alive)
 				{
+                    
 					minDistance = distance;
 					Temp = i;
 				}
@@ -55,7 +56,7 @@ namespace project
 			double min = double.MaxValue;
 			for (int i = 0; i < distances.Length; i++)
 			{
-				if (distances[i] < min)
+                if ((distances[i] < min) && Targets[i].Alive)
 				{
 					min = distances[i];
 					Temp = i;

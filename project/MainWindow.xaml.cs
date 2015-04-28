@@ -168,7 +168,7 @@ namespace project
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            ga = new GA(enemy, army, battleCount: 5, populationSize: 6, mapSize: 16);
+            ga = new GA(enemy, army, mapSize: 16);
             ga.Go();
 
             sw.Stop();
@@ -185,15 +185,15 @@ namespace project
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            LoadingAnimation loading = new LoadingAnimation();
-            loading.VerticalAlignment = VerticalAlignment.Center;
-            loading.HorizontalAlignment = HorizontalAlignment.Left;
-            root.Children.Add(loading);
+            //LoadingAnimation loading = new LoadingAnimation();
+            //loading.VerticalAlignment = VerticalAlignment.Center;
+            //loading.HorizontalAlignment = HorizontalAlignment.Left;
+            //root.Children.Add(loading);
             await Task.Run(() =>
             {
                 AllCalculations();
             });
-            root.Children.Remove(loading);
+            //root.Children.Remove(loading);
 
         }
 

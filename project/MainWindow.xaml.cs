@@ -80,7 +80,7 @@ namespace project
 				}
 
 			}
-            var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1);
+            var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, false);
 
 
             RectangleF[][][] Animations2 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
@@ -139,7 +139,7 @@ namespace project
             }
 
 			
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
+            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
 
 
 

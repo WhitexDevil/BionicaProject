@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace project
 {
@@ -139,12 +140,14 @@ namespace project
 
             }
 
+
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.fighter_transparent_2, Animations2, true);
 
             enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
             Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
             Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
+
             int n = 4;
             army = new Squad[3 * n];
             for (int i = 0; i < army.Length; i += 3)
@@ -271,5 +274,23 @@ namespace project
         {
            Battle.Width = Battle.ActualHeight;
         }
+
+		//private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		//{
+		//	int X1 = (int)(Width / 2);
+		//	int Y1 = (int)(Height / 2);
+		//	int X2 =  (int)(e.GetPosition(this).X);
+		//	int Y2 = (int)(e.GetPosition(this).Y);
+		//	Title = String.Format("Angle: {0} Start: {1}:{2} Mouse: {3}:{4}",
+		//		Visualization.DirectionDegree(new System.Drawing.Point(X1,Y1),
+		//		new System.Drawing.Point(X2,Y2)),X1,Y1,X2,Y2 
+				
+		//		);
+		//	l.X1 = X1;
+		//	l.X2 = X2;
+		//	l.Y1 = Y1;
+		//	l.Y2 = Y2;
+		//}
+
 	}
 }

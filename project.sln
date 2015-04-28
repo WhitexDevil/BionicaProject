@@ -9,14 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorGDIControlWPF", "proje
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpful projects", "Helpful projects", "{ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selen.Wpf.SystemStyles", "C:\Users\Flubber\Desktop\source\Selen.Wpf.SystemStyles\Selen.Wpf.SystemStyles.csproj", "{A468315F-FA11-4BC2-8E5F-EA3C48B24C74}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selen.Wpf.Core", "C:\Users\Flubber\Desktop\source\Selen.Wpf.Core\Selen.Wpf.Core.csproj", "{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selen.Wpf.GenericAppTree", "C:\Users\Flubber\Desktop\source\Selen.Wpf.GenericAppTree\Selen.Wpf.GenericAppTree.csproj", "{8615A3C0-298C-4B9D-8FFC-D5ACA466523D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Selen.Wpf.GenericAppTree.Contracts", "C:\Users\Flubber\Desktop\source\Selen.Wpf.GenericAppTree.Contracts\Selen.Wpf.GenericAppTree.Contracts.csproj", "{FC32AB02-5705-48E0-BCFD-78EB6C137AEB}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{16B154A0-4939-4078-B37F-14E88DA6E7B7}"
 	ProjectSection(SolutionItems) = preProject
 		C:\Users\Flubber\Desktop\source\tools\deploy.cmd = C:\Users\Flubber\Desktop\source\tools\deploy.cmd
@@ -41,22 +33,6 @@ Global
 		{F888AD1B-C734-477A-92AE-2B79ABC7E2D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F888AD1B-C734-477A-92AE-2B79ABC7E2D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F888AD1B-C734-477A-92AE-2B79ABC7E2D0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A468315F-FA11-4BC2-8E5F-EA3C48B24C74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A468315F-FA11-4BC2-8E5F-EA3C48B24C74}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A468315F-FA11-4BC2-8E5F-EA3C48B24C74}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A468315F-FA11-4BC2-8E5F-EA3C48B24C74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8615A3C0-298C-4B9D-8FFC-D5ACA466523D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8615A3C0-298C-4B9D-8FFC-D5ACA466523D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8615A3C0-298C-4B9D-8FFC-D5ACA466523D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8615A3C0-298C-4B9D-8FFC-D5ACA466523D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC32AB02-5705-48E0-BCFD-78EB6C137AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC32AB02-5705-48E0-BCFD-78EB6C137AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC32AB02-5705-48E0-BCFD-78EB6C137AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC32AB02-5705-48E0-BCFD-78EB6C137AEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,10 +40,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F888AD1B-C734-477A-92AE-2B79ABC7E2D0} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
 		{5DA2FC0B-474B-43C4-A087-CCC52B794E8B} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
-		{A468315F-FA11-4BC2-8E5F-EA3C48B24C74} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
-		{C94C1BDD-11F9-4A3F-8929-86B1B67AE1D5} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
-		{8615A3C0-298C-4B9D-8FFC-D5ACA466523D} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
-		{FC32AB02-5705-48E0-BCFD-78EB6C137AEB} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
 		{16B154A0-4939-4078-B37F-14E88DA6E7B7} = {ABADC569-BC3A-4187-AC8B-DCA7A4DA2AB3}
 	EndGlobalSection
 EndGlobal

@@ -212,7 +212,7 @@ namespace project
 		public void RecordMove(Squad squad, Point start, Point end, Step[] path)
 		{
 			//	Console.WriteLine("Move");
-			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).Union(new Point[]{start}).ToArray();
+			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).Concat(new Point[]{start}).ToArray();
 			if (pathcutted.Length < 2) return;
 			Timeline.Add(new Action()
 			{
@@ -250,7 +250,7 @@ namespace project
 
 		private void InitZeroState(BattleData battleData)
 		{
-			Squads = battleData.AllyArmy.Union(battleData.EnemyArmy).ToArray();
+			Squads = battleData.AllyArmy.Concat(battleData.EnemyArmy).ToArray();
 			InitBD = (BattleData)battleData.Clone();
 			for (int i = 0; i < InitBD.AllyArmy.Length; i++)
 			{
@@ -271,7 +271,7 @@ namespace project
 			if (subturn < Subturn || subturn == 0)
 			{
 				BD = (BattleData)InitBD.Clone();
-				Squads = BD.AllyArmy.Union(BD.EnemyArmy).ToArray();
+				Squads = BD.AllyArmy.Concat(BD.EnemyArmy).ToArray();
 				Subturn = 0;
 				SubturnRelative = 0;
 				Turn = 0;
@@ -381,7 +381,7 @@ namespace project
 			{
 				if (i == Action.Squad || i == Action.Target) continue;
 
-				(i < BD.AllyArmy.Length ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
+				(i < BD.AllyArmy.Length ? Squads[i].Unit.SideASprite : Squads[i].Unit.SideBSprite).DrawStanding(g,
 					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
 					i < BD.AllyArmy.Length ? 0 : 270, Squads[i].Amount, frame);
 			}

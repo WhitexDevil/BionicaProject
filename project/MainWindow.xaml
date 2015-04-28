@@ -17,6 +17,7 @@
         <local:Battle x:Name="Battle" Margin="89,10,125,10"/>
         <Slider x:Name="TimeSlider" Margin="224,0,10,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01" Width="Auto" Style="{DynamicResource FlatSlider}" BorderBrush="#FF3F3F46"/>
         <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="169,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <Button Content="Animate" Margin="89,0,0,10" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
+        <Button x:Name="Animate" Content="Animate" Margin="89,0,0,10" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
+        <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}"/>
     </Grid>
 </Controls:MetroWindow>

@@ -6,5 +6,5 @@
                   xmlns:razorControl="clr-namespace:RazorGDIControlWPF"
                   mc:Ignorable="d" 
              d:DesignHeight="128" d:DesignWidth="128">
-	<razorControl:RazorBackendCtl x:Name="RazorBackend1"/>
+    <razorControl:RazorBackendCtl x:Name="RazorBackend1"/>
 </WindowsFormsHost>

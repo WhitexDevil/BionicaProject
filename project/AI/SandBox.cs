@@ -123,7 +123,6 @@ namespace project
 				if (CurrentBattleData.Visualization != null)
 					CurrentBattleData.Visualization.RecordTurn();
 				Side1.NextTurn(DeltaBalance)(CurrentBattleData);
-                CurrentBattleData.EraseDeadSquads();
 				CurrentBattleData.Reverse = !CurrentBattleData.Reverse;
 
 				if (CurrentBattleData.Visualization != null)

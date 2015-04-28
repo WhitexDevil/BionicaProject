@@ -75,9 +75,7 @@ namespace project
 
 						break;
 					case Sprite.AnimationAction.Dying:
-                        Animations1[i] = new RectangleF[1][];
-                        Animations1[i][0] = new RectangleF[1];
-                        Animations1[i][0][0] = new RectangleF(0, 0, 0, 0);
+						Animations1[i] = Animations1[(int)Sprite.AnimationAction.TakingDamage];
 						break;
 				}
 
@@ -134,17 +132,18 @@ namespace project
 
                         break;
                     case Sprite.AnimationAction.Dying:
-                         Animations2[i] = new RectangleF[1][];
-                         Animations2[i][0] = new RectangleF[1];
-                        Animations2[i][0][0] = new RectangleF(0, 0, 0, 0);
+                        Animations2[i] = Animations2[(int)Sprite.AnimationAction.TakingDamage];
                         break;
                 }
 
             }
+<<<<<<< HEAD
+            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
+=======
 
 			
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
-
+>>>>>>> origin/master
 
 
 

@@ -221,7 +221,7 @@ namespace project
 			//g.Clear(Color.White);
 			for (int x = 0; x < Math.Ceiling((float)width / Sprite.Background.Width); x++)
 				for (int y = 0; y < Math.Ceiling((float)height / Sprite.Background.Height); y++)
-					g.DrawImageUnscaled(Sprite.Background, new Point(x, y));
+					g.DrawImageUnscaled(Sprite.Background, new Point(x * Sprite.Background.Width, y * Sprite.Background.Height));
 
 			float wK = (float)width / InitBD.MapWidth;
 			float hK = (float)height / (1+InitBD.MapHeight);

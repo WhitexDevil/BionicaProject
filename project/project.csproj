@@ -182,7 +182,7 @@
     <None Include="Resources\MyFighter4.png" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="Resources\Laptop.jpg" />
+    <Resource Include="Resources\Laptop.jpg" />
     <Resource Include="Resources\Desktop.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +197,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Archer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\horo-vector-4-by-straywolf.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

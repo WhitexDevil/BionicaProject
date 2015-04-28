@@ -139,4 +139,7 @@
   <data name="Archer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\archer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="horo_vector_4_by_straywolf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resources\horo-vector-4-by-straywolf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

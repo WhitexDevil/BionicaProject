@@ -139,10 +139,7 @@ namespace project
 
             }
 
-<<<<<<< HEAD
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
-=======
->>>>>>> c18cb3baa2aae9c708744f4b6c300430fe1915b6
+
 
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.fighter_transparent_2, Animations2, true);
 
@@ -150,38 +147,6 @@ namespace project
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
             Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
             Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
-<<<<<<< HEAD
-			int n = 4;
-			army = new Squad[3 * n];
-			for (int i = 0; i < army.Length; i += 3)
-			{
-				army[i] = new Squad(humanKnights);
-				army[i + 1] = new Squad(humanSoliders);
-				army[i + 2] = new Squad(humanArcher);
-			}
-			//for (int i = 0; i < ; i++)
-			//{
-			//    if (i<army.Length/2)
-			//    army[i] = new Squad(humanKnights);
-			//    else
-			//    army[i] = new Squad(humanSoliders);
-			//}
-
-			Stopwatch sw = Stopwatch.StartNew();
-
-			ga = new GA(enemy, army, battleCount: 5, populationSize: 6, mapSize: 32);
-			ga.Go();
-
-			sw.Stop();
-			System.Windows.MessageBox.Show("Genetic algorithm has finished in " + sw.Elapsed.TotalSeconds.ToString());
-
-			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 32) { Visualization = true };
-			v = sb.BattleData.Visualization;
-			sb.Fight(1);
-			v.SetTime(0);
-			Battle.Visualization = v;
-			Battle.Frame = 0;
-=======
 
             int n = 4;
             army = new Squad[3 * n];
@@ -227,7 +192,7 @@ namespace project
                 AllCalculations();
             });
             root.Children.Remove(loading);
->>>>>>> c18cb3baa2aae9c708744f4b6c300430fe1915b6
+
 		}
 
 
@@ -301,12 +266,11 @@ namespace project
 
 			while (TimeSlider.Value < TimeSlider.Maximum)
 			{
-				TimeSlider.Value += TimeSlider.Maximum * 0.00025;
+				TimeSlider.Value += TimeSlider.Maximum * 0.00005;
 				await Task.Delay(1);
 			}
 		}
-<<<<<<< HEAD
-=======
+
 
         private void SetUpWindow(object sender, RoutedEventArgs e)
         {
@@ -330,6 +294,6 @@ namespace project
 		//	l.Y2 = Y2;
 		//}
 
->>>>>>> c18cb3baa2aae9c708744f4b6c300430fe1915b6
+
 	}
 }

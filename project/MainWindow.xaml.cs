@@ -48,7 +48,7 @@ namespace project
 						Animations1[i][0][0] = new RectangleF(0, 320, 72, 88);
 						Animations1[i][0][1] = new RectangleF(100, 320, 72, 88);
 						Animations1[i][0][2] = new RectangleF(200, 320, 72, 88);
-						Animations1[i][0][3] = new RectangleF(10, 320, 72, 88);
+						Animations1[i][0][3] = new RectangleF(310, 320, 72, 88);
 
 						break;
 					case Sprite.AnimationAction.Attacking:
@@ -137,8 +137,6 @@ namespace project
                 }
 
             }
-
-			
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
 
 

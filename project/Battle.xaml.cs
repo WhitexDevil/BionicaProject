@@ -47,7 +47,7 @@ namespace project
 				fps2 = fps;
 				if (fps2 < 60 && delay > 0)
 					Interlocked.Decrement(ref delay);
-				else
+				else if (delay < 1000)
 					Interlocked.Increment(ref delay);
 			};
 			fpstimer.Start();

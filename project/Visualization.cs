@@ -77,7 +77,7 @@ namespace project
 			RectangleF[][] ActionAnimations = Animations[(int)action];
 			return ActionAnimations[(int)(directionDegree * ActionAnimations.Length / 181F)];
 		}
-
+		const float spriteK = 1.5F;
 		private void DrawSpriteFrame(Graphics g, PointF position, SizeF size, AnimationAction action, float directionDegree, float frame)
 		{
 			if (DisableTextures)
@@ -89,23 +89,26 @@ namespace project
 				var Texture = directionDegree >= 180 ? MirroredTexture : this.Texture;
 				var Animation = GetAnimation(action, directionDegree);
 				var AniRect =  Animation[(int)(frame * Animation.Length / (Visualization.SubturnFramerate+1))];
+				var h =  AniRect.Height * size.Width / AniRect.Width;
+				g.DrawImage(Texture,
+					new RectangleF(directionDegree < 180 ? position.X : position.X - AniRect.Width + size.Width, position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
 
-				g.DrawImage(Texture, new RectangleF(position, size), directionDegree < 180 ?AniRect:
+					directionDegree < 180 ? AniRect :
 					new RectangleF(Texture.Width - (AniRect.X +AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
 				, GraphicsUnit.Pixel);
 			}
 		}
 		private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
 		{
-			g.DrawString(damage.ToString(), new Font("Arial", 11),
+			g.DrawString(damage.ToString(), new Font("Arial", 12, FontStyle.Bold),
 				new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / Visualization.SubturnFramerate), Color.Red)),
-				new PointF(directionDegree >= 180 ? position.X : position.X + size.Width / 3,
-					position.Y + size.Height * 0.5F - (size.Height * frame / 2 / Visualization.SubturnFramerate)));
+				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.6F : position.X,
+					position.Y + size.Height * 0.5F - (size.Height * frame / Visualization.SubturnFramerate)));
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
 			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
-				new PointF(directionDegree >= 180 ? position.X : position.X + size.Width / 3, position.Y + size.Height * 0.5F));
+				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.6F : position.X, position.Y+size.Height*0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
 		{
@@ -313,7 +316,7 @@ namespace project
 
 			float xDiff = destination.X - source.X;
 			float yDiff = destination.Y - source.Y;
-			return (float)(Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI)+90;
+			return (float)((Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI)+90);
 		}
 
 
@@ -338,7 +341,7 @@ namespace project
 
 			var Action = Timeline[Subturn];
 			var Squad = Squads[Action.Squad];
-			var Size = new SizeF(wK*2.5F, hK*2.5F);
+			var Size = new SizeF(wK, hK);
 			switch (Action.Type)
 			{
 				case ActionType.None:
@@ -357,7 +360,7 @@ namespace project
 						DirectionDegree(Squad.Position, Target.Position),
 						Squad.Amount, frame);
 
-					(SideA ? Squad.Unit.SideBSprite : Squad.Unit.SideASprite).DrawTakingDamage(g,
+					(SideA ? Target.Unit.SideBSprite : Target.Unit.SideASprite).DrawTakingDamage(g,
 						new PointF(Target.Position.X * wK, Target.Position.Y * hK), Size,
 						SideA ? 270 : 0, Target.Amount, Action.Damage, frame);
 
@@ -370,7 +373,7 @@ namespace project
 					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
 
 					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawMove(g, new PointF(X * wK, Y * hK), Size,
-							DirectionDegree(Action.Path[start], Action.Path[start - 1]), Squad.Amount, frame);
+							DirectionDegree(Action.Path[start], Action.Path[start-1]), Squad.Amount, frame);
 					break;
 			}
 

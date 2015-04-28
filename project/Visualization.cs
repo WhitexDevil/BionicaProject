@@ -73,9 +73,9 @@ namespace project
 
 		private RectangleF[] GetAnimation(AnimationAction action, float directionDegree)
 		{
-			if (directionDegree > 180) directionDegree = 180 - (directionDegree % 180);
+			if (directionDegree >= 180) directionDegree = 180 - (directionDegree % 180);
 			RectangleF[][] ActionAnimations = Animations[(int)action];
-			return ActionAnimations[(int)(directionDegree * ActionAnimations.Length / 180F)];
+			return ActionAnimations[(int)(directionDegree * ActionAnimations.Length / 181F)];
 		}
 
 		private void DrawSpriteFrame(Graphics g, PointF position, SizeF size, AnimationAction action, float directionDegree, float frame)
@@ -86,10 +86,13 @@ namespace project
 			}
 			else
 			{
-				var Texture = directionDegree > 180 ? MirroredTexture : this.Texture;
+				var Texture = directionDegree >= 180 ? MirroredTexture : this.Texture;
 				var Animation = GetAnimation(action, directionDegree);
-				g.DrawImage(Texture, new RectangleF(position, size),
-					Animation[(int)(frame * Animation.Length / Visualization.SubturnFramerate)], GraphicsUnit.Pixel);
+				var AniRect =  Animation[(int)(frame * Animation.Length / (Visualization.SubturnFramerate+1))];
+
+				g.DrawImage(Texture, new RectangleF(position, size), directionDegree < 180 ?AniRect:
+					new RectangleF(Texture.Width - (AniRect.X +AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
+				, GraphicsUnit.Pixel);
 			}
 		}
 		private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
@@ -305,9 +308,12 @@ namespace project
 
 		private float DirectionDegree(Point source, Point destination)
 		{
+			//var n = 270 - (Math.Atan2(source.Y - destination.Y, source.X - destination.X)) * 180 / Math.PI;
+			//return (float)(n % 360);
+
 			float xDiff = destination.X - source.X;
-			float yDiff = destination.Y - destination.Y;
-			return (float)(Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI);
+			float yDiff = destination.Y - source.Y;
+			return (float)(Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI)+90;
 		}
 
 
@@ -332,14 +338,14 @@ namespace project
 
 			var Action = Timeline[Subturn];
 			var Squad = Squads[Action.Squad];
-			var Size = new SizeF(wK, hK);
+			var Size = new SizeF(wK*2.5F, hK*2.5F);
 			switch (Action.Type)
 			{
 				case ActionType.None:
 
 					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
-						SideA ? 0 : 180, Squad.Amount, frame);
+						SideA ? 0 : 270, Squad.Amount, frame);
 
 					break;
 				case ActionType.Attack:
@@ -353,14 +359,13 @@ namespace project
 
 					(SideA ? Squad.Unit.SideBSprite : Squad.Unit.SideASprite).DrawTakingDamage(g,
 						new PointF(Target.Position.X * wK, Target.Position.Y * hK), Size,
-						SideA ? 180 : 0, Target.Amount, Action.Damage, frame);
+						SideA ? 270 : 0, Target.Amount, Action.Damage, frame);
 
 					break;
 				case ActionType.Move:
 
-					float framecost = SubturnFramerate / (Action.Path.Length - 1);
-					int pp = (int)(frame / framecost);
-					int start = Action.Path.Length - 1 - pp;
+					float framecost = (SubturnFramerate+1) / (Action.Path.Length-1);
+					int start = Action.Path.Length -1- (int)(frame / framecost);
 					float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
 					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
 
@@ -375,7 +380,7 @@ namespace project
 
 				(i < BD.AllyArmy.Length ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
 					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
-					i < BD.AllyArmy.Length ? 0 : 180, Squads[i].Amount, frame);
+					i < BD.AllyArmy.Length ? 0 : 270, Squads[i].Amount, frame);
 			}
 
 			#region old

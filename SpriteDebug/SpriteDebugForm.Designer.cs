@@ -221,6 +221,7 @@
 			// 
 			// button5
 			// 
+			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.button5.Location = new System.Drawing.Point(806, 41);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(134, 23);

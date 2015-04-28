@@ -25,7 +25,7 @@ namespace project
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			RectangleF[][][] Animations = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
+			RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
 			for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
 			{
 				switch ((Sprite.AnimationAction)i)
@@ -33,64 +33,121 @@ namespace project
 					case Sprite.AnimationAction.Standing:
 						int lengthS = 23;
 
-						Animations[i] = new RectangleF[1][];
-						Animations[i][0] = new RectangleF[lengthS];
+						Animations1[i] = new RectangleF[1][];
+						Animations1[i][0] = new RectangleF[lengthS];
 						for (int j = 0; j < lengthS; j++)
 						{
-							Animations[i][0][j] = new RectangleF(72 * j, 224, 72, 88);
+							Animations1[i][0][j] = new RectangleF(72 * j, 224, 72, 88);
 						}
 						break;
 					case Sprite.AnimationAction.Moving:
 						int lengthM = 4;
 
-						Animations[i] = new RectangleF[1][];
-						Animations[i][0] = new RectangleF[lengthM];
-						Animations[i][0][0] = new RectangleF(0, 320, 72, 88);
-						Animations[i][0][1] = new RectangleF(100, 320, 72, 88);
-						Animations[i][0][2] = new RectangleF(200, 320, 72, 88);
-						Animations[i][0][3] = new RectangleF(10, 320, 72, 88);
+						Animations1[i] = new RectangleF[1][];
+						Animations1[i][0] = new RectangleF[lengthM];
+						Animations1[i][0][0] = new RectangleF(0, 320, 72, 88);
+						Animations1[i][0][1] = new RectangleF(100, 320, 72, 88);
+						Animations1[i][0][2] = new RectangleF(200, 320, 72, 88);
+						Animations1[i][0][3] = new RectangleF(10, 320, 72, 88);
 
 						break;
 					case Sprite.AnimationAction.Attacking:
 
 						int lengthA = 28;
 
-						Animations[i] = new RectangleF[1][];
-						Animations[i][0] = new RectangleF[lengthA];
+						Animations1[i] = new RectangleF[1][];
+						Animations1[i][0] = new RectangleF[lengthA];
 						for (int j = 0; j < lengthA; j++)
 						{
-							Animations[i][0][j] = new RectangleF(72 * j, 96, 72, 120);
+							Animations1[i][0][j] = new RectangleF(72 * j, 96, 72, 120);
 						}
 
 						break;
 					case Sprite.AnimationAction.TakingDamage:
 						int lengthT = 13;
 
-						Animations[i] = new RectangleF[1][];
-						Animations[i][0] = new RectangleF[lengthT];
+						Animations1[i] = new RectangleF[1][];
+						Animations1[i][0] = new RectangleF[lengthT];
 						for (int j = 0; j < lengthT; j++)
 						{
-							Animations[i][0][j] = new RectangleF(72 * j, 0, 72, 88);
+							Animations1[i][0][j] = new RectangleF(72 * j, 0, 72, 88);
 						}
 
 						break;
 					case Sprite.AnimationAction.Dying:
-						Animations[i] = Animations[(int)Sprite.AnimationAction.TakingDamage];
+						Animations1[i] = Animations1[(int)Sprite.AnimationAction.TakingDamage];
 						break;
 				}
 
 			}
+            var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1);
 
-			var gSprite = new Sprite( global::project.Properties.Resources.MyHorseman1, Animations);
 
+            RectangleF[][][] Animations2 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
+            for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
+            {
+                switch ((Sprite.AnimationAction)i)
+                {
+                    case Sprite.AnimationAction.Standing:
+                        int lengthS = 23;
+
+                        Animations2[i] = new RectangleF[1][];
+                        Animations2[i][0] = new RectangleF[lengthS];
+                        for (int j = 0; j < lengthS; j++)
+                        {
+                            Animations2[i][0][j] = new RectangleF(72 * j, 88, 72, 80);
+                        }
+                        break;
+                    case Sprite.AnimationAction.Moving:
+                        int lengthM = 12;
+
+                        Animations2[i] = new RectangleF[1][];
+                        Animations2[i][0] = new RectangleF[lengthM];
+                        for (int j = 0; j < lengthM; j++)
+                        {
+                            Animations2[i][0][j] = new RectangleF(96 * j, 176, 72, 80);
+                        }
+                        break;
+                    case Sprite.AnimationAction.Attacking:
+
+                        int lengthA = 21;
+
+                        Animations2[i] = new RectangleF[1][];
+                        Animations2[i][0] = new RectangleF[lengthA];
+                        for (int j = 0; j < lengthA; j++)
+                        {
+                            Animations2[i][0][j] = new RectangleF(96 * j, 264, 72, 80);
+                        }
+
+                        break;
+                    case Sprite.AnimationAction.TakingDamage:
+                        int lengthT = 13;
+
+                        Animations2[i] = new RectangleF[1][];
+                        Animations2[i][0] = new RectangleF[lengthT];
+                        for (int j = 0; j < lengthT; j++)
+                        {
+                            Animations2[i][0][j] = new RectangleF(72 * j, 0, 72, 80);
+                        }
+
+                        break;
+                    case Sprite.AnimationAction.Dying:
+                        Animations2[i] = Animations2[(int)Sprite.AnimationAction.TakingDamage];
+                        break;
+                }
+
+            }
+
+			
+            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
 
 
 
 
 			enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
-			Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSprite, SideBSprite = gSprite };
-			Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSprite, SideBSprite = gSprite };
-			Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSprite, SideBSprite = gSprite };
+            Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
+            Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
+            Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
 			int n = 4;
 			army = new Squad[3 * n];
 			for (int i = 0; i < army.Length; i += 3)

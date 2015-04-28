@@ -243,15 +243,17 @@ namespace project
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-            LoadingAnimation loading = new LoadingAnimation();
-            loading.VerticalAlignment = VerticalAlignment.Center;
-            loading.HorizontalAlignment = HorizontalAlignment.Left;
-            root.Children.Add(loading);
+            //LoadingAnimation loading = new LoadingAnimation();
+            //loading.VerticalAlignment = VerticalAlignment.Center;
+            //loading.HorizontalAlignment = HorizontalAlignment.Left;
+            //root.Children.Add(loading);
+            loading.Visibility = Visibility.Visible;
             await Task.Run(() =>
             {
                 AllCalculations();
             });
-            root.Children.Remove(loading);
+            //root.Children.Remove(loading);
+            loading.Visibility = Visibility.Hidden;
 
         }
 

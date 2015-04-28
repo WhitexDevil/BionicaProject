@@ -63,6 +63,16 @@ namespace project.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Archer {
+            get {
+                object obj = ResourceManager.GetObject("Archer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap fighter_transparent {
             get {
                 object obj = ResourceManager.GetObject("fighter_transparent", resourceCulture);

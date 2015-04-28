@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace project
 {
@@ -137,13 +138,9 @@ namespace project
                 }
 
             }
-<<<<<<< HEAD
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
-=======
 
-			
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
->>>>>>> origin/master
+			var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
+
 
 
 
@@ -170,7 +167,7 @@ namespace project
 
 			Stopwatch sw = Stopwatch.StartNew();
 
-			ga = new GA(enemy, army, battleCount: 5, populationSize: 6, mapSize: 32);
+			ga = new GA(enemy, army, battleCount: 1, populationSize: 2, mapSize: 32);
 			ga.Go();
 
 			sw.Stop();
@@ -259,5 +256,21 @@ namespace project
 				await Task.Delay(1);
 			}
 		}
+		//private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+		//{
+		//	int X1 = (int)(Width / 2);
+		//	int Y1 = (int)(Height / 2);
+		//	int X2 =  (int)(e.GetPosition(this).X);
+		//	int Y2 = (int)(e.GetPosition(this).Y);
+		//	Title = String.Format("Angle: {0} Start: {1}:{2} Mouse: {3}:{4}",
+		//		Visualization.DirectionDegree(new System.Drawing.Point(X1,Y1),
+		//		new System.Drawing.Point(X2,Y2)),X1,Y1,X2,Y2 
+				
+		//		);
+		//	l.X1 = X1;
+		//	l.X2 = X2;
+		//	l.Y1 = Y1;
+		//	l.Y2 = Y2;
+		//}
 	}
 }

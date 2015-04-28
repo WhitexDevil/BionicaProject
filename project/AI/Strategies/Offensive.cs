@@ -10,9 +10,10 @@ namespace project
         {
             if (battleData.EnemyArmy.Length < 1)
                 return;
-            int TargetIndex = Strategy.NearestToAll(battleData.AllyArmy, battleData.EnemyArmy);
+           
             for (int i = 0; i < battleData.AllyArmy.Length; i++)
             {
+                int TargetIndex = Strategy.NearestToAll(battleData.AllyArmy, battleData.EnemyArmy);
                 Step[] Path = DistanceAndPath.PathTo(
                     battleData,
                     battleData.AllyArmy[i].Position,

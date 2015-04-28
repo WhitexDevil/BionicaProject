@@ -55,18 +55,20 @@ namespace project
 		private RectangleF[][][] Animations;
 		private bool DisableTextures;
 		private Color Color;
+		private bool Mirrored;
 
 		public Sprite(Color color)
 		{
 			DisableTextures = true;
 			this.Color = color;
 		}
-		public Sprite(Bitmap texture, RectangleF[][][] animations)
+		public Sprite(Bitmap texture, RectangleF[][][] animations, bool mirrored)
 		{
 			this.Animations = animations;
-			this.Texture = texture;
+			this.Texture = new Bitmap(texture);
 			this.MirroredTexture = new Bitmap(Texture);
-			this.MirroredTexture.RotateFlip(RotateFlipType.RotateNoneFlipX);
+			(mirrored ? this.Texture : this.MirroredTexture).RotateFlip(RotateFlipType.RotateNoneFlipX);
+			this.Mirrored = mirrored;
 		}
 
 		public enum AnimationAction { Standing, Moving, Attacking, TakingDamage, Dying };
@@ -93,7 +95,7 @@ namespace project
 				g.DrawImage(Texture,
 					new RectangleF(directionDegree < 180 ? position.X : position.X - AniRect.Width + size.Width, position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
 
-					directionDegree < 180 ? AniRect :
+					directionDegree < 180 ^ Mirrored ? AniRect : 
 					new RectangleF(Texture.Width - (AniRect.X +AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
 				, GraphicsUnit.Pixel);
 			}

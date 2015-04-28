@@ -137,14 +137,8 @@ namespace project
                 }
 
             }
-<<<<<<< HEAD
-            var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2);
-=======
 
-			
             var gSpriteSoldier = new Sprite(global::project.Properties.Resources.MyFighter4, Animations2, true);
->>>>>>> origin/master
-
 
 
 

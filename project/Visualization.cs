@@ -110,11 +110,13 @@ namespace project
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
+			position = new PointF(position.X + size.Height, position.Y);
 			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
 				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X, position.Y + size.Height * 0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
 		{
+			position = new PointF(position.X, position.Y + size.Height);
 			if (DisableTextures)
 			{
 				g.FillEllipse(new SolidBrush(Color), new RectangleF(position, size));
@@ -128,6 +130,7 @@ namespace project
 		}
 		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
+			position = new PointF(position.X,position.Y + size.Height);
 			if (health > 0)
 			{
 				DrawSpriteFrame(g, position, size, AnimationAction.Standing, directionDegree, frame);
@@ -140,6 +143,7 @@ namespace project
 		}
 		public void DrawTakingDamage(Graphics g, PointF position, SizeF size, float directionDegree, int health, int damage, float frame)
 		{
+			position = new PointF(position.X, position.Y + size.Height);
 			if (damage >= health)
 			{
 				DrawDie(g, position, size, directionDegree, frame);
@@ -154,11 +158,13 @@ namespace project
 		}
 		public void DrawAttack(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
+			position = new PointF(position.X, position.Y + size.Height);
 			DrawSpriteFrame(g, position, size, AnimationAction.Attacking, directionDegree, frame);
 			DrawHealth(g, position, size, directionDegree, health);
 		}
 		public void DrawMove(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
+			position = new PointF(position.X, position.Y + size.Height);
 			DrawSpriteFrame(g, position, size, AnimationAction.Moving, directionDegree, frame);
 			DrawHealth(g, position, size, directionDegree, health);
 		}
@@ -334,7 +340,8 @@ namespace project
 		{
 			g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 			g.Clear(Color.White);
-			float wK = (float)width / InitBD.MapWidth;
+			
+			float wK = (float)width / (InitBD.MapWidth+1);
 			float hK = (float)height / InitBD.MapHeight;
 
 			for (float x = 0; x < width; x += wK)

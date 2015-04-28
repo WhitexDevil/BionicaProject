@@ -12,6 +12,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Content="Start" Margin="10,0,0,10" Click="Button_Click" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1"/>
+        <!--<Line  x:Name="l" StrokeThickness="10" Y2="100" X2="100" Stroke="Black" Margin="10,0"/>-->
         <local:Battle x:Name="Battle" Margin="89,10,125,10"/>
         <Slider x:Name="TimeSlider" Margin="224,0,10,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01"/>
         <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="169,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>

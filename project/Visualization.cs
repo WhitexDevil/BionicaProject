@@ -90,13 +90,14 @@ namespace project
 			{
 				var Texture = directionDegree >= 180 ? MirroredTexture : this.Texture;
 				var Animation = GetAnimation(action, directionDegree);
-				var AniRect =  Animation[(int)(frame * Animation.Length / (Visualization.SubturnFramerate+1))];
-				var h =  AniRect.Height * size.Width / AniRect.Width;
+				var AniRect = Animation[(int)(frame * Animation.Length / (Visualization.SubturnFramerate + 1))];
+				var h = AniRect.Height * size.Width / AniRect.Width;
 				g.DrawImage(Texture,
-					new RectangleF(directionDegree < 180 ? position.X : position.X - spriteK * AniRect.Width + spriteK * size.Width, position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
+					new RectangleF(directionDegree < 180 ? position.X : position.X - size.Width*(spriteK-1), 
+						position.Y - (spriteK * h - size.Height), spriteK * size.Width, spriteK * h),
 
-					directionDegree < 180 ^ Mirrored ? AniRect : 
-					new RectangleF(Texture.Width - (AniRect.X +AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
+					directionDegree < 180 ^ Mirrored ? AniRect :
+					new RectangleF(Texture.Width - (AniRect.X + AniRect.Width), AniRect.Y, AniRect.Width, AniRect.Height)
 				, GraphicsUnit.Pixel);
 			}
 		}
@@ -104,13 +105,13 @@ namespace project
 		{
 			g.DrawString(damage.ToString(), new Font("Arial", 12, FontStyle.Bold),
 				new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / Visualization.SubturnFramerate), Color.Red)),
-				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.6F : position.X,
+				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X,
 					position.Y + size.Height * 0.5F - (size.Height * frame / Visualization.SubturnFramerate)));
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
 			g.DrawString(health.ToString(), new Font("Arial", 11), Brushes.Green,
-				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.6F : position.X, position.Y+size.Height*0.5F));
+				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X, position.Y + size.Height * 0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)
 		{
@@ -118,12 +119,12 @@ namespace project
 			{
 				g.FillEllipse(new SolidBrush(Color), new RectangleF(position, size));
 				g.DrawLine(Pens.Red, position, new PointF(position.X + size.Width, position.Y + size.Height));
-				g.DrawLine(Pens.Red, 
-					new PointF(position.X + size.Width, position.Y), 
+				g.DrawLine(Pens.Red,
+					new PointF(position.X + size.Width, position.Y),
 					new PointF(position.X, position.Y + size.Height));
 			}
-		//	else
-		//		DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
+			//	else
+			//		DrawSpriteFrame(g, position, size, AnimationAction.Dying, directionDegree, frame);
 		}
 		public void DrawStanding(Graphics g, PointF position, SizeF size, float directionDegree, int health, float frame)
 		{
@@ -214,7 +215,7 @@ namespace project
 		public void RecordMove(Squad squad, Point start, Point end, Step[] path)
 		{
 			//	Console.WriteLine("Move");
-			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).Concat(new Point[]{start}).ToArray();
+			var pathcutted = path.Select(x => x.Key).SkipWhile(x => x != end).TakeWhile(x => x != start).Concat(new Point[] { start }).ToArray();
 			if (pathcutted.Length < 2) return;
 			Timeline.Add(new Action()
 			{
@@ -267,7 +268,7 @@ namespace project
 			}
 		}
 
-	
+
 		public void SetTime(int subturn)
 		{
 			if (subturn < Subturn || subturn == 0)
@@ -311,21 +312,21 @@ namespace project
 			}
 		}
 
-		private float DirectionDegree(Point source, Point destination)
+		public static float DirectionDegree(Point source, Point destination)
 		{
-			//var n = 270 - (Math.Atan2(source.Y - destination.Y, source.X - destination.X)) * 180 / Math.PI;
-			//return (float)(n % 360);
+			var n = 270 -(Math.Atan2(source.Y - destination.Y, source.X - destination.X)) * 180 / Math.PI;
+			return (float)(n % 360);
 
-			float xDiff = destination.X - source.X;
-			float yDiff = destination.Y - source.Y;
-			return (float)((Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI)+90);
+			//float xDiff = destination.X - source.X;
+			//float yDiff = destination.Y - source.Y;
+			//return (float)((Math.Atan2(yDiff, xDiff) * 180.0 / Math.PI) + 90);
 		}
 
 
 
 		public void DrawFrame(Bitmap b, float frame)
 		{
-			using (Graphics g = Graphics.FromImage(b)) 
+			using (Graphics g = Graphics.FromImage(b))
 				DrawFrame(g, b.Width, b.Height, frame);
 		}
 
@@ -341,52 +342,54 @@ namespace project
 			for (float y = 0; y < height; y += hK)
 				g.DrawLine(Pens.LightGray, 0, y, width, y);
 
-			var Action = Timeline[Subturn];
-			var Squad = Squads[Action.Squad];
+			var YSorted = Squads.Select((x, i) => new KeyValuePair<Squad, int>(x, i)).OrderBy(x2 => x2.Key.Position.Y);
+
 			var Size = new SizeF(wK, hK);
-			switch (Action.Type)
+			var Action = Timeline[Subturn];
+			foreach (var SortedSquad in YSorted)
 			{
-				case ActionType.None:
+				var Squad = SortedSquad.Key;
+				bool SideASquad = SortedSquad.Value < BD.AllyArmy.Length;
+				var Sprite = SideASquad ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite;
 
-					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawStanding(g,
+				if (SortedSquad.Value == Action.Squad)
+				{
+					switch (Action.Type)
+					{
+						case ActionType.Attack:
+
+							Sprite.DrawAttack(g,
+								new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
+								DirectionDegree(Squad.Position, Squads[Action.Target].Position),
+								Squad.Amount, frame);
+
+							break;
+						case ActionType.Move:
+
+							float framecost = (SubturnFramerate + 1) / (Action.Path.Length - 1);
+							int start = Action.Path.Length - 1 - (int)(frame / framecost);
+							float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
+							float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
+
+							Sprite.DrawMove(g, new PointF(X * wK, Y * hK), Size,
+									DirectionDegree(Action.Path[start], Action.Path[start - 1]), Squad.Amount, frame);
+							break;
+					}
+				}
+				else if (SortedSquad.Value == Action.Target)
+				{
+					Sprite.DrawTakingDamage(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
-						SideA ? 0 : 270, Squad.Amount, frame);
-
-					break;
-				case ActionType.Attack:
-
-					var Target = Squads[Action.Target];
-
-					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawAttack(g,
+						SideASquad ? 270 : 0, Squad.Amount, Action.Damage, frame);
+				}
+				else
+				{
+					Sprite.DrawStanding(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
-						DirectionDegree(Squad.Position, Target.Position),
-						Squad.Amount, frame);
-
-					(SideA ? Target.Unit.SideBSprite : Target.Unit.SideASprite).DrawTakingDamage(g,
-						new PointF(Target.Position.X * wK, Target.Position.Y * hK), Size,
-						SideA ? 270 : 0, Target.Amount, Action.Damage, frame);
-
-					break;
-				case ActionType.Move:
-
-					float framecost = (SubturnFramerate+1) / (Action.Path.Length-1);
-					int start = Action.Path.Length -1- (int)(frame / framecost);
-					float X = Action.Path[start].X + (Action.Path[start - 1].X - Action.Path[start].X) * ((frame % framecost) / framecost);
-					float Y = Action.Path[start].Y + (Action.Path[start - 1].Y - Action.Path[start].Y) * ((frame % framecost) / framecost);
-
-					(SideA ? Squad.Unit.SideASprite : Squad.Unit.SideBSprite).DrawMove(g, new PointF(X * wK, Y * hK), Size,
-							DirectionDegree(Action.Path[start], Action.Path[start-1]), Squad.Amount, frame);
-					break;
+						SideASquad ? 0 : 270, Squad.Amount, frame);
+				}
 			}
 
-			for (int i = 0; i < Squads.Length; i++)
-			{
-				if (i == Action.Squad || i == Action.Target) continue;
-
-				(i < BD.AllyArmy.Length ? Squads[i].Unit.SideASprite : Squads[i].Unit.SideBSprite).DrawStanding(g,
-					new PointF(Squads[i].Position.X * wK, Squads[i].Position.Y * hK), Size,
-					i < BD.AllyArmy.Length ? 0 : 270, Squads[i].Amount, frame);
-			}
 
 			#region old
 			//for (int a = 0; a < 2; a++)
@@ -458,7 +461,7 @@ namespace project
 		}
 
 		#region old
-			//Bitmap[] ally, enemy;
+		//Bitmap[] ally, enemy;
 		//Bitmap[] ally, enemy;
 
 		//void DrawArmy(Graphics g, float wK, float hK, Squad[] army, int indexShift, int frame)

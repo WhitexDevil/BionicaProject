@@ -34,10 +34,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\lib\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -63,6 +70,12 @@
     <Compile Include="Battle.xaml.cs">
       <DependentUpon>Battle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Block.xaml.cs">
+      <DependentUpon>Block.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LoadingAnimation.xaml.cs">
+      <DependentUpon>LoadingAnimation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PathFinder\AuthorAttribute.cs" />
     <Compile Include="PathFinder\IPathFinder.cs" />
     <Compile Include="PathFinder\PathFinderFast.cs" />
@@ -76,6 +89,22 @@
     <Compile Include="Army\Unit.cs" />
     <Compile Include="Visualization.cs" />
     <Page Include="Battle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Block.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FlatSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Label.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LoadingAnimation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -121,9 +150,29 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="C:\Users\Flubber\Desktop\source\Selen.Wpf.Core\Selen.Wpf.Core.csproj">
+      <Project>{c94c1bdd-11f9-4a3f-8929-86b1b67ae1d5}</Project>
+      <Name>Selen.Wpf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Flubber\Desktop\source\Selen.Wpf.GenericAppTree.Contracts\Selen.Wpf.GenericAppTree.Contracts.csproj">
+      <Project>{fc32ab02-5705-48e0-bcfd-78eb6c137aeb}</Project>
+      <Name>Selen.Wpf.GenericAppTree.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Flubber\Desktop\source\Selen.Wpf.GenericAppTree\Selen.Wpf.GenericAppTree.csproj">
+      <Project>{8615a3c0-298c-4b9d-8ffc-d5aca466523d}</Project>
+      <Name>Selen.Wpf.GenericAppTree</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\Users\Flubber\Desktop\source\Selen.Wpf.SystemStyles\Selen.Wpf.SystemStyles.csproj">
+      <Project>{a468315f-fa11-4bc2-8e5f-ea3c48b24c74}</Project>
+      <Name>Selen.Wpf.SystemStyles</Name>
+    </ProjectReference>
     <ProjectReference Include="RazorGDIControlWPF\RazorGDIControlWPF.csproj">
       <Project>{f888ad1b-c734-477a-92ae-2b79abc7e2d0}</Project>
       <Name>RazorGDIControlWPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="RazorGDIPainter\RazorGDIPainter.csproj">
+      <Project>{5da2fc0b-474b-43c4-a087-ccc52b794e8b}</Project>
+      <Name>RazorGDIPainter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +180,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\MyFighter4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Resources\Laptop.jpg" />
+    <Resource Include="Resources\Desktop.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

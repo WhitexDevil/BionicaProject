@@ -8,6 +8,7 @@ using System.Windows.Media.Effects;
 using Teske.WPF.Effects;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace project
 {
@@ -58,10 +59,7 @@ namespace project
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
 
-
             rightControl.IsOpen = false;
-
-
             general.Agr = GeneralOption.Agr.Slider1.Value;
             general.Wair = GeneralOption.Wair.Slider1.Value;
             general.Perc = GeneralOption.Per.Slider1.Value;
@@ -77,7 +75,7 @@ namespace project
             Simulate.IsEnabled = false;
             Reset.IsEnabled = false;
             Start.IsEnabled = false;
-            loading.IsActive = true;
+            loading.IsActive = false;
 
             int n = 4;
             army = new Squad[3 * n];
@@ -95,10 +93,13 @@ namespace project
                 goalFitness: WintRate,
                 battleCount: BattleCount);
             await Task.Run(() => ga.Go());
-            Simulate.IsEnabled = true;
+        
             loading.IsActive = false;
             Start.IsEnabled = true;
             TimeSlider.IsEnabled = true;
+            GeneralList.ItemsSource = ga.GetLastGeneration().ToArray().Select((x) => { return "Power: "+((Player)x).WinRate.ToString("0.##") + " Gens: " + String.Join("/ ",((Player)x).Genes().Select(x2=>x2.ToString("0.##"))); });
+          
+
         }
 
         Visualization Visualization;
@@ -129,15 +130,17 @@ namespace project
 
 
 
-            fly.IsEnabled = false;
+             fly.IsEnabled = false;
             rightControl.IsOpen = false;
             if ((string)Animate.Content == "Animate")
             {
+              
                 Animate.Content = "Stop";
                 Animator.IsEnabled = true;
             }
             else
             {
+                //fly.IsEnabled = true;
                 Animate.Content = "Animate";
                 Animator.IsEnabled = false;
             }
@@ -176,21 +179,38 @@ namespace project
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            TimeSlider.Value = TimeSlider.Maximum;
-            Battle.Frame = -1;
+            Animator.IsEnabled = false;
             fly.IsEnabled = true;
             TimeSlider.Value = 0;
+            Battle.Frame = -1;
+            BattleLog.Clear();
+            GeneralList.ItemsSource = null;
+            Reset.IsEnabled = false;
+            Animate.IsEnabled = false;
+            Simulate.IsEnabled = false;
+            Animate.Content = "Animate";
+
         }
 
         private void Simulate_Click(object sender, RoutedEventArgs e)
         {
-            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 16) { Visualization = true };
+            int i = GeneralList.SelectedIndex;
+            if (i == -1)
+                return;
+            SandBox sb = new SandBox(enemy, ga.GetNthGenome(i), army, army, 32) { Visualization = true };
             Visualization = sb.BattleData.Visualization;
             sb.Fight(1);
             Visualization.SetTime(0);
             Battle.Visualization = Visualization;
             Battle.Frame = 0;
             Animate.IsEnabled = true;
+            Reset.IsEnabled = true;
+            
+        }
+
+        private void GeneralList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Simulate.IsEnabled = true;
         }
 
 

@@ -162,7 +162,7 @@ namespace project
             for (int i = 0; i < m_populationSize; i++)
             {
                 Player g = ((Player)m_thisGeneration[i]);
-                g.Fitness = FitnessFunction(g);
+                g.WinRate = FitnessFunction(g);
 
                 m_totalFitness += g.Fitness;
             }
@@ -282,6 +282,7 @@ namespace project
             //sw.Stop();
             //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
             //sw.Reset();
+            player.WinRate = (double)temp / (double)m_battleCount;
             double result = 1 - Math.Abs(m_goalFitness - (double)temp / (double)m_battleCount);
             return result;
         }
@@ -367,19 +368,20 @@ namespace project
             return ((Player)m_thisGeneration[m_populationSize - 1]);
         }
 
-        public void GetWorst(out double[] values, out double fitness)
+        public ArrayList GetLastGeneration()
         {
-            GetNthGenome(0, out values, out fitness);
+            return m_thisGeneration;
         }
 
-        public void GetNthGenome(int n, out double[] values, out double fitness)
+
+        
+
+        public Player GetNthGenome(int n)
         {
             if (n < 0 || n > m_populationSize - 1)
                 throw new ArgumentOutOfRangeException("n too large, or too small");
-            project.Player g = ((Player)m_thisGeneration[n]);
-            values = new double[g.Length];
-            g.GetValues(ref values);
-            fitness = (double)g.Fitness;
+            return ((Player)m_thisGeneration[n]);
+            
         }
     }
 }

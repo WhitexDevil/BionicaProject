@@ -157,6 +157,18 @@ namespace project
                 m_fitness = value;
             }
         }
+         public double WinRate
+        {
+            get
+            {
+                return m_fitness;
+            }
+            set
+            {
+                m_fitness = value;
+            }
+        }
+
 
         public static double MutationRate
         {

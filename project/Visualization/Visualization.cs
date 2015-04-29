@@ -181,14 +181,14 @@ namespace project
 				{
 					case ActionType.Attack:
 						Squads[Timeline[t].Target].Amount -= Timeline[t].Damage;
-						lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} атакует отряд {1} и наносит {2} урона\r\n",
+						lock (BattleLog) BattleLog.Add(String.Format("Squad #{0} attacks squad {1} and kill {2} units\r\n",
 							ToArmyIndex(Timeline[t].Squad), ToArmyIndex(Timeline[t].Target), Timeline[t].Damage));
 						if (!Squads[Timeline[t].Target].Alive)
-							lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} погибает\r\n", ToArmyIndex(Timeline[t].Target)));
+							lock (BattleLog) BattleLog.Add(String.Format("Squad #{0} DEFEATED\r\n", ToArmyIndex(Timeline[t].Target)));
 						break;
 					case ActionType.Move:
 						Squads[Timeline[t].Squad].Position = Timeline[t].Path.First();
-						lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} идет в точку {1}:{2}\r\n",
+						lock (BattleLog) BattleLog.Add(String.Format("Squad #{0} moving to {1}:{2}\r\n",
 							ToArmyIndex(Timeline[t].Squad), Timeline[t].Path.First().X, Timeline[t].Path.First().X));
 						break;
 				}
@@ -199,7 +199,7 @@ namespace project
 				{
 					SubturnRelative = 0;
 					Turn++;
-					lock (BattleLog) BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B") + "\r\n", Turn - 1));
+					lock (BattleLog) BattleLog.Add(String.Format("Turn {0} finished, now turn of Side" + (SideA ? "A" : "B") + "\r\n", Turn - 1));
 				}
 			}
 		}

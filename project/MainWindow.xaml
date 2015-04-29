@@ -7,7 +7,7 @@
                       xmlns:lol="clr-namespace:project.Controls"
         x:Name="main"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" WindowState="Maximized" Loaded="SetUpWindow" SizeChanged="SetUpWindow"  MinHeight="500" MinWidth="888" WindowStartupLocation="CenterScreen">
+        Title="STRATEGY AI GENERATOR" WindowState="Maximized" Loaded="SetUpWindow" SizeChanged="SetUpWindow"  MinHeight="500" MinWidth="888" WindowStartupLocation="CenterScreen">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -28,7 +28,7 @@
         <local:Battle x:Name="Battle" Margin="10" Grid.Column="1"/>
         <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="300" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Grid.Column="1" Margin="10"/>
         <TextBox x:Name="BattleLog" Margin="10" TextWrapping="Wrap"/>
-        <TextBox  TextWrapping="Wrap" Text="TextBox" Margin="10,10,35,10" Grid.Column="2"/>
+        <ListBox x:Name="GeneralList"  Margin="10,10,35,10" Grid.Column="2" Foreground="White" SelectionChanged="GeneralList_SelectionChanged"/>
         <Controls:FlyoutsControl Grid.RowSpan="2" Background="Black" Margin="-21,0,0,0" Grid.ColumnSpan="3">
             <Controls:Flyout   Position="Right"   Width="Auto" IsOpen="False" VerticalAlignment="Top" x:Name="rightControl" Background="{DynamicResource AccentColorBrush}">
                 <Grid>

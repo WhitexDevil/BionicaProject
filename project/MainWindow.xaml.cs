@@ -13,6 +13,7 @@ namespace project
 {
     class GeneralPrototype
     {
+        
         public double Agr { get; set; }
         public double Wair { get; set; }
         public double Perc { get; set; }
@@ -24,7 +25,8 @@ namespace project
        
         GA ga;
         Player enemy;
-        GeneralPrototype generalPrototype;
+        GeneralPrototype general = new GeneralPrototype();
+        
         Squad[] army;
 
         public MainWindow()
@@ -33,6 +35,11 @@ namespace project
         }
         private void AllCalculations()
         {
+            general.Agr = 0.9;
+            general.Wair = 0.5;
+            general.Perc = 0.7;
+            general.Prd = 0.8;
+
 			#region Horse
             RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
             for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
@@ -320,7 +327,7 @@ namespace project
 			#endregion
 			var gSpritePhoenix = new Sprite(global::project.Properties.Resources._41843, Animations4, false);
 
-            enemy = new Player(new double[4] { generalPrototype.Agr, generalPrototype.Wair, generalPrototype.Perc, generalPrototype.Prd });
+            enemy = new Player(new double[4] { general.Agr, general.Wair, general.Perc, general.Prd });
 
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
 			Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpritePhoenix, SideBSprite = gSpriteSoldier };

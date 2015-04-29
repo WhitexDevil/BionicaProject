@@ -226,10 +226,10 @@ namespace project
 			float wK = (float)width / InitBD.MapWidth;
 			float hK = (float)height / (1+InitBD.MapHeight);
 
-			//for (float x = 0; x < width; x += wK)
-			//	g.DrawLine(Pens.LightGray, x, 0, x, height);
-			//for (float y = 0; y < height; y += hK)
-			//	g.DrawLine(Pens.LightGray, 0, y, width, y);
+			for (float x = 0; x < width; x += wK)
+				g.DrawLine(Pens.DarkGreen, x, 0, x, height);
+			for (float y = 0; y < height; y += hK)
+				g.DrawLine(Pens.DarkGreen, 0, y, width, y);
 
 			var YSorted = Squads.Select((x, i) => new KeyValuePair<Squad, int>(x, i)).OrderBy(x2 => x2.Key.Position.Y);
 

@@ -18,6 +18,8 @@ namespace project
 		private Color Color;
 		private bool Mirrored;
 		public static Bitmap Background = global::project.Properties.Resources.Fon;
+		private Font Font = new Font("Arial", 12, FontStyle.Bold);
+
 
 		public Sprite(Color color)
 		{
@@ -70,16 +72,17 @@ namespace project
 				, GraphicsUnit.Pixel);
 			}
 		}
+
 		private void DrawDamage(Graphics g, PointF position, SizeF size, float directionDegree, int damage, float frame)
 		{
-			g.DrawString(damage.ToString(), new Font("Arial", 12, FontStyle.Bold),
+			g.DrawString(damage.ToString(), Font,
 				new SolidBrush(Color.FromArgb(255 - (int)(frame * 255 / Visualization.SubturnFramerate), Color.Red)),
 				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X,
 					position.Y + size.Height * 0.5F - (size.Height * frame / Visualization.SubturnFramerate)));
 		}
 		private void DrawHealth(Graphics g, PointF position, SizeF size, float directionDegree, int health)
 		{
-			g.DrawString(health.ToString(), new Font("Arial", 11, FontStyle.Bold), Brushes.White,
+			g.DrawString(health.ToString(), Font, Brushes.White,
 				new PointF(directionDegree >= 180 ? position.X + size.Width * 0.55F : position.X, position.Y + size.Height * 0.5F));
 		}
 		private void DrawDie(Graphics g, PointF position, SizeF size, float directionDegree, float frame)

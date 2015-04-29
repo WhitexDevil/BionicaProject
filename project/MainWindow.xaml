@@ -7,34 +7,37 @@
                       xmlns:lol="clr-namespace:project.Controls"
         x:Name="main"
         GlowBrush="{DynamicResource AccentColorBrush}"
-        Title="MainWindow" WindowState="Maximized" Loaded="SetUpWindow" SizeChanged="SetUpWindow"  MinHeight="500" MinWidth="888" WindowStartupLocation="CenterScreen">
+        Title="STRATEGY AI GENERATOR" WindowState="Maximized" Loaded="SetUpWindow" SizeChanged="SetUpWindow"  MinHeight="500" MinWidth="888" WindowStartupLocation="CenterScreen">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="37"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100*"/>
-            <ColumnDefinition Width="180*"/>
-            <ColumnDefinition Width="100*"/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="295"/>
         </Grid.ColumnDefinitions>
-        <local:Battle x:Name="Battle" VerticalAlignment="Center" HorizontalAlignment="Center" MinHeight="250" MinWidth="250" Visibility="Hidden" Margin="38,109,70,109" Grid.Column="1" Height="250" Width="250"/>
         <Slider x:Name="TimeSlider" Margin="98,0,35,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01" Width="Auto" Style="{DynamicResource FlatSlider}" BorderBrush="#FF3F3F46" Grid.ColumnSpan="2" Grid.Column="1"/>
         <Label x:Name="SubTurnLabel" Content="Subturn: 0" HorizontalAlignment="Left" Margin="13,4,0,0" VerticalAlignment="Top" Grid.Row="1" Style="{StaticResource MetroLabel}" Foreground="Black" Grid.Column="1" Height="26" Width="64"/>
-        <Button x:Name="Animate" Content="Animate" Margin="89,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
-        <Button x:Name="Reset" IsEnabled="False" Content="Reset" Margin="169,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_2" Grid.ColumnSpan="2"/>
-        <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Margin="88,159,120,159" Grid.Column="1"/>
+        <Button x:Name="Animate" Content="Animate" Margin="105,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="90" Grid.Row="1" Click="Button_Click_1" IsEnabled="False"/>
+        <Button x:Name="Simulate" Content="Simulate" Margin="10,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="90" Grid.Row="1" Click="Simulate_Click" IsEnabled="False" />
+        <Button x:Name="Reset" IsEnabled="False" Content="Reset" Margin="200,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="90
+                " Grid.Row="1" Click="Button_Click_2"/>
         <Grid x:Name="fly" Width="20" Height="Auto" HorizontalAlignment="Right" Grid.RowSpan="2" MouseEnter="Grid_MouseEnter" Background="{DynamicResource AccentColorBrush}" Grid.Column="2"/>
-        <TextBox  x:Name="BattleLog" TextWrapping="Wrap" Text="TextBox" Margin="60,10,31,20" Grid.Column="2"/>
+        <local:Battle x:Name="Battle" Margin="10" Grid.Column="1"/>
+        <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="300" Height="300" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Grid.Column="1" Margin="10"/>
+        <TextBox x:Name="BattleLog" Margin="10" TextWrapping="Wrap"/>
+        <ListBox x:Name="GeneralList"  Margin="10,10,35,10" Grid.Column="2" Foreground="White" SelectionChanged="GeneralList_SelectionChanged"/>
         <Controls:FlyoutsControl Grid.RowSpan="2" Background="Black" Margin="-21,0,0,0" Grid.ColumnSpan="3">
             <Controls:Flyout   Position="Right"   Width="Auto" IsOpen="False" VerticalAlignment="Top" x:Name="rightControl" Background="{DynamicResource AccentColorBrush}">
                 <Grid>
                     <lol:GenegalOption x:Name="GeneralOption"  Margin="0  , -30 , 0 ,0"  Width="Auto"/>
                     <lol:GaControlBasic x:Name="GaOption"  Margin="0  , 270 , 0 ,0"  Width="Auto" />
-                    <Button x:Name="Start" Content="Start" Margin="20,0,0,10" Click="Button_Click" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" />
-
+                    <Button x:Name="Start" Content="Start" Margin="15,0,0,10" Click="Button_Click" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" />
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
+
     </Grid>
 </Controls:MetroWindow>

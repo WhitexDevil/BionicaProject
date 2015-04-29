@@ -10,8 +10,8 @@ using System.Diagnostics;
 using System.Threading;
 namespace project
 {
-    public delegate double GAFunction(Player player, Player Enemy,  Squad[] allyArmy,Squad[] enemyArmy);
-    
+    public delegate double GAFunction(Player player, Player Enemy, Squad[] allyArmy, Squad[] enemyArmy);
+
     /// <summary>
     /// Genetic Algorithm class
     /// </summary>
@@ -30,9 +30,9 @@ namespace project
             m_generationSize = 1;
             m_battleCount = 1;
             m_goalFitness = 1;
-           
-          
-            
+
+
+
 
         }
         /// <summary>
@@ -53,8 +53,9 @@ namespace project
             double goalFitness = 0.9,
             int populationSize = 2,
             int generationSize = 2,
-            int battleCount = 5 ,
-            int mapSize=64):this(enemy,Army,Army,crossoverRate,mutationRate,goalFitness, populationSize,generationSize,battleCount,mapSize){}
+            int battleCount = 5,
+            int mapSize = 64)
+            : this(enemy, Army, Army, crossoverRate, mutationRate, goalFitness, populationSize, generationSize, battleCount, mapSize) { }
 
         /// <summary>
         /// Sets different army to each side;
@@ -75,7 +76,7 @@ namespace project
             double mutationRate = 0.05,
             double goalFitness = 0.9,
             int populationSize = 2,
-            int generationSize =2,
+            int generationSize = 2,
             int battleCount = 5,
             int mapSize = 64)
         {
@@ -83,18 +84,18 @@ namespace project
             m_mutationRate = mutationRate;
             m_crossoverRate = crossoverRate;
             m_goalFitness = goalFitness;
-            m_populationSize = populationSize + populationSize%2;
+            m_populationSize = populationSize + populationSize % 2;
             m_generationSize = generationSize;
-                      // m_strFitness = "";
+            // m_strFitness = "";
             Enemy = enemy;
             AllyArmy = allyArmy;
             EnemyArmy = enemyArmy;
             m_battleCount = battleCount;
             m_mapSize = mapSize;
-       
+
         }
 
-    
+
 
 
         public void InitialValues()
@@ -108,9 +109,9 @@ namespace project
         /// </summary>
         public void Go()
         {
-           
-          
-     
+
+
+
             //  Create the fitness table.
             m_fitnessTable = new ArrayList();
             m_thisGeneration = new ArrayList(m_generationSize);
@@ -125,11 +126,11 @@ namespace project
             {
                 CreateNextGeneration();
                 RankPopulation();
-               
-            }
-           
 
-          
+            }
+
+
+
         }
 
         /// <summary>
@@ -140,15 +141,15 @@ namespace project
         /// <returns>Random individual biased towards highest fitness</returns>
         private int RouletteSelection()
         {
-            double randomFitness = Random.NextDouble() * (double)m_fitnessTable[m_populationSize-1];
+            double randomFitness = Random.NextDouble() * (double)m_fitnessTable[m_populationSize - 1];
             int idx = -1;
-            for (int i = 0;i<m_populationSize;i++)
-                if (randomFitness<=(double)m_fitnessTable[i])
+            for (int i = 0; i < m_populationSize; i++)
+                if (randomFitness <= (double)m_fitnessTable[i])
                 {
                     idx = i;
                     break;
                 }
-          
+
             return idx;
         }
 
@@ -161,8 +162,8 @@ namespace project
             for (int i = 0; i < m_populationSize; i++)
             {
                 Player g = ((Player)m_thisGeneration[i]);
-                g.Fitness = FitnessFunction(g);
-               
+                g.WinRate = FitnessFunction(g);
+
                 m_totalFitness += g.Fitness;
             }
             m_thisGeneration.Sort(new GenomeComparer());
@@ -197,37 +198,37 @@ namespace project
                 g = (Player)m_thisGeneration[m_populationSize - 1];
 
             ConcurrentBag<Player> bag = new ConcurrentBag<Player>();
-                Parallel.For(0, m_populationSize / 2, i =>
+            Parallel.For(0, m_populationSize / 2, i =>
+            {
+
+                int pidx1 = RouletteSelection();
+                int pidx2 = RouletteSelection();
+                Player parent1, parent2, child1, child2;
+                parent1 = ((Player)m_thisGeneration[pidx1]);
+                parent2 = ((Player)m_thisGeneration[pidx2]);
+
+                if (Random.NextDouble() < m_crossoverRate)
                 {
+                    parent1.Crossover(ref parent2, out child1, out child2);
+                }
+                else
+                {
+                    child1 = parent1;
+                    child2 = parent2;
+                }
+                child1.Mutate();
+                child2.Mutate();
 
-                    int pidx1 = RouletteSelection();
-                    int pidx2 = RouletteSelection();
-                    Player parent1, parent2, child1, child2;
-                    parent1 = ((Player)m_thisGeneration[pidx1]);
-                    parent2 = ((Player)m_thisGeneration[pidx2]);
+                bag.Add(child1);
+                bag.Add(child2);
+            });
 
-                    if (Random.NextDouble() < m_crossoverRate)
-                    {
-                        parent1.Crossover(ref parent2, out child1, out child2);
-                    }
-                    else
-                    {
-                        child1 = parent1;
-                        child2 = parent2;
-                    }
-                    child1.Mutate();
-                    child2.Mutate();
+            foreach (var item in bag)
+            {
+                m_nextGeneration.Add(item);
+            }
 
-                    bag.Add(child1);
-                    bag.Add(child2);
-                });
 
-          foreach (var item in bag)
-	        {
-            m_nextGeneration.Add(item);
-	        }
-           
-       
             if (m_elitism)
                 m_nextGeneration[0] = g;
 
@@ -247,7 +248,7 @@ namespace project
         private Player Enemy;
         private Squad[] AllyArmy;
         private Squad[] EnemyArmy;
-        private int m_battleCount ;
+        private int m_battleCount;
         private int m_currentGeneration = 0;
         private ArrayList m_thisGeneration;
         private ArrayList m_nextGeneration;
@@ -260,30 +261,31 @@ namespace project
             set { m_mapSize = value; }
         }
         static private GAFunction getFitness;
-       
-         
+
+
         double FitnessFunction(Player player)
-         {
-          
-             //Stopwatch sw = new Stopwatch();
-             //sw.Start();
-             int temp = 0;
-             Parallel.For(0, m_battleCount, i =>
-              {
-           
+        {
+
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
+            int temp = 0;
+            Parallel.For(0, m_battleCount, i =>
+             {
+
                  SandBox sb = new SandBox(Enemy, player, EnemyArmy, AllyArmy, m_mapSize);
                  if (sb.Fight(m_currentGeneration))
-                 Interlocked.Add(ref temp,1);
+                     Interlocked.Add(ref temp, 1);
              }
-            );
+           );
 
-             
-             //sw.Stop();
-             //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
-             //sw.Reset();
-             double result = 1 - Math.Abs(m_goalFitness - (double)temp / (double)m_battleCount);
-             return result;
-         }
+
+            //sw.Stop();
+            //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
+            //sw.Reset();
+            player.WinRate = (double)temp / (double)m_battleCount;
+            double result = 1 - Math.Abs(m_goalFitness - (double)temp / (double)m_battleCount);
+            return result;
+        }
 
 
 
@@ -312,7 +314,7 @@ namespace project
             }
         }
 
-  
+
 
         public double CrossoverRate
         {
@@ -337,7 +339,7 @@ namespace project
             }
         }
 
-       
+
 
         /// <summary>
         /// Keep previous generation's fittest individual in place of worst in current
@@ -361,24 +363,25 @@ namespace project
             g.GetValues(ref values);
             fitness = (double)g.Fitness;
         }
-         public Player GetBest()
-            {
-             return ((Player)m_thisGeneration[m_populationSize - 1]);
-            }
-
-        public void GetWorst(out double[] values, out double fitness)
+        public Player GetBest()
         {
-            GetNthGenome(0, out values, out fitness);
+            return ((Player)m_thisGeneration[m_populationSize - 1]);
         }
 
-        public void GetNthGenome(int n, out double[] values, out double fitness)
+        public ArrayList GetLastGeneration()
+        {
+            return m_thisGeneration;
+        }
+
+
+        
+
+        public Player GetNthGenome(int n)
         {
             if (n < 0 || n > m_populationSize - 1)
                 throw new ArgumentOutOfRangeException("n too large, or too small");
-            project.Player g = ((Player)m_thisGeneration[n]);
-            values = new double[g.Length];
-            g.GetValues(ref values);
-            fitness = (double)g.Fitness;
+            return ((Player)m_thisGeneration[n]);
+            
         }
     }
 }

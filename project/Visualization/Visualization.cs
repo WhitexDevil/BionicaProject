@@ -269,7 +269,7 @@ namespace project
 				{
 					Sprite.DrawTakingDamage(g,
 						new PointF(Squad.Position.X * wK, Squad.Position.Y * hK), Size,
-						SideASquad ? 270 : 0, Squad.Amount, Action.Damage, frame);
+						DirectionDegree(Squad.Position, Squads[Action.Squad].Position), Squad.Amount, Action.Damage, frame);
 				}
 				else
 				{

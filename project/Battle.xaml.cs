@@ -89,6 +89,7 @@ namespace project
 					Visualization.DrawFrame(g, Buffer.Width, Buffer.Height, frame);
 					g.Flush();
 					renderedframe = frame;
+					razorPainterWPFCtl1.RazorGFX.DrawImageUnscaled(Buffer, 0, 0);
 				}
 				if (Visualization == null)
 				{
@@ -96,8 +97,8 @@ namespace project
 					var nya = global::project.Properties.Resources.horo_vector_4_by_straywolf;
 					razorPainterWPFCtl1.RazorGFX.DrawImage(nya, 0, razorPainterWPFCtl1.RazorHeight - (nya.Height * razorPainterWPFCtl1.RazorWidth / nya.Width), razorPainterWPFCtl1.RazorWidth, nya.Height * razorPainterWPFCtl1.RazorWidth / nya.Width);
 				}
-				else
-					razorPainterWPFCtl1.RazorGFX.DrawImageUnscaled(Buffer, 0, 0);
+				//else
+				//	razorPainterWPFCtl1.RazorGFX.DrawImageUnscaled(Buffer, 0, 0);
 				if ((Buffer.Width != razorPainterWPFCtl1.RazorWidth || Buffer.Height != razorPainterWPFCtl1.RazorHeight) && (
 					razorPainterWPFCtl1.RazorWidth > 0 && razorPainterWPFCtl1.RazorWidth < 10000 &&
 					razorPainterWPFCtl1.RazorHeight > 0 && razorPainterWPFCtl1.RazorHeight < 10000

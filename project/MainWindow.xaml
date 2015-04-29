@@ -4,7 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Load="clr-namespace:LoadingControl.Control"
         xmlns:local="clr-namespace:project"
-
+        
         Title="MainWindow" Height="350" Width="525" WindowState="Maximized" Loaded="SetUpWindow">
     <Grid Margin="10,0,0,0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" x:Name="root">
         <Grid.RowDefinitions>
@@ -20,6 +20,6 @@
         <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="169,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <Button x:Name="Animate" Content="Animate" Margin="89,0,0,10" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
         <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}"/>
-     
+        
     </Grid>
 </Controls:MetroWindow>

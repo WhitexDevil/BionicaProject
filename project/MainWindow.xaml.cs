@@ -21,8 +21,7 @@ namespace project
 
     public partial class MainWindow
     {
-        UserControlInt sd = new UserControlInt();
-        sd.
+       
         GA ga;
         Player enemy;
         GeneralPrototype generalPrototype;

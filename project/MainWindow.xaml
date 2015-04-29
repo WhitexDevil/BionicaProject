@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Load="clr-namespace:LoadingControl.Control"
         xmlns:local="clr-namespace:project"
+                      xmlns:lol="clr-namespace:project.Controls"
         x:Name="main"
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="MainWindow" WindowState="Maximized" Loaded="SetUpWindow" SizeChanged="SetUpWindow"  MinHeight="500" MinWidth="888" WindowStartupLocation="CenterScreen">
@@ -23,8 +24,8 @@
         <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}"/>
         <Grid Width="20" Height="Auto" HorizontalAlignment="Right" Grid.RowSpan="2" MouseEnter="Grid_MouseEnter" Background="{DynamicResource AccentColorBrush}"/>
         <Controls:FlyoutsControl Grid.RowSpan="2" Background="Black">
-            <Controls:Flyout Position="Right"   Width="300" IsOpen="False" VerticalAlignment="Top" x:Name="rightControl" Background="{DynamicResource AccentColorBrush}">
-                
+            <Controls:Flyout  Position="Right"   Width="500" IsOpen="False" VerticalAlignment="Top" x:Name="rightControl" Background="{DynamicResource AccentColorBrush}">
+                <lol:GenegalOption x:Name="GeneralOption" HorizontalAlignment="Center" />
             </Controls:Flyout>
         </Controls:FlyoutsControl>
     </Grid>

@@ -34,10 +34,8 @@ namespace project
 
         private void AllCalculations()
         {
-            general.Agr = 0.9;
-            general.Wair = 0.5;
-            general.Perc = 0.7;
-            general.Prd = 0.8;
+
+            
             
 			#region Horse
             RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
@@ -97,7 +95,7 @@ namespace project
 
             }
 			#endregion
-			var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, true);
+			var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, false);
 
 			#region Soldier
             RectangleF[][][] Animations2 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
@@ -329,7 +327,7 @@ namespace project
             enemy = new Player(new double[4] { general.Agr, general.Wair, general.Perc, general.Prd });
 
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
-			Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpritePhoenix, SideBSprite = gSpriteSoldier };
+            Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
             Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteArcher, SideBSprite = gSpriteArcher };
 
             int n = 4;
@@ -350,14 +348,14 @@ namespace project
 
             Stopwatch sw = Stopwatch.StartNew();
 
-            ga = new GA(enemy, army, mapSize: 16);
+            ga = new GA(enemy, army, mapSize: 32);
             ga.Go();
 
             sw.Stop();
 
             // System.Windows.MessageBox.Show("Genetic algorithm has finished in " + sw.Elapsed.TotalSeconds.ToString());
 
-            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 16) { Visualization = true };
+            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 32) { Visualization = true };
             v = sb.BattleData.Visualization;
             sb.Fight(1);
             v.SetTime(0);
@@ -366,7 +364,10 @@ namespace project
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            general.Agr = GeneralOption.Agr.Slider1.Value;
+            general.Wair = GeneralOption.Wair.Slider1.Value;
+            general.Perc = GeneralOption.Per.Slider1.Value;
+            general.Prd = GeneralOption.Prd.Slider1.Value;
             //LoadingAnimation loading = new LoadingAnimation();
             //loading.VerticalAlignment = VerticalAlignment.Center;
             //loading.HorizontalAlignment = HorizontalAlignment.Left;

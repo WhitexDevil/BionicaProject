@@ -59,10 +59,10 @@
 			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textBox1.ForeColor = System.Drawing.Color.Red;
-			this.textBox1.Location = new System.Drawing.Point(806, 70);
+			this.textBox1.Location = new System.Drawing.Point(790, 70);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(134, 448);
+			this.textBox1.Size = new System.Drawing.Size(134, 447);
 			this.textBox1.TabIndex = 1;
 			this.textBox1.Text = "Change values with mouse scroll! Try it!";
 			this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
@@ -75,7 +75,7 @@
 			// button1
 			// 
 			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button1.Location = new System.Drawing.Point(725, 495);
+			this.button1.Location = new System.Drawing.Point(709, 494);
 			this.button1.Name = "button1";
 			this.button1.Size = new System.Drawing.Size(75, 23);
 			this.button1.TabIndex = 2;
@@ -86,7 +86,7 @@
 			// button2
 			// 
 			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button2.Location = new System.Drawing.Point(12, 464);
+			this.button2.Location = new System.Drawing.Point(12, 463);
 			this.button2.Name = "button2";
 			this.button2.Size = new System.Drawing.Size(88, 23);
 			this.button2.TabIndex = 3;
@@ -98,16 +98,16 @@
 			// 
 			this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.trackBar1.Location = new System.Drawing.Point(156, 464);
+			this.trackBar1.Location = new System.Drawing.Point(156, 463);
 			this.trackBar1.Name = "trackBar1";
-			this.trackBar1.Size = new System.Drawing.Size(644, 45);
+			this.trackBar1.Size = new System.Drawing.Size(628, 45);
 			this.trackBar1.TabIndex = 5;
 			this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
 			// 
 			// button3
 			// 
 			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button3.Location = new System.Drawing.Point(12, 495);
+			this.button3.Location = new System.Drawing.Point(12, 494);
 			this.button3.Name = "button3";
 			this.button3.Size = new System.Drawing.Size(55, 23);
 			this.button3.TabIndex = 6;
@@ -120,11 +120,11 @@
 			this.trackBar2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.trackBar2.LargeChange = 100;
-			this.trackBar2.Location = new System.Drawing.Point(163, 495);
+			this.trackBar2.Location = new System.Drawing.Point(163, 494);
 			this.trackBar2.Maximum = 1000;
 			this.trackBar2.Minimum = 1;
 			this.trackBar2.Name = "trackBar2";
-			this.trackBar2.Size = new System.Drawing.Size(556, 45);
+			this.trackBar2.Size = new System.Drawing.Size(540, 45);
 			this.trackBar2.SmallChange = 10;
 			this.trackBar2.TabIndex = 7;
 			this.trackBar2.TickFrequency = 100;
@@ -138,8 +138,8 @@
 			// 
 			// button4
 			// 
-			this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.button4.Location = new System.Drawing.Point(806, 12);
+			this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.button4.Location = new System.Drawing.Point(790, 12);
 			this.button4.Name = "button4";
 			this.button4.Size = new System.Drawing.Size(134, 23);
 			this.button4.TabIndex = 8;
@@ -151,7 +151,7 @@
 			// 
 			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(73, 501);
+			this.label1.Location = new System.Drawing.Point(73, 500);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(84, 13);
 			this.label1.TabIndex = 9;
@@ -161,7 +161,7 @@
 			// 
 			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(106, 470);
+			this.label2.Location = new System.Drawing.Point(106, 469);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(44, 13);
 			this.label2.TabIndex = 10;
@@ -182,8 +182,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.pictureBox2);
-			this.splitContainer1.Size = new System.Drawing.Size(788, 446);
-			this.splitContainer1.SplitterDistance = 365;
+			this.splitContainer1.Size = new System.Drawing.Size(772, 445);
+			this.splitContainer1.SplitterDistance = 357;
 			this.splitContainer1.SplitterWidth = 10;
 			this.splitContainer1.TabIndex = 11;
 			// 
@@ -196,7 +196,7 @@
 			this.pictureBox1.InitialImage = null;
 			this.pictureBox1.Location = new System.Drawing.Point(0, 0);
 			this.pictureBox1.Name = "pictureBox1";
-			this.pictureBox1.Size = new System.Drawing.Size(365, 446);
+			this.pictureBox1.Size = new System.Drawing.Size(357, 445);
 			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox1.TabIndex = 1;
 			this.pictureBox1.TabStop = false;
@@ -211,7 +211,7 @@
 			this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
 			this.pictureBox2.Location = new System.Drawing.Point(0, 0);
 			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(413, 446);
+			this.pictureBox2.Size = new System.Drawing.Size(405, 445);
 			this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pictureBox2.TabIndex = 1;
 			this.pictureBox2.TabStop = false;
@@ -222,7 +222,7 @@
 			// button5
 			// 
 			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.button5.Location = new System.Drawing.Point(806, 41);
+			this.button5.Location = new System.Drawing.Point(790, 41);
 			this.button5.Name = "button5";
 			this.button5.Size = new System.Drawing.Size(134, 23);
 			this.button5.TabIndex = 12;
@@ -234,7 +234,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(952, 530);
+			this.ClientSize = new System.Drawing.Size(936, 529);
 			this.Controls.Add(this.button5);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.label2);

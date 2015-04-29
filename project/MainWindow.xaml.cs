@@ -52,9 +52,6 @@ namespace project
 			//}
 		}
 
-		private void AllCalculations()
-		{
-
             
         private void AllCalculations()
             {
@@ -69,8 +66,8 @@ namespace project
             Battle.Visualization = v;
             Battle.Frame = 0;
                         }
-        private async void Button_Click(object sender, RoutedEventArgs e)
-                        {
+        private  async void Button_Click(object sender, RoutedEventArgs e)
+        {
            // fly.IsEnabled = false;
 
             rightControl.IsOpen = false;
@@ -107,41 +104,15 @@ namespace project
                 goalFitness:WintRate,
                 battleCount: BattleCount);
 
-            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 32) { Visualization = true };
-            v = sb.BattleData.Visualization;
-            sb.Fight(1);
-            v.SetTime(0);
-            Battle.Visualization = v;
-            Battle.Frame = 0;
-        }
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            general.Agr = GeneralOption.Agr.Slider1.Value;
-            general.Wair = GeneralOption.Wair.Slider1.Value;
-            general.Perc = GeneralOption.Per.Slider1.Value;
-            general.Prd = GeneralOption.Prd.Slider1.Value;
-            //LoadingAnimation loading = new LoadingAnimation();
-            //loading.VerticalAlignment = VerticalAlignment.Center;
-            //loading.HorizontalAlignment = HorizontalAlignment.Left;
-            //root.Children.Add(loading);
-            Reset.IsEnabled = false;
-            Start.IsEnabled = false;
-            loading.IsActive = true;
             await Task.Run(() =>
             {
                 AllCalculations();
             });
-        
             loading.IsActive = false;
-            Start.IsEnabled = true;
-            TimeSlider.IsEnabled = true;
             Animate.IsEnabled = true;
             Reset.IsEnabled = true;
+            Battle.Visibility = Visibility.Visible;
         }
-
-
-
-
 
 
         Visualization v;
@@ -151,23 +122,23 @@ namespace project
         private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double d = TimeSlider.Maximum;
-			SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * Visualization.BattleLength / TimeSlider.Maximum)).ToString();
+            SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * v.BattleLength / TimeSlider.Maximum)).ToString();
             Task.Run(() =>
             {
                 Battle.SetTimeAndFrame(
-					((int)(e.NewValue * Visualization.BattleLength / d)),
-					(float)(e.NewValue * Visualization.BattleLength * 60 / d) % 60);
+					((int)(e.NewValue * v.BattleLength / d)),
+					(float)(e.NewValue * v.BattleLength * 60 / d) % 60);
 				Dispatcher.Invoke((Action)(() =>
 				{
-					lock (Visualization.BattleLog)
-						BattleLog.Text = String.Join(String.Empty, Visualization.BattleLog);
+					lock (v.BattleLog)
+						BattleLog.Text = String.Join(String.Empty, v.BattleLog);
 					BattleLog.ScrollToEnd();
 				}));
             });
         }
 
 		DispatcherTimer Animator = new DispatcherTimer();
-        private async void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 			fly.IsEnabled = false;
 			rightControl.IsOpen = false;

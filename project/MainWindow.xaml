@@ -25,7 +25,7 @@
         <Button x:Name="Reset" IsEnabled="False" Content="Reset" Margin="169,0,0,10"  Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_2" Grid.ColumnSpan="2"/>
         <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Margin="88,159,120,159" Grid.Column="1"/>
         <Grid x:Name="fly" Width="20" Height="Auto" HorizontalAlignment="Right" Grid.RowSpan="2" MouseEnter="Grid_MouseEnter" Background="{DynamicResource AccentColorBrush}" Grid.Column="2"/>
-        <TextBox  TextWrapping="Wrap" Text="TextBox" Margin="60,10,31,20" Grid.Column="2"/>
+        <TextBox  x:Name="BattleLog" TextWrapping="Wrap" Text="TextBox" Margin="60,10,31,20" Grid.Column="2"/>
         <Controls:FlyoutsControl Grid.RowSpan="2" Background="Black" Margin="-21,0,0,0" Grid.ColumnSpan="3">
             <Controls:Flyout   Position="Right"   Width="Auto" IsOpen="False" VerticalAlignment="Top" x:Name="rightControl" Background="{DynamicResource AccentColorBrush}">
                 <Grid>
@@ -36,18 +36,5 @@
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
-
-      <Grid Margin="10">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <local:Battle x:Name="Battle" Margin="10" Grid.Column="1"/>
-            <TextBox x:Name="BattleLog" Margin="10" TextWrapping="Wrap"/>
-            <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Grid.Column="1" Margin="0"/>
-        </Grid>
     </Grid>
 </Controls:MetroWindow>

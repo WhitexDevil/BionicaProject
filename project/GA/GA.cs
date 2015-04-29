@@ -281,7 +281,8 @@ namespace project
              //sw.Stop();
              //System.Windows.MessageBox.Show(sw.Elapsed.TotalMilliseconds.ToString());
              //sw.Reset();
-             return (double)temp / (double)m_battleCount;
+             double result = 1 - Math.Abs(m_goalFitness - (double)temp / (double)m_battleCount);
+             return result;
          }
 
 

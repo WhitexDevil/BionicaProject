@@ -2,12 +2,12 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Effects;
+using Teske.WPF.Effects;
 using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace project
 {
@@ -32,14 +32,30 @@ namespace project
 		public MainWindow()
 		{
 			InitializeComponent();
-
+			Animator.Tick += Animator_Tick;
 		}
+
+		void Animator_Tick(object sender, EventArgs e)
+		{
+			TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			if (TimeSlider.Value == TimeSlider.Maximum)
+			{
+				Animator.IsEnabled = false;
+			}
+		}
+
+		void Animator_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			//TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			//if (TimeSlider.Value == TimeSlider.Maximum) { 
+			//	Animator.Enabled = false; 
+			//}
+		}
+
 		private void AllCalculations()
 		{
-			general.Agr = 0.9;
-			general.Wair = 0.5;
-			general.Perc = 0.7;
-			general.Prd = 0.8;
+
+
 
 			#region Horse
 			RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
@@ -331,7 +347,7 @@ namespace project
 			enemy = new Player(new double[4] { general.Agr, general.Wair, general.Perc, general.Prd });
 
 			Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
-			Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpritePhoenix, SideBSprite = gSpriteSoldier };
+			Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
 			Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteArcher, SideBSprite = gSpriteArcher };
 
 			int n = 4;
@@ -352,43 +368,45 @@ namespace project
 
 			Stopwatch sw = Stopwatch.StartNew();
 
-			ga = new GA(enemy, army, mapSize: 16);
+			ga = new GA(enemy, army, mapSize: 32);
 			ga.Go();
 
 			sw.Stop();
 
 			// System.Windows.MessageBox.Show("Genetic algorithm has finished in " + sw.Elapsed.TotalSeconds.ToString());
 
-			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 16) { Visualization = true };
-			v = sb.BattleData.Visualization;
+			SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 32) { Visualization = true };
+			Visualization = sb.BattleData.Visualization;
 			sb.Fight(1);
-			v.SetTime(0);
+			Visualization.SetTime(0);
 			//Dispatcher.Invoke((Action)(()=>
 			//BattleLog.DataContext = v.BattleLog));
-			Battle.Visualization = v;
-			Battle.Frame = 0;
+			Battle.Visualization = Visualization;
+			Battle.Frame = -1;
 		}
 		private async void Button_Click(object sender, RoutedEventArgs e)
 		{
-
+			general.Agr = GeneralOption.Agr.Slider1.Value;
+			general.Wair = GeneralOption.Wair.Slider1.Value;
+			general.Perc = GeneralOption.Per.Slider1.Value;
+			general.Prd = GeneralOption.Prd.Slider1.Value;
 			//LoadingAnimation loading = new LoadingAnimation();
 			//loading.VerticalAlignment = VerticalAlignment.Center;
 			//loading.HorizontalAlignment = HorizontalAlignment.Left;
 			//root.Children.Add(loading);
+			Reset.IsEnabled = false;
 			Start.IsEnabled = false;
-			Battle.Visibility = System.Windows.Visibility.Hidden;
 			loading.IsActive = true;
 			await Task.Run(() =>
 			{
 				AllCalculations();
 			});
 			//root.Children.Remove(loading);
-			Battle.Visibility = System.Windows.Visibility.Visible;
 			loading.IsActive = false;
 			Start.IsEnabled = true;
 			TimeSlider.IsEnabled = true;
 			Animate.IsEnabled = true;
-
+			Reset.IsEnabled = true;
 		}
 
 
@@ -427,7 +445,7 @@ namespace project
 		//}
 
 
-		Visualization v;
+		Visualization Visualization;
 		//BitmapImage BitmapToImageSource(Bitmap bitmap)
 		//{
 		//	using (MemoryStream memory = new MemoryStream())
@@ -445,32 +463,47 @@ namespace project
 		//}
 		//Bitmap b;
 
+
 		private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
 		{
 			double d = TimeSlider.Maximum;
-			SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * v.BattleLength / TimeSlider.Maximum)).ToString();
+			SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * Visualization.BattleLength / TimeSlider.Maximum)).ToString();
 			Task.Run(() =>
 			{
 				Battle.SetTimeAndFrame(
-					((int)(e.NewValue * v.BattleLength / d)),
-					(float)(e.NewValue * v.BattleLength * 60 / d) % 60);
-				Dispatcher.BeginInvoke((Action)(() =>
+					((int)(e.NewValue * Visualization.BattleLength / d)),
+					(float)(e.NewValue * Visualization.BattleLength * 60 / d) % 60);
+				Dispatcher.Invoke((Action)(() =>
 				{
-					lock (v.BattleLog)
-						BattleLog.Text = String.Join(String.Empty, v.BattleLog);
+					lock (Visualization.BattleLog)
+						BattleLog.Text = String.Join(String.Empty, Visualization.BattleLog);
 					BattleLog.ScrollToEnd();
 				}));
 			});
 		}
 
+		DispatcherTimer Animator = new DispatcherTimer();
 		private async void Button_Click_1(object sender, RoutedEventArgs e)
 		{
-
-			while (TimeSlider.Value < TimeSlider.Maximum)
+			fly.IsEnabled = false;
+			rightControl.IsOpen = false;
+			if ((string)Animate.Content == "Animate")
 			{
-				TimeSlider.Value += TimeSlider.Maximum * 0.00005;
-				await Task.Delay(1);
+				Animate.Content = "Stop";
+				Animator.IsEnabled = true;
 			}
+			else
+			{
+				Animate.Content = "Animate";
+				Animator.IsEnabled = false;
+			}
+
+			//while (TimeSlider.Value < TimeSlider.Maximum && Battle.IsVisible)
+			//{
+			//	TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			//	await Task.Delay(5);
+			//}
+
 		}
 
 
@@ -480,6 +513,36 @@ namespace project
 			TimeSlider.IsEnabled = false;
 			Battle.Width = Battle.ActualHeight;
 		}
+
+		private void SetUpWindow(object sender, SizeChangedEventArgs e)
+		{
+			if (main.Width > main.Height)
+			{
+				Battle.Width = main.Height * 0.85;
+				Battle.Height = main.Height * 0.85;
+			}
+			else
+			{
+				Battle.Width = main.Width * 0.85;
+				Battle.Height = main.Width * 0.85;
+			}
+		}
+
+		private void Grid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+		{
+			rightControl.IsOpen = true;
+
+		}
+
+		private void Button_Click_2(object sender, RoutedEventArgs e)
+		{
+			TimeSlider.Value = TimeSlider.Maximum;
+			Battle.Frame = -1;
+			fly.IsEnabled = true;
+			TimeSlider.Value = 0;
+		}
+
+
 
 		//private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
 		//{
@@ -497,7 +560,6 @@ namespace project
 		//	l.Y1 = Y1;
 		//	l.Y2 = Y2;
 		//}
-
 
 	}
 }

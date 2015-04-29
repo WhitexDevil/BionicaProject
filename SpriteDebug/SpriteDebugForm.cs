@@ -192,13 +192,11 @@ namespace WindowsFormsApplication1
 			{
 				if (button2.Text == "Unfreeze Sample")
 				{
-					pictureBox1.Refresh();
 					Freezed = null;
 					button2.Text = "Freeze Sample";
 				}
 				else if (pictureBox1.Image != null)
 				{
-					pictureBox1.Refresh();
 					Freezed = pictureBox1.Image.ChangeOpacity(0.5F);
 					button2.Text = "Unfreeze Sample";
 				}

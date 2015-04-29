@@ -83,7 +83,7 @@ namespace project
             m_mutationRate = mutationRate;
             m_crossoverRate = crossoverRate;
             m_goalFitness = goalFitness;
-            m_populationSize = populationSize;
+            m_populationSize = populationSize + populationSize%2;
             m_generationSize = generationSize;
                       // m_strFitness = "";
             Enemy = enemy;

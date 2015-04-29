@@ -8,7 +8,7 @@
              d:DesignHeight="80" d:DesignWidth="280">
     <Grid>
         <Slider  x:Name="Slider1" HorizontalAlignment="Left" Margin="10,40,10,0" Width="260" Maximum="100" Minimum="1" ValueChanged="Slider1_ValueChanged"/>
-        <Label  x:Name="LabelSlider1"   HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top" Height="30" Width="45" RenderTransformOrigin="1.039,0.682"/>
+        <Label  x:Name="LabelSlider1"   HorizontalAlignment="Left" Margin="228,10,0,0" VerticalAlignment="Top" Height="30" Width="45" RenderTransformOrigin="1.039,0.682" Content="1"/>
         <Label  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="30" Width="178" Content="{Binding yProp, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:UserControlInt}}}"/>
 
     </Grid>

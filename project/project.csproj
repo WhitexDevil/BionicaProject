@@ -113,6 +113,7 @@
     <Compile Include="AI\AI.cs" />
     <Compile Include="AI\Strategies\Strategies.cs" />
     <Compile Include="Army\Unit.cs" />
+    <Compile Include="SpriteInit.cs" />
     <Compile Include="Visualization\Sprite.cs" />
     <Compile Include="Visualization\Visualization.cs" />
     <Page Include="Battle.xaml">

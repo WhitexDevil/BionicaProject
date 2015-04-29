@@ -1,11 +1,13 @@
-﻿<Controls:MetroWindow x:Class="project.MainWindow"
+﻿<Controls:MetroWindow
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Load="clr-namespace:LoadingControl.Control"
         xmlns:local="clr-namespace:project"
         
-        Title="MainWindow" Height="350" Width="525" WindowState="Maximized" Loaded="SetUpWindow">
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="project.MainWindow"
+        
+        Title="MainWindow" Height="456" Width="656" WindowState="Maximized" Loaded="SetUpWindow">
     <Grid Margin="10,0,0,0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -15,11 +17,20 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button x:Name="Start" Content="Start" Margin="10,0,0,10" Click="Button_Click" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1"/>
-        <local:Battle x:Name="Battle" Margin="89,10,125,10"/>
-        <Slider x:Name="TimeSlider" Margin="257,0,10,10" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01" Width="Auto" Style="{DynamicResource FlatSlider}" BorderBrush="#FF3F3F46"/>
-        <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="169,4,0,0" VerticalAlignment="Top" Grid.Row="1"/>
-        <Button x:Name="Animate" Content="Animate" Margin="89,0,0,10" RenderTransformOrigin="-2.624,1.809" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="75" Grid.Row="1" Click="Button_Click_1"/>
-        <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Left" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}"/>
-        
+        <Slider x:Name="TimeSlider" Margin="261,0,10,12" VerticalAlignment="Bottom" Grid.Row="1" Height="18" ValueChanged="TimeSlider_ValueChanged" Maximum="100" SmallChange="0.01" Width="Auto" Style="{DynamicResource FlatSlider}" BorderBrush="#FF3F3F46"/>
+        <Label x:Name="SubTurnLabel" Content="Label: 0" HorizontalAlignment="Left" Margin="175,4,0,0" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1"/>
+        <Button x:Name="Animate" Content="Animate" Margin="95,7,0,10" RenderTransformOrigin="-2.624,1.809" Grid.Row="1" Click="Button_Click_1" Grid.Column="0" HorizontalAlignment="Left" Width="75"/>
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <local:Battle x:Name="Battle" Margin="10" Grid.Column="1"/>
+            <TextBox x:Name="BattleLog" Margin="10" TextWrapping="Wrap" d:IsLocked="True"/>
+            <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Grid.Column="1" Margin="0" d:IsLocked="True"/>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

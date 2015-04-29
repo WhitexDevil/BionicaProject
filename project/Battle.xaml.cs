@@ -121,6 +121,7 @@ namespace project
 				}
 				if (frame == this.RequestedFrame) return;
 				this.RequestedFrame = frame;
+				if (FPS < 60) Delay = 0;
 			}
 		}
 		private int time;
@@ -143,6 +144,7 @@ namespace project
 		public Battle()
 		{
 			InitializeComponent();
+
 		}
 
 		private Visualization visualization;
@@ -160,10 +162,10 @@ namespace project
 
 		private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
 		{
-			if ((bool)e.NewValue)
-				Init();
-			else
-				Dispose();
+			//if ((bool)e.NewValue)
+			//	Init();
+			//else
+			//	Dispose();
 		}
 
 

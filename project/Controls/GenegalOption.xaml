@@ -12,6 +12,8 @@
         <local:UserControl1 x:Name="Wair" MyProp="Wairness" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
         <local:UserControl1 x:Name="Per" MyProp="Perception" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
         <local:UserControl1 x:Name="Prd" MyProp="Pride: " HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
+        <Label Content="Teacher Charecteristic"  Margin="89,0,85,0" VerticalAlignment="Top" Width="Auto
+               "/>
 
     </Grid>
 </UserControl>

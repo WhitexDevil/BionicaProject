@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\FlyoutStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\LabelControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -75,7 +75,7 @@ namespace project
             Simulate.IsEnabled = false;
             Reset.IsEnabled = false;
             Start.IsEnabled = false;
-            loading.IsActive = false;
+            loading.IsActive = true;
 
             int n = 4;
             army = new Squad[3 * n];

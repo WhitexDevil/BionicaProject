@@ -2,12 +2,10 @@
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using System.Windows.Media.Effects;
+using Teske.WPF.Effects;
 
 namespace project
 {
@@ -33,6 +31,7 @@ namespace project
         {
             InitializeComponent();
         }
+
         private void AllCalculations()
         {
             general.Agr = 0.9;
@@ -372,6 +371,7 @@ namespace project
             //loading.VerticalAlignment = VerticalAlignment.Center;
             //loading.HorizontalAlignment = HorizontalAlignment.Left;
             //root.Children.Add(loading);
+
             Start.IsEnabled = false;
             loading.IsActive = true;
             await Task.Run(() =>
@@ -468,6 +468,27 @@ namespace project
             TimeSlider.IsEnabled = false;
             Battle.Width = Battle.ActualHeight;
         }
+
+        private void SetUpWindow(object sender, SizeChangedEventArgs e)
+        {
+            if (main.Width > main.Height)
+            {
+                Battle.Width = main.Height * 0.85;
+                Battle.Height = main.Height * 0.85;
+            }
+            else
+            {
+                Battle.Width = main.Width * 0.85;
+                Battle.Height = main.Width * 0.85;
+            }
+        }
+
+        private void Grid_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            rightControl.IsOpen = true;
+         
+        }
+
 
         //private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         //{

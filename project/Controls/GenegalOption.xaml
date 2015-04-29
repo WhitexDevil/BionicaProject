@@ -8,10 +8,10 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
 
-        <local:UserControl1 Name="Agr" MyProp="Agression" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <local:UserControl1 Name="Wair" MyProp="Wairness" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
-        <local:UserControl1 Name="Per" MyProp="Perception" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
-        <local:UserControl1 Name="Prd" MyProp="Pride: " HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
+        <local:UserControl1 x:Name="Agr" MyProp="Agression" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <local:UserControl1 x:Name="Wair" MyProp="Wairness" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"/>
+        <local:UserControl1 x:Name="Per" MyProp="Perception" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top"/>
+        <local:UserControl1 x:Name="Prd" MyProp="Pride: " HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </UserControl>

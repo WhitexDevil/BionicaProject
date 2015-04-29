@@ -371,7 +371,7 @@ namespace project
             //loading.VerticalAlignment = VerticalAlignment.Center;
             //loading.HorizontalAlignment = HorizontalAlignment.Left;
             //root.Children.Add(loading);
-
+            Reset.IsEnabled = false;
             Start.IsEnabled = false;
             loading.IsActive = true;
             await Task.Run(() =>
@@ -383,6 +383,8 @@ namespace project
             Start.IsEnabled = true;
             TimeSlider.IsEnabled = true;
             Animate.IsEnabled = true;
+            Reset.IsEnabled = true;
+            Battle.Visibility = Visibility.Visible;
         }
 
 
@@ -453,12 +455,16 @@ namespace project
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            fly.IsEnabled = false;
 
-            while (TimeSlider.Value < TimeSlider.Maximum)
-            {
-                TimeSlider.Value += TimeSlider.Maximum * 0.00005;
-                await Task.Delay(1);
-            }
+                rightControl.IsOpen = false;
+               
+                while (TimeSlider.Value < TimeSlider.Maximum)
+                {
+                    TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+                    await Task.Delay(5);
+                }
+
         }
 
 
@@ -487,6 +493,13 @@ namespace project
         {
             rightControl.IsOpen = true;
          
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Battle.Visibility = Visibility.Hidden;
+            fly.IsEnabled = true;
+            TimeSlider.Value = 0;
         }
 
 

@@ -29,8 +29,8 @@ namespace project
             m_populationSize = 2;
             m_generationSize = 1;
             m_battleCount = 1;
-            m_strFitness = "";
-            m_genomeSize = 4;
+            m_goalFitness = 1;
+           
           
             
 
@@ -50,11 +50,11 @@ namespace project
             Squad[] Army,
             double crossoverRate = 0.8,
             double mutationRate = 0.05,
+            double goalFitness = 0.9,
             int populationSize = 2,
             int generationSize = 2,
-            int genomeSize = 4,
             int battleCount = 5 ,
-            int mapSize=64):this(enemy,Army,Army,crossoverRate,mutationRate, populationSize,generationSize,genomeSize,battleCount,mapSize){}
+            int mapSize=64):this(enemy,Army,Army,crossoverRate,mutationRate,goalFitness, populationSize,generationSize,battleCount,mapSize){}
 
         /// <summary>
         /// Sets different army to each side;
@@ -73,32 +73,28 @@ namespace project
             Squad[] allyArmy,
             double crossoverRate = 0.8,
             double mutationRate = 0.05,
+            double goalFitness = 0.9,
             int populationSize = 2,
             int generationSize =2,
-            int genomeSize=4,
             int battleCount = 5,
             int mapSize = 64)
         {
             InitialValues();
             m_mutationRate = mutationRate;
             m_crossoverRate = crossoverRate;
+            m_goalFitness = goalFitness;
             m_populationSize = populationSize;
             m_generationSize = generationSize;
-            m_genomeSize = genomeSize;
-           // m_strFitness = "";
-              Enemy = enemy;
-              AllyArmy = allyArmy;
+                      // m_strFitness = "";
+            Enemy = enemy;
+            AllyArmy = allyArmy;
             EnemyArmy = enemyArmy;
             m_battleCount = battleCount;
             m_mapSize = mapSize;
        
         }
 
-        public GA(int genomeSize)
-        {
-            InitialValues();
-            m_genomeSize = genomeSize;
-        }
+    
 
 
         public void InitialValues()
@@ -114,9 +110,7 @@ namespace project
         {
            
           
-            if (m_genomeSize == 0)
-                throw new IndexOutOfRangeException("Genome size not set");
-
+     
             //  Create the fitness table.
             m_fitnessTable = new ArrayList();
             m_thisGeneration = new ArrayList(m_generationSize);
@@ -247,9 +241,8 @@ namespace project
         private double m_crossoverRate;
         private int m_populationSize;
         private int m_generationSize;
-        private int m_genomeSize;
         private double m_totalFitness;
-        private string m_strFitness;
+        private double m_goalFitness;
         private bool m_elitism;
         private Player Enemy;
         private Squad[] AllyArmy;
@@ -318,17 +311,7 @@ namespace project
             }
         }
 
-        public int GenomeSize
-        {
-            get
-            {
-                return m_genomeSize;
-            }
-            set
-            {
-                m_genomeSize = value;
-            }
-        }
+  
 
         public double CrossoverRate
         {
@@ -353,17 +336,7 @@ namespace project
             }
         }
 
-        public string FitnessFile
-        {
-            get
-            {
-                return m_strFitness;
-            }
-            set
-            {
-                m_strFitness = value;
-            }
-        }
+       
 
         /// <summary>
         /// Keep previous generation's fittest individual in place of worst in current

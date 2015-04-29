@@ -7,7 +7,8 @@
              d:DesignHeight="81.203" d:DesignWidth="300">
     <Grid Margin="0,0,0,10">
         <Slider  Name="Slider1" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Width="280"/>
-        <Label Name="LabelSlider1" Content="{Binding ElementName=Slider1, Path=Value}"  HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="29" Width="104"/>
+        <Label Name="LabelSlider1" Content="{Binding ElementName=Slider1, Path=Value}"  HorizontalAlignment="Left" Margin="68,10,0,0" VerticalAlignment="Top" Height="29" Width="104"/>
+        <Label Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="24" Width="53"/>
 
     </Grid>
 </UserControl>

@@ -39,7 +39,7 @@ namespace project
             general.Wair = 0.5;
             general.Perc = 0.7;
             general.Prd = 0.8;
-
+            
 			#region Horse
             RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
             for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)

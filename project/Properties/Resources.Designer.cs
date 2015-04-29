@@ -123,9 +123,9 @@ namespace project.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap horo_vector_4_by_straywolf {
+        internal static System.Drawing.Bitmap horo_vector_4_by_straywolf2 {
             get {
-                object obj = ResourceManager.GetObject("horo_vector_4_by_straywolf", resourceCulture);
+                object obj = ResourceManager.GetObject("horo_vector_4_by_straywolf2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

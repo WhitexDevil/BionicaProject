@@ -136,13 +136,13 @@
   <data name="MyHorseman1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\MyHorseman1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="horo_vector_4_by_straywolf" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\horo-vector-4-by-straywolf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Archer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\archer.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_41843" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\41843.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="horo_vector_4_by_straywolf2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\horo-vector-4-by-straywolf2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

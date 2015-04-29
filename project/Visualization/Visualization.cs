@@ -56,7 +56,8 @@ namespace project
 		BattleData BD;
 		List<List<Action>> Turns = new List<List<Action>>();
 		List<Action> Timeline = new List<Action>();
-		public List<string> BattleLog = new List<string>();
+
+		public List<string> BattleLog { get; set; }
 
 		private int turn;
 
@@ -89,6 +90,7 @@ namespace project
 		public Visualization(BattleData battleData)
 		{
 			InitZeroState(battleData);
+			BattleLog = new List<string>();
 		}
 
 		private int FindIndex(Squad squad)
@@ -154,6 +156,11 @@ namespace project
 		}
 
 
+		private int ToArmyIndex(int index)
+		{
+			return index >= BD.AllyArmy.Length ? index - BD.AllyArmy.Length : index;
+		}
+
 		public void SetTime(int subturn)
 		{
 			if (subturn < Subturn || subturn == 0)
@@ -163,7 +170,7 @@ namespace project
 				Subturn = 0;
 				SubturnRelative = 0;
 				Turn = 0;
-				BattleLog.Clear();
+				lock (BattleLog) BattleLog.Clear();
 			}
 			for (int t = Subturn; t < Math.Min(subturn, Timeline.Count - 1); t++)
 			{
@@ -174,15 +181,15 @@ namespace project
 				{
 					case ActionType.Attack:
 						Squads[Timeline[t].Target].Amount -= Timeline[t].Damage;
-						BattleLog.Add(String.Format("Отряд #{0} атакует отряд {1} и наносит {2} урона",
-							Timeline[t].Squad, Timeline[t].Target, Timeline[t].Damage));
+						lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} атакует отряд {1} и наносит {2} урона\r\n",
+							ToArmyIndex(Timeline[t].Squad), ToArmyIndex(Timeline[t].Target), Timeline[t].Damage));
 						if (!Squads[Timeline[t].Target].Alive)
-							BattleLog.Add(String.Format("Отряд #{0} погибает", Timeline[t].Target));
+							lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} погибает\r\n", ToArmyIndex(Timeline[t].Target)));
 						break;
 					case ActionType.Move:
 						Squads[Timeline[t].Squad].Position = Timeline[t].Path.First();
-						BattleLog.Add(String.Format("Отряд #{0} идет в точку {1}:{2}",
-							Timeline[t].Squad, Timeline[t].Path.First().X, Timeline[t].Path.First().X));
+						lock (BattleLog) BattleLog.Add(String.Format("Отряд #{0} идет в точку {1}:{2}\r\n",
+							ToArmyIndex(Timeline[t].Squad), Timeline[t].Path.First().X, Timeline[t].Path.First().X));
 						break;
 				}
 
@@ -192,7 +199,7 @@ namespace project
 				{
 					SubturnRelative = 0;
 					Turn++;
-					BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B"), Turn - 1));
+					lock (BattleLog) BattleLog.Add(String.Format("Ход {0} завершен, теперь ходит сторона " + (SideA ? "A" : "B") + "\r\n", Turn - 1));
 				}
 			}
 		}

@@ -36,5 +36,18 @@
                 </Grid>
             </Controls:Flyout>
         </Controls:FlyoutsControl>
+
+      <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <local:Battle x:Name="Battle" Margin="10" Grid.Column="1"/>
+            <TextBox x:Name="BattleLog" Margin="10" TextWrapping="Wrap"/>
+            <Controls:ProgressRing x:Name="loading" IsActive="False" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Height="150" Foreground="#FF3F3F46" BorderBrush="{DynamicResource BackgroundNormal}" Grid.Column="1" Margin="0"/>
+        </Grid>
     </Grid>
 </Controls:MetroWindow>

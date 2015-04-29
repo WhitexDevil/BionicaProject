@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Effects;
 using Teske.WPF.Effects;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace project
 {
@@ -30,14 +32,34 @@ namespace project
         public MainWindow()
         {
             InitializeComponent();
+			Animator.Tick += Animator_Tick;
         }
 
+		void Animator_Tick(object sender, EventArgs e)
+		{
+			TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			if (TimeSlider.Value == TimeSlider.Maximum)
+			{
+				Animator.IsEnabled = false;
+			}
+		}
 
+		void Animator_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+		{
+			//TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			//if (TimeSlider.Value == TimeSlider.Maximum) { 
+			//	Animator.Enabled = false; 
+			//}
+		}
 
+		private void AllCalculations()
+		{
+
+            
         private void AllCalculations()
-        {
+            {
 
-           
+
             ga.Go();
 
             SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 16) { Visualization = true };
@@ -46,20 +68,20 @@ namespace project
             v.SetTime(0);
             Battle.Visualization = v;
             Battle.Frame = 0;
-        }
+                        }
         private async void Button_Click(object sender, RoutedEventArgs e)
-        {
+                        {
            // fly.IsEnabled = false;
 
             rightControl.IsOpen = false;
-               
+
 
             general.Agr = GeneralOption.Agr.Slider1.Value;
             general.Wair = GeneralOption.Wair.Slider1.Value;
             general.Perc = GeneralOption.Per.Slider1.Value;
             general.Prd = GeneralOption.Prd.Slider1.Value;
             enemy = new Player(new double[4] { general.Agr, general.Wair, general.Perc, general.Prd });
-           
+
 
             Reset.IsEnabled = false;
             Start.IsEnabled = false;
@@ -85,6 +107,26 @@ namespace project
                 goalFitness:WintRate,
                 battleCount: BattleCount);
 
+            SandBox sb = new SandBox(enemy, ga.GetBest(), army, army, 32) { Visualization = true };
+            v = sb.BattleData.Visualization;
+            sb.Fight(1);
+            v.SetTime(0);
+            Battle.Visualization = v;
+            Battle.Frame = 0;
+        }
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            general.Agr = GeneralOption.Agr.Slider1.Value;
+            general.Wair = GeneralOption.Wair.Slider1.Value;
+            general.Perc = GeneralOption.Per.Slider1.Value;
+            general.Prd = GeneralOption.Prd.Slider1.Value;
+            //LoadingAnimation loading = new LoadingAnimation();
+            //loading.VerticalAlignment = VerticalAlignment.Center;
+            //loading.HorizontalAlignment = HorizontalAlignment.Left;
+            //root.Children.Add(loading);
+            Reset.IsEnabled = false;
+            Start.IsEnabled = false;
+            loading.IsActive = true;
             await Task.Run(() =>
             {
                 AllCalculations();
@@ -95,37 +137,56 @@ namespace project
             TimeSlider.IsEnabled = true;
             Animate.IsEnabled = true;
             Reset.IsEnabled = true;
-            Battle.Visibility = Visibility.Visible;
         }
 
 
 
-       
+
 
 
         Visualization v;
-     
+
+
 
         private void TimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             double d = TimeSlider.Maximum;
-            SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * v.BattleLength / TimeSlider.Maximum)).ToString();
+			SubTurnLabel.Content = "Subturn: " + ((int)(e.NewValue * Visualization.BattleLength / TimeSlider.Maximum)).ToString();
             Task.Run(() =>
             {
                 Battle.SetTimeAndFrame(
-                    ((int)(e.NewValue * v.BattleLength / d)),
-                    (float)(e.NewValue * v.BattleLength * 60 / d) % 60);
+					((int)(e.NewValue * Visualization.BattleLength / d)),
+					(float)(e.NewValue * Visualization.BattleLength * 60 / d) % 60);
+				Dispatcher.Invoke((Action)(() =>
+				{
+					lock (Visualization.BattleLog)
+						BattleLog.Text = String.Join(String.Empty, Visualization.BattleLog);
+					BattleLog.ScrollToEnd();
+				}));
             });
         }
 
+		DispatcherTimer Animator = new DispatcherTimer();
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
-          
-                while (TimeSlider.Value < TimeSlider.Maximum)
+			fly.IsEnabled = false;
+			rightControl.IsOpen = false;
+			if ((string)Animate.Content == "Animate")
+			{
+				Animate.Content = "Stop";
+				Animator.IsEnabled = true;
+			}
+			else
                 {
-                    TimeSlider.Value += TimeSlider.Maximum * 0.0001;
-                    await Task.Delay(5);
+				Animate.Content = "Animate";
+				Animator.IsEnabled = false;
                 }
+
+			//while (TimeSlider.Value < TimeSlider.Maximum && Battle.IsVisible)
+			//{
+			//	TimeSlider.Value += TimeSlider.Maximum * 0.0001;
+			//	await Task.Delay(5);
+			//}
 
         }
 
@@ -159,10 +220,12 @@ namespace project
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Battle.Visibility = Visibility.Hidden;
+			TimeSlider.Value = TimeSlider.Maximum;
+			Battle.Frame = -1;
             fly.IsEnabled = true;
             TimeSlider.Value = 0;
         }
+
 
 
         //private void Window_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
@@ -181,7 +244,6 @@ namespace project
         //	l.Y1 = Y1;
         //	l.Y2 = Y2;
         //}
-
 
     }
 }

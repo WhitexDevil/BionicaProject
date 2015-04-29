@@ -1,4 +1,5 @@
-﻿using System;
+﻿using project.Controls;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -10,13 +11,21 @@ using System.Windows.Media.Imaging;
 
 namespace project
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    class GeneralPrototype
+    {
+        public double Agr { get; set; }
+        public double Wair { get; set; }
+        public double Perc { get; set; }
+        public double Prd { get; set; }
+    }
+
     public partial class MainWindow
     {
+        UserControlInt sd = new UserControlInt();
+        sd.
         GA ga;
         Player enemy;
+        GeneralPrototype generalPrototype;
         Squad[] army;
 
         public MainWindow()
@@ -81,7 +90,7 @@ namespace project
                 }
 
             }
-            var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, true);
+            var gSpriteHorse = new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, false);
 
 
             RectangleF[][][] Animations2 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
@@ -198,11 +207,12 @@ namespace project
 
             }
 
-
+            
 
             var gSpriteArcher = new Sprite(global::project.Properties.Resources.Archer, Animations3, true);
 
-            enemy = new Player(new double[4] { 0.1, 0.9, 0.9, 0.9 });
+            enemy = new Player(new double[4] { generalPrototype.Agr, generalPrototype.Wair, generalPrototype.Perc, generalPrototype.Prd });
+
             Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = gSpriteHorse, SideBSprite = gSpriteHorse };
             Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = gSpriteSoldier, SideBSprite = gSpriteSoldier };
             Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = gSpriteArcher, SideBSprite = gSpriteArcher };

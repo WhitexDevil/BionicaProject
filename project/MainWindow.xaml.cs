@@ -42,6 +42,7 @@ namespace project
             if (TimeSlider.Value == TimeSlider.Maximum)
             {
                 Animator.IsEnabled = false;
+                Button_Click_1(Animate, new RoutedEventArgs());
             }
         }
 
@@ -60,6 +61,8 @@ namespace project
         {
 
             rightControl.IsOpen = false;
+            fly.IsEnabled = false;
+            
             general.Agr = GeneralOption.Agr.Slider1.Value;
             general.Wair = GeneralOption.Wair.Slider1.Value;
             general.Perc = GeneralOption.Per.Slider1.Value;
@@ -130,11 +133,12 @@ namespace project
 
 
 
-             fly.IsEnabled = false;
+            fly.IsEnabled = false;
             rightControl.IsOpen = false;
             if ((string)Animate.Content == "Animate")
             {
-              
+                Simulate.IsEnabled = false;
+                Reset.IsEnabled = false;
                 Animate.Content = "Stop";
                 Animator.IsEnabled = true;
             }
@@ -143,6 +147,8 @@ namespace project
                 //fly.IsEnabled = true;
                 Animate.Content = "Animate";
                 Animator.IsEnabled = false;
+                Simulate.IsEnabled = true;
+                Reset.IsEnabled = true;
             }
 
 
@@ -195,6 +201,7 @@ namespace project
         private void Simulate_Click(object sender, RoutedEventArgs e)
         {
             int i = GeneralList.SelectedIndex;
+            TimeSlider.Value = 0;
             if (i == -1)
                 return;
             SandBox sb = new SandBox(enemy, ga.GetNthGenome(i), army, army, 32) { Visualization = true };

@@ -11,16 +11,20 @@ namespace project
     public partial class MainWindow
     {
 
-        private static Sprite SpriteSoldier = InitSoldier();
-        private static Sprite SpriteHorse = InitHorse();
-        private static Sprite SpriteArcher = InitArcher();
-               
-        private static  Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = SpriteHorse, SideBSprite = SpriteHorse };
+        private static Sprite SpriteASoldier = InitSoldier(project.Properties.Resources.fighter_transparent_2);
+        private static Sprite SpriteAHorse = InitHorse(project.Properties.Resources.MyHorseman1);
+        private static Sprite SpriteAArcher = InitArcher(project.Properties.Resources.Archer);
 
-        private static Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = SpriteSoldier, SideBSprite = SpriteSoldier };
-        private static Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = SpriteArcher, SideBSprite = SpriteArcher };
+        private static Sprite SpriteBSoldier = InitSoldier(project.Properties.Resources.fighter_transparent_2_1);
+        private static Sprite SpriteBHorse = InitHorse(project.Properties.Resources.MyHorseman1_1);
+        private static Sprite SpriteBArcher = InitArcher(project.Properties.Resources.Archer_1);
+       
+        private static  Unit humanKnights = new Unit(4, 17, 3, 5, 7, 25, 1.5f) { SideASprite = SpriteAHorse, SideBSprite = SpriteBHorse };
 
-           private static Sprite InitHorse(){ 
+        private static Unit humanSoliders = new Unit(4, 16, 2, 4, 4, 30, 1.5f) { SideASprite = SpriteASoldier, SideBSprite = SpriteBSoldier };
+        private static Unit humanArcher = new Unit(4, 12, 5, 4, 3, 20, 10f) { SideASprite = SpriteAArcher, SideBSprite = SpriteBArcher };
+
+           private static Sprite InitHorse(Bitmap res){ 
 			#region Horse
             RectangleF[][][] Animations1 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
             for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
@@ -79,12 +83,12 @@ namespace project
 
             }
 			#endregion
-			return new Sprite(global::project.Properties.Resources.MyHorseman1, Animations1, false);
+			return new Sprite(res, Animations1, false);
            }
 
 
 
-           private static Sprite InitSoldier(){ 
+           private static Sprite InitSoldier(Bitmap res){ 
 			#region Soldier
             RectangleF[][][] Animations2 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
             for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
@@ -142,10 +146,10 @@ namespace project
 
             }
 			#endregion
-            return new Sprite(global::project.Properties.Resources.fighter_transparent_2, Animations2, true);
+            return new Sprite(res, Animations2, true);
            }
 
-           private static Sprite InitArcher(){ 
+           private static Sprite InitArcher(Bitmap res){ 
 			#region Archer
             RectangleF[][][] Animations3 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
             for (int i = 0; i < Enum.GetValues(typeof(Sprite.AnimationAction)).Length; i++)
@@ -201,7 +205,7 @@ namespace project
 
             }
 			#endregion
-			return new Sprite(global::project.Properties.Resources.Archer, Animations3, true);
+			return new Sprite(res, Animations3, true);
            }
             //#region Phoenix
             //RectangleF[][][] Animations4 = new RectangleF[Enum.GetValues(typeof(Sprite.AnimationAction)).Length][][];
